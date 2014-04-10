@@ -1,0 +1,9 @@
+git remote add origin https://github.com/tmsbn/Project-Libra.git
+
+git push -u origin master
+
+git pull -u origin master
+
+later on use:
+git pull
+git push
