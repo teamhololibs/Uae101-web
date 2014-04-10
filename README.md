@@ -5,11 +5,11 @@ Android Library Hub
 
 -----------------------------------------
 
-Potential site names to be added below, and we'll pick one later:
+Potential site names to be added below, and we'll pick one later (use < br / > for intentation):
 
-libdroid.com
-android-lib.com
-droidlibs.com
+libdroid.com <br/>
+android-libs.com <br/>
+droidlibs.com <br/>
 
 -----------------------------------------
 
