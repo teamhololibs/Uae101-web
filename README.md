@@ -10,6 +10,7 @@ Potential site names to be added below, and we'll pick one later (use < br / > f
 libdroid.com <br/>
 android-libs.com <br/>
 droidlibs.com <br/>
+libradroid.com <br/>
 
 ===
 
