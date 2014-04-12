@@ -15,6 +15,10 @@ devdriod.com <br/>
 
 ===
 
+When commiting any change, in the commit message specify what part of the project this commit corresponds to. For example, if the changes are related to admin portal then the msg should start "Admin: added a page" and if its the site then "Site: 404 page". 
+
+===
+
 Files related to and accessible from the admin module will be found in /admin/ directory
 
 Likewise, the user accessible directory can be found in /www/
