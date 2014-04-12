@@ -1,0 +1,31 @@
+/*
+-Thomas, dec 29 2012
+-file created
+*/
+
+/*
+
+ID, CREATED, UPDATED, to be there in most tables
+
+-Prasanth, Jan 03, 2013
+- Users table
+id, created, updated, name, username, email, password, password_reset_token, rank, 
+
+- Admin table
+
+- Admin table log
+
+- User table log
+
+- Article table
+*/
+
+
+/*
+-THomas 02 Feb 2013
+show create table 'tablename';
+
+*/
+
+
+

@@ -1,0 +1,589 @@
+
+/* CSS RESET */
+html,body,div,span,object,iframe,
+h1,h2,h3,h4,h5,h6,
+p,blockquote,pre,abbr,
+address,cite,code,del,dfn,em,
+img,ins,kbd,q,samp,small,strong,sub,sup,var,
+b,i,dl,dt,dd,ol,ul,li,
+fieldset,form,label,legend,
+table,caption,tbody,tfoot,thead,tr,th,td,
+article,aside,canvas,details,figcaption,
+figure,footer,header,hgroup,menu,nav,
+section,summary,time,mark,audio,video{
+    margin:0;
+    padding:0;
+    border:0;
+    outline:0;
+    font-size:100%;
+    vertical-align:baseline;
+    background:transparent;
+    border: 0;
+}
+body{
+    line-height:1
+}
+article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{
+    display:block
+}
+nav, ul{
+    list-style:none
+}
+blockquote,q{
+    quotes:none
+}
+blockquote:before,blockquote:after,q:before,q:after{
+    content:none
+}
+a{
+    margin:0;
+    padding:0;
+    font-size:100%;
+    vertical-align:baseline;
+    background:transparent
+}
+a:visited, a:link{
+    color: rgb(27, 112, 179);
+}
+ins{
+    background-color:#ff9;
+    color:#000;
+    text-decoration:none
+}
+mark{
+    background-color:#ff9;
+    color:#000;
+    font-style:italic;
+    font-weight:bold
+}
+del{
+    text-decoration:line-through
+}
+abbr[title],
+dfn[title]{
+    border-bottom:1px dotted;
+    cursor:help
+}
+table{
+    border-collapse:collapse;
+    border-spacing:0
+}
+hr{
+    display:block;
+    height:1px;
+    border:0;
+    border-top:1px solid #ccc;
+    margin:1em 0;
+    padding:0
+}
+input,
+select{
+    vertical-align:middle
+}
+input[type='checkbox'], input[type='radio']{
+    padding: 0;
+    margin: 0;
+    vertical-align:middle;
+}
+/* END: CSS RESET */
+
+/* PAGE CSS */
+
+/* TOP MENU */
+.wrapper{
+    min-width: 1200px;
+    width:100%;
+    position: relative;
+    font-family: 'Arimo', serif;
+    font-size: 14px;
+    line-height: 1em;
+    margin: 0 auto;
+    color: black;
+}
+.heading_bar{
+    width: 100%;
+    color: white;
+    padding: 5px 0px;
+    background-color: rgb(119, 119, 119);
+    background-image: linear-gradient(bottom, rgb(71,71,71) 3%, rgb(107,107,107) 100%);
+    background-image: -o-linear-gradient(bottom, rgb(71,71,71) 3%, rgb(107,107,107) 100%);
+    background-image: -moz-linear-gradient(bottom, rgb(71,71,71) 3%, rgb(107,107,107) 100%);
+    background-image: -webkit-linear-gradient(bottom, rgb(71,71,71) 3%, rgb(107,107,107) 100%);
+    background-image: -ms-linear-gradient(bottom, rgb(71,71,71) 3%, rgb(107,107,107) 100%);
+
+    background-image: -webkit-gradient(
+        linear,
+        left bottom,
+        left top,
+        color-stop(0.03, rgb(71,71,71)),
+        color-stop(1, rgb(107,107,107))
+        );
+}
+.heading_bar .site_name{
+    float: left;
+    width: 13%;
+    font-family: 'Fauna One', serif;
+    font-size: 1.1em;
+    padding-top: 4px;
+    padding-left: 4px;
+    color: rgb(226, 226, 226);
+}
+.heading_bar .logout_area{
+    float: right;
+    width: 13%;
+    padding-top: 4px;
+    overflow: hidden;
+    line-height: 1.2em;
+}
+
+.logout_area .logout, .admin_name{
+    float: right;
+    margin-right: 15px;
+}
+.logout_area .admin_name{
+    max-height: 30px;
+    max-width: 60%;
+    overflow: hidden;
+    text-align: right;
+    color: rgb(226, 226, 226);
+}
+
+.menu{
+    margin: 0 auto;
+    display: inline-block;
+    z-index: 1000;
+    float: left;
+    width: 73%;
+}
+.heading_bar a:link, .heading_bar a:visited, .heading_bar a:active{
+    color: white;
+    text-decoration: none;
+}
+.menu > ul > li > a{
+    display: inline-block;
+    padding: 5px 12px;
+}
+.menu > ul > li{
+    cursor: pointer;
+    position: relative;
+    display: inline-block;
+    margin: 0px 4px;
+}
+.menu > ul > li:hover, .menu > ul > li.selected{
+    background-color: rgb(176, 176, 176);
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+    -webkit-box-shadow: 0px 0px 8px rgba(83, 83, 83, 1);
+    -moz-box-shadow:    0px 0px 8px rgba(50, 50, 50, 1);
+    box-shadow:         0px 0px 8px rgba(50, 50, 50, 1);
+}
+.menu .selected a{
+    color: black !important;
+}
+.menu li:hover a{
+    color: black;
+}
+.menu li.drop_down{
+    padding: 5px 12px;
+}
+.menu .drop_down ul {
+    position: absolute;
+    min-width: 200px;
+    left: 0px;
+    top: 20px;
+    padding: 5px 0;
+    background-color: rgb(176, 176, 176);
+    border-top: 0px;
+    -webkit-border-radius: 6px;
+    -webkit-border-top-left-radius: 0;
+    -moz-border-radius: 6px;
+    -moz-border-radius-topleft: 0;
+    border-radius: 6px;
+    border-top-left-radius: 0;
+    -webkit-box-shadow: 0px 3px 2px rgba(50, 50, 50, 0.75);
+    -moz-box-shadow:    0px 3px 2px rgba(50, 50, 50, 0.75);
+    box-shadow:         0px 3px 2px rgba(50, 50, 50, 0.75);
+    z-index: 1001;
+    display: none;
+}
+.menu li.drop_down:hover{
+    color: black;
+    background: rgb(176, 176, 176) url('/images/menu_drop_down2.gif') no-repeat right;
+}
+.menu .drop_down li:hover{
+    background-color: rgb(156, 156, 156);
+}
+.menu .drop_down li a{
+    display: inline-block;
+    width: 90%;
+    padding: 5px 10px;
+}
+.menu ul li.drop_down{
+    background: url('/images/menu_drop_down.gif') no-repeat right;
+}
+.menu > ul > li:hover > ul{
+    display: block;
+}
+.menu > ul > li.selected{
+    background-color: white !important;
+}
+.menu li.drop_down li.selected a{
+    font-weight: bold;
+    font-style: italic;
+    color: white !important;
+}
+
+/* END TOP MENU */
+
+/* SECOND LAYER OF INFO */
+
+.page_heading{
+    height: 60px;
+    background: rgb(228, 228, 228);
+    background-image: linear-gradient(bottom, rgb(210,210,210) 35%, rgb(228,228,228) 68%);
+    background-image: -o-linear-gradient(bottom, rgb(210,210,210) 35%, rgb(228,228,228) 68%);
+    background-image: -moz-linear-gradient(bottom, rgb(210,210,210) 35%, rgb(228,228,228) 68%);
+    background-image: -webkit-linear-gradient(bottom, rgb(210,210,210) 35%, rgb(228,228,228) 68%);
+    background-image: -ms-linear-gradient(bottom, rgb(210,210,210) 35%, rgb(228,228,228) 68%);
+
+    background-image: -webkit-gradient(
+        linear,
+        left bottom,
+        left top,
+        color-stop(0.35, rgb(210,210,210)),
+        color-stop(0.68, rgb(228,228,228))
+        );
+    -webkit-box-shadow: 0px 3px 0px rgba(50, 50, 50, 0.15);
+    -moz-box-shadow:    0px 3px 0px rgba(50, 50, 50, 0.15);
+    box-shadow:         0px 3px 0px rgba(50, 50, 50, 0.15);
+    padding: 10px;
+    margin-bottom: 15px;
+    font-size: 0.85em;
+    text-transform: capitalize;
+}
+.page_heading .create_button{
+    float: right;
+    margin-top: 13px; 
+    margin-right: 10px; 
+    padding: 10px;
+}
+.anchor_button{
+    cursor: pointer;
+    background-color: rgb(245, 245, 245);
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    border-radius: 20px;
+    padding: 10px;
+    -webkit-box-shadow: 0px 0px 10px rgba(50, 50, 50, 0.75);
+    -moz-box-shadow:    0px 0px 10px rgba(50, 50, 50, 0.75);
+    box-shadow:         0px 0px 10px rgba(50, 50, 50, 0.75);
+}
+.anchor_button:hover{
+    -webkit-box-shadow: 0px 0px 15px rgba(50, 50, 50, 0.75);
+    -moz-box-shadow:    0px 0px 15px rgba(50, 50, 50, 0.75);
+    box-shadow:         0px 0px 15px rgba(50, 50, 50, 0.75);
+}
+.anchor_button:active{
+    -webkit-box-shadow: inset 0px 0px 10px rgba(50, 50, 50, 0.75);
+    -moz-box-shadow:    inset 0px 0px 10px rgba(50, 50, 50, 0.75);
+    box-shadow:         inset 0px 0px 10px rgba(50, 50, 50, 0.75);
+}
+a.anchor_button:link, a.anchor_button:visited, a.anchor_button:active, a.anchor_button:hover{
+    color: black;
+    text-decoration: none;
+}
+.anchor_button.search_button_text{
+    font-size: 12px;
+    padding: 8px;
+    float: right;
+}
+.page_heading .page_heading_text{
+    padding-top: 15px;
+    font-size: 16px;
+}
+
+/* END SECOND LAYER OF INFO */
+
+/* CONTENT */
+
+.main_content{
+    padding: 10px 0.4%;
+    width: 99%;
+    float: left;
+}
+.main_content .search_options .minus{
+    display: none;
+}
+.main_content .search_options{
+    width: 15%;
+    float: right;
+    padding-left: .5%;
+}
+.search_options_closed{
+    width: 10%;
+}
+.main_content .search_options .search_elements{
+    display: none;
+    width: 95%;
+    margin-top: 43px;
+    padding: 2% 2% 1%;
+    background-color: rgb(216, 216, 216);
+    -webkit-box-shadow: 0px 0px 5px rgba(50, 50, 50, 0.75);
+    -moz-box-shadow:    0px 0px 5px rgba(50, 50, 50, 0.75);
+    box-shadow:         0px 0px 5px rgba(50, 50, 50, 0.75);
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+.main_content .search_options .search_elements ul li{
+    margin-top: 10px;
+}
+.main_content .search_options .search_elements input[type='text'], input[type='email'], input[type='number'], select{
+    width: 100%;
+}
+.main_content .search_button{
+}
+.main_content .data_container{
+    width: 99%;
+    margin-top: 40px;
+}
+.data_top_options{
+    margin: 0 0 30px 20px;
+}
+.data_top_options span.selected{
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0px 0px 9px rgba(50, 50, 50, 0.75);
+    -moz-box-shadow:    inset 0px 0px 9px rgba(50, 50, 50, 0.75);
+    box-shadow:         inset 0px 0px 9px rgba(50, 50, 50, 0.75);
+}
+.data_top_options > span{
+    margin-right: 70px;
+    padding: 8px;
+}
+.data_top_options span a:link, .data_top_options span a:visited{
+    text-decoration: none;
+}
+.data_top_options span a:hover{
+    text-decoration: underline;
+}
+.data_top_options span a span{
+    font-size: .8em;
+    color: grey;
+}
+.data_top_options_right{
+    width: 84%;
+    float: right;
+}
+.data_container .paginated_data{
+    width: 100%;
+    text-align: left;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    -webkit-box-shadow: 0px 0px 7px rgba(50, 50, 50, 0.75);
+    -moz-box-shadow:    0px 0px 7px rgba(50, 50, 50, 0.75);
+    box-shadow:         0px 0px 7px rgba(50, 50, 50, 0.75);
+}
+.data_container .paginated_data th{
+    background: rgb(179, 179, 179);
+    background-image: linear-gradient(bottom, rgb(185,185,185) 18%, rgb(200,200,200) 68%);
+    background-image: -o-linear-gradient(bottom, rgb(185,185,185) 18%, rgb(200,200,200) 68%);
+    background-image: -moz-linear-gradient(bottom, rgb(185,185,185) 18%, rgb(200,200,200) 68%);
+    background-image: -webkit-linear-gradient(bottom, rgb(185,185,185) 18%, rgb(200,200,200) 68%);
+    background-image: -ms-linear-gradient(bottom, rgb(185,185,185) 18%, rgb(200,200,200) 68%);
+
+    background-image: -webkit-gradient(
+        linear,
+        left bottom,
+        left top,
+        color-stop(0.18, rgb(185,185,185)),
+        color-stop(0.68, rgb(200,200,200))
+        );
+    border-right: 1px solid rgb(145, 145, 145);
+    padding: 7px;
+    font-weight: normal;
+}
+.data_container .paginated_data th:last-child{
+    border-right: 0;
+}
+.data_container .paginated_data td{
+    padding: 5px;
+}
+.data_container .paginated_data .odd{
+    background: rgb(228, 228, 228);
+}
+.footer{
+    font-size: 0.8em;
+    padding: 10px;
+    clear: both;
+}
+
+.button{
+    color: white;
+    background: rgb(56, 161, 221);
+    padding: 7px 15px;
+    -webkit-border-radius: 16px;;
+    -moz-border-radius: 16px;;
+    border-radius: 16px;
+    text-transform: capitalize;
+}
+
+.button.cancel{
+    color: white;
+    background: rgb(168, 168, 168);
+}
+
+.confirmation_message{
+    background-image: linear-gradient(bottom, rgb(21,89,24) 26%, rgb(5,123,5) 63%);
+    background-image: -o-linear-gradient(bottom, rgb(21,89,24) 26%, rgb(5,123,5) 63%);
+    background-image: -moz-linear-gradient(bottom, rgb(21,89,24) 26%, rgb(5,123,5) 63%);
+    background-image: -webkit-linear-gradient(bottom, rgb(21,89,24) 26%, rgb(5,123,5) 63%);
+    background-image: -ms-linear-gradient(bottom, rgb(21,89,24) 26%, rgb(5,123,5) 63%);
+
+    background-image: -webkit-gradient(
+        linear,
+        left bottom,
+        left top,
+        color-stop(0.26, rgb(21,89,24)),
+        color-stop(0.63, rgb(5,123,5))
+        );
+    padding: 20px;
+    margin-bottom: 20px;
+    color: white;
+    width: 50%;
+}
+
+.confirmation_message.error{
+    background-image: linear-gradient(bottom, rgb(202,56,56) 34%, rgb(240,39,39) 63%);
+    background-image: -o-linear-gradient(bottom, rgb(202,56,56) 34%, rgb(240,39,39) 63%);
+    background-image: -moz-linear-gradient(bottom, rgb(202,56,56) 34%, rgb(240,39,39) 63%);
+    background-image: -webkit-linear-gradient(bottom, rgb(202,56,56) 34%, rgb(240,39,39) 63%);
+    background-image: -ms-linear-gradient(bottom, rgb(202,56,56) 34%, rgb(240,39,39) 63%);
+
+    background-image: -webkit-gradient(
+        linear,
+        left bottom,
+        left top,
+        color-stop(0.34, rgb(202,56,56)),
+        color-stop(0.63, rgb(240,39,39))
+        );
+}
+
+.form_fields{
+    background: rgb(228, 228, 228);
+    font-size: 0.8em;
+    float: left;
+    width: 99%;
+    margin: 0 auto;
+    padding: 10px;
+}
+.form_fields li{
+    float: left;
+    margin: 0.6%;
+    width: 99%;
+}
+.form_button{
+    margin-top: 15px;
+    margin-left: 20%;
+    float: left;
+}
+.form_fields li input[type='text'], .form_fields li input[type='password'], .form_fields li input[type='number'], .form_fields li input[type='email']{
+    /*float: left;*/
+    padding: 5px;
+}
+
+.form_fields li.wide > label{
+    float: left;
+    padding-top: 11px;
+    width: 20%;
+    font-size: 1.11em;
+}
+
+.form_fields li.wide  select{
+    width: 75%;
+    
+}
+.form_fields li.wide .input_box{
+    /*float: left;*/
+    width: 75%;
+    
+}
+.form_fields li.wide > input{
+    width: 75%;
+}
+
+.form_fields li.short{
+    float: left;
+    margin-right: 50px;
+    width: 200px;
+}
+.form_fields li.short label{
+    margin-right: 20px;
+}
+.form_fields li.wide > ul{
+    float: right;
+    width: 82%;
+}
+.inner_padding_important{
+    width: 98% !important;
+    padding: 5px !important;
+}
+.synonym_word_block_right{
+    width: 30%;
+    float: right;
+    margin: 0;
+}
+.synonym_word_block_left{
+    width: 31%;
+    float: left;
+    margin-right: 2.2%;
+}
+.synonym_search_box{
+    width: 97.5%;
+    padding: .5%;
+}
+.synonym_word_list{
+    padding: 5px;
+    margin-top: 10px; 
+    height: 500px; 
+}
+.synonym_heading{
+    text-align: center;
+    font-size: 1.15em;
+}
+.add_main_word_button{
+    height: 50px;
+}
+.prst_underlay{
+    display:none;
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background-color:#000;
+    -moz-opacity:0.5;
+    opacity:.50;
+    filter:alpha(opacity=50);
+}
+.prst_lightbox{
+    display:none;
+    position:absolute;
+    top:100px;
+    left:25%;
+    width:50%;
+    height:400px;
+    background-color:#fff;
+}
+.add_to_main_word, .add_to_synoynm{
+    cursor: pointer;
+}
+.add_to_synoynm, .remove_synoynm{
+    width: 35px;
+}
+.add_to_main_word{
+    width: 35%;
+    margin: 0 auto;
+}
