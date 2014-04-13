@@ -1,10 +1,9 @@
 <?
 
-$full_menu
-        = array(
-    'Emirates' => "emirates_manage.php;emirates",
-    'Groups' => "groups_manage.php;groups",
-    'Branches' => "branches_manage.php;branches",
+$full_menu = array(
+    'Categories' => "categories_manage.php;categories",
+    'Resources' => "resources_manage.php;resources",
+    'Users' => "libraries_manage.php;users",
     'Config Variables' => "configs_manage.php;configs",
     'Super Admin Options' => array(
         'Back Up' => "backup.php;backup",

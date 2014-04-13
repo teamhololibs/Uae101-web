@@ -42,7 +42,7 @@ function PreparePage($page_info) {
     $page_info['current_url'] = GetEncodedCurrentUrl();
     $page_info['site_name'] = SITE_NAME;
 
-    require_once 'header.php';
+    require_once SERVER_PATH . WEB_DIRECTORY . 'header.php';
 }
 
 function footer() {
