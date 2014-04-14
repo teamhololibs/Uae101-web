@@ -12,6 +12,13 @@ android-libs.com <br/>
 droidlibs.com <br/>
 libradroid.com <br/>
 devdriod.com <br/>
+droidalpha.com <br/>
+libs.guru ($20) <br/>
+omnilibs.com <br/>
+actionbar.guru <br/>
+quodroid.com - quo means more in latin <br/>
+droidfrenzy.com <br/>
+semicolon.guru <br/>
 
 ===
 
