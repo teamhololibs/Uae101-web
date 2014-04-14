@@ -19,6 +19,8 @@ actionbar.guru <br/>
 quodroid.com - quo means more in latin <br/>
 droidfrenzy.com <br/>
 semicolon.guru <br/>
+libsactivity.com <br/>
+droidactivity.com >br/>
 
 ===
 
