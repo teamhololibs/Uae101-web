@@ -21,6 +21,8 @@ droidfrenzy.com <br/>
 semicolon.guru <br/>
 libsactivity.com <br/>
 droidactivity.com <br/>
+hololibs.com<br/>
+holojars.com<br/>
 
 ===
 
