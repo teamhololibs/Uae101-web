@@ -48,9 +48,11 @@ $admin_path = "admin";
 $files = array(
     "$classes_path/Adminuser.class.php",
     "$classes_path/Config.class.php",
+    "$classes_path/Category.class.php",
     "$classes_path/Database.class.php",
     "$classes_path/Letter.class.php",
     "$classes_path/Log.class.php",
+    "$classes_path/Resource.class.php",
     "$functions_path/access.functions.php",
     "$functions_path/admin.functions.php",
     "$functions_path/database.functions.php",

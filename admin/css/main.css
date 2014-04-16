@@ -488,6 +488,7 @@ a.anchor_button:link, a.anchor_button:visited, a.anchor_button:active, a.anchor_
     margin-top: 15px;
     margin-left: 20%;
     float: left;
+    clear: both;
 }
 .form_fields li input[type='text'], .form_fields li input[type='password'], .form_fields li input[type='number'], .form_fields li input[type='email']{
     /*float: left;*/

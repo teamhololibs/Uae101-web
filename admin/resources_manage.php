@@ -21,9 +21,14 @@ if (isset($_GET['x'])) {
             $where_array[] = "active = 0";
             $var = 'deleted';
             break;
+        case '-1' :
+            $where_array[] = "is_approved = 0";
+            $var = 'notapproved';
+            break;
         case '1' :
         default :
             $where_array[] = "active = 1";
+            $where_array[] = "is_approved = 1";
             $var = 'active';
             break;
     }
@@ -32,7 +37,7 @@ if (isset($_GET['x'])) {
     $where = implode(" AND ", $where_array);
     $where = trim($where, 'AND');
 } else {
-    $where = 'active = 1';
+    $where = 'active = 1 AND is_approved = 1';
     $active = 'selected';
     $order = 'name';
 }
@@ -40,11 +45,14 @@ if (isset($_GET['x'])) {
 if ($scope_where != '')
     $scope_where = " AND $scope_where";
 
-$cats_parent = GetRowsAsAssocArray("SELECT * FROM $table_name WHERE $where ORDER BY $order");
+$resources = GetRowsAsAssocArray("SELECT * FROM $table_name WHERE $where ORDER BY $order");
 $active_count = GetCount($table_name, "active = 1 AND is_approved = 1 $scope_where");
 $delete_count = GetCount($table_name, "active = 0 AND is_approved = 1 $scope_where");
 $notapproved_count = GetCount($table_name, "is_approved = 0 $scope_where");
 $scope_prefix = GetUrlPrefix();
+
+$res = new Resource();
+$category = new Category();
 
 PreparePage(array(
     'title' => 'Resources', // Required
@@ -55,7 +63,7 @@ PreparePage(array(
     'create_button' => '<a class="make_dialog anchor_button create_button_text" href="' . $table_name . '_modify.php?action=create">Create a New Resource</a>' // Optional
 ));
 ?>
-<script type="text/javascript" src="js/category.js"></script>
+<script type="text/javascript" src="js/resource_category.js"></script>
 <? if (SEARCH) { ?>
     <div class="search_options">
         <a class="anchor_button search_button_text">Search Options <span class="indicator">+</span><span class="indicator minus">-</span></a>
@@ -65,6 +73,18 @@ PreparePage(array(
                 <ul>
                     <li>
                         <input id="name" type="text" name="x[name]" value="<?= $_GET['x']['name'] ?>" placeholder="Name"/>
+                    </li>
+                    <li>
+                        <input id="name" type="text" name="x[description]" value="<?= $_GET['x']['description'] ?>" placeholder="Description"/>
+                    </li>
+                    <li>
+                        <input id="name" type="text" name="x[name]" value="<?= $_GET['x']['name'] ?>" placeholder="Category xxx"/>
+                    </li>
+                    <li>
+                        <input id="name" type="text" name="x[name]" value="<?= $_GET['x']['name'] ?>" placeholder="Author xxx"/>
+                    </li>
+                    <li>
+                        <input id="name" type="text" name="x[name]" value="<?= $_GET['x']['name'] ?>" placeholder="Submitter xxx"/>
                     </li>
                 </ul>
                 <input class="button" type="submit" value="Search"/>
@@ -92,85 +112,57 @@ PreparePage(array(
                 <th>Name</th>
                 <th>Description</th>
                 <th>Category</th>
-                <th>Author</th>
-                <th>Points</th>
-                <th>Views</th>
-                <th>Updated</th>
-                <? if (ACTION) { ?>
+                <th>Information</th>
+    <? if (ACTION) { ?>
                     <th>
                         Action
                     </th>
-                <? } ?>
+            <? } ?>
             </tr>
             <?
             $i = 0;
-            foreach ($cats_parent as $cp) {
-                $cc = GetRowsAsAssocArray("SELECT * FROM {$table_name} WHERE $where AND parent_id = {$cp['cat_id']} ORDER BY name"); //cats_child
-                $cccount = count($cc);
-                if ($cccount == 0) {
-                    $class = ($i++ % 2 != 0) ? "class='odd'" : '';
-                    echo "<tr $class>";
-                    echo "<td>{$cp['cat_id']}</td>";
-                    echo "<td>{$cp['name']}</td>";
-                    echo "<td></td>";
-                    echo "<td></td>";
-                    echo "<td>#</td>";
-                    echo "<td>{$cp['updated']}</td>";
-                    if (ACTION) {
-                        echo "<td>";
-                        if (EDIT) {
-                            echo "<a class='make_dialog' title='{$cp['name']}' href='{$table_name}'_modify.php?action=edit&id={$cp['cat_id']}'>Edit</a><br/>";
+            foreach ($resources as $resource) {
+                ?>
+                <tr <?= ($i++ % 2 != 0) ? "class='odd'" : '' ?> >
+                    <td><?= $resource['resource_id'] ?></td>
+                    <td><?= $resource['name'] ?></td>
+                    <td><?= TextFromDB($resource['description']) ?></td>
+                    <td>
+                        <?
+                        $res_cats = $res->GetResourceCategories($resource['resource_id']);
+                        foreach ($res_cats as $res_cat) {
+                            echo $category->GetCategoryFullName($res_cat) . "<br/><br/>";
                         }
-                        if (DELETE) {
-                            if ($cp['active'] == '1') {
-                                echo "<a onclick='return confirm(\"Are you sure you want to delete?\");' "
-                                . "href='{$table_name}_modify.php?action=delete&id={$cp['cat_id']}'>Delete</a><br/>";
-                            } else {
-                                echo "<a onclick='return confirm(\"Are you sure you want to enable?\");' "
-                                . "href='{$table_name}_modify.php?action=enable&id={$cp['cat_id']}'>Enable</a><br/>";
-                            }
-                        }
-                        echo "</td>";
-                    }
-                    echo "</tr>";
-                } else {
-                    $class = ($i++ % 2 != 0) ? "class='odd'" : '';
-                    echo "<tr $class>";
-                    echo "<td rowspan='$cccount' >{$cp['cat_id']}</td>";
-                    echo "<td rowspan='$cccount' >{$cp['name']}</td>";
-                    $j = 0;
-                    foreach ($cc as $c) {
-                        echo "<td>{$c['cat_id']}</td>";
-                        echo "<td>{$c['name']}</td>";
-                        echo "<td>#</td>";
-                        echo "<td>{$cp['updated']}</td>";
-                        if (ACTION) {
-                            echo "<td>";
-                            if (EDIT) {
-                                echo "<a class='make_dialog' title='{$c['name']}' href='{$table_name}'_modify.php?action=edit&id={$c['cat_id']}'>Edit</a><br/>";
-                            }
+                        ?>
+                    </td>
+                    <td>
+                        <?
+                        echo "Author: auth<br/><br/>";
+                        echo "Submitter: subbb<br/><br/>";
+                        echo "Points: " . $resource['points'] . "<br/><br/>";
+                        echo "Views: " . $resource['views'] . "<br/><br/>";
+                        echo "Updated: " . $resource['updated'] . "<br/><br/>";
+                        ?>
+                    </td>
+                        <? if (ACTION) { ?>
+                        <td>
+                            <? if (EDIT) { ?><a class="make_dialog" title="<?= $resource['name'] ?>" href="<?= $table_name ?>_modify.php?action=edit&id=<?= $resource['resource_id'] ?>"/>Edit</a><br/><? } ?>
+
+                            <?
                             if (DELETE) {
-                                if ($c['active'] == '1') {
-                                    echo "<a onclick='return confirm(\"Are you sure you want to delete?\");' "
-                                    . "href='{$table_name}_modify.php?action=delete&id={$c['cat_id']}'>Delete</a><br/>";
-                                } else {
-                                    echo "<a onclick='return confirm(\"Are you sure you want to enable?\");' "
-                                    . "href='{$table_name}_modify.php?action=enable&id={$c['cat_id']}'>Enable</a><br/>";
-                                }
-                            }
-                            echo "</td>";
-                        }
-                        if ($j != $cccount - 1) {
-                            echo "</tr>";
-                            $class = ($i++ % 2 != 0) ? "class='odd'" : '';
-                            echo "<tr $class>";
-                        }
-                        $j++;
-                    }
-                    echo "</tr>";
-                }
-            }
-            ?>
+                                if ($resource['active'] == '1') {
+                                    ?>
+                                    <a onclick="return confirm('Are you sure you want t
+                                                        o delete?');" href="<?= $table_name ?>_modify.php?action=delete&id=<?= $resource['resource_id'] ?>"/>Delete</a><br/>
+                                   <? } else { ?>
+                                    <a onclick="return confirm('Are you sure you want t
+                                                                o enable?');" href="<?= $table_name ?>_modify.php?action=enable&id=<?= $resource['resource_id'] ?>"/>Enable</a><br/>
+                                   <? } ?>
+                        <? } ?>
+                        </td>
+                <? } ?>
+                </tr>
+    <? } ?>
         </table>
     </div>
 <? } ?>

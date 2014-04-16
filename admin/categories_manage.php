@@ -39,7 +39,7 @@ if (isset($_GET['x'])) {
 if ($scope_where != '')
     $scope_where = " AND $scope_where";
 
-$cats_parent = GetRowsAsAssocArray("SELECT * FROM $table_name WHERE is_parent = 1 ORDER BY parent_id");
+$cats_parent = GetRowsAsAssocArray("SELECT * FROM $table_name WHERE parent_id = 0 ORDER BY name");
 $active_count = GetCount($table_name, "active = 1 $scope_where");
 $delete_count = GetCount($table_name, "active = 0 $scope_where");
 $scope_prefix = GetUrlPrefix();

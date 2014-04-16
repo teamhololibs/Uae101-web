@@ -17,11 +17,15 @@ if (isset($_GET['id']) && $_GET['id'] != '')
     $id = TextFromDB($_GET['id']);
 
 if ($action == 'edit' && $id) {
-    $resource = GetRowById($table_name, 'cat_id', $id);
+    $resource = GetRowById($table_name, 'resource_id', $id);
+}
+
+foreach ($resource as $key => $value) {
+    $resource[$key] = TextFromDB($value);
 }
 
 if ($action == 'delete' && $id) {
-    $qs = "UPDATE $table_name SET active = 0 WHERE cat_id = $id ";
+    $qs = "UPDATE $table_name SET active = 0 WHERE resource_id = $id ";
     $res = ExecuteQuery($qs);
     if (!$res) {
         echo "error";
@@ -32,7 +36,7 @@ if ($action == 'delete' && $id) {
 }
 
 if ($action == 'enable' && $id) {
-    $qs = "UPDATE {$table_name} SET active = 1 WHERE cat_id = $id ";
+    $qs = "UPDATE {$table_name} SET active = 1 WHERE resource_id = $id ";
     $res = ExecuteQuery($qs);
     if (!$res) {
         echo "error";
@@ -43,6 +47,7 @@ if ($action == 'enable' && $id) {
 }
 
 if (isset($_POST['submit']) && ($_POST['submit'] != '')) {
+    $fields_res_cats = $_POST['res_cats'];
     $fields = $_POST['q'];
     $set_str = 'SET ';
     $message = '';
@@ -51,21 +56,17 @@ if (isset($_POST['submit']) && ($_POST['submit'] != '')) {
         $set_str .= " $k = '$v', ";
     }
 
-    if ($fields['name'] == '' || $fields['is_parent'] == '') {
+    if ($fields['name'] == '' || $fields['description'] == '' || $fields['author'] == '') {
         $message = "Please enter required information";
-    }
-
-    if ($fields['is_parent'] == '0' && $fields['parent_id'] == '') {
-        $message = "Choose a parent";
     }
 
     $set_str = (trim($set_str, ' ,'));
 
     $action_str = false;
     if ($action == 'edit' && $id) {
-        $where_validation = " AND cat_id != $id ";
+        $where_validation = " AND resource_id != $id ";
         $action_str = "UPDATE";
-        $where_str = "WHERE cat_id=$id";
+        $where_str = "WHERE resource_id=$id";
     }
     if ($action == 'create')
         $action_str = "INSERT INTO";
@@ -79,6 +80,14 @@ if (isset($_POST['submit']) && ($_POST['submit'] != '')) {
 
     if ($message == '') {
         $res = ExecuteQuery($qs);
+        if ($id == '') {
+            $id = GetLastInsertId();
+            ExecuteQuery("DELETE FROM res_cat WHERE res_id = " . $id);
+        }
+        foreach ($fields_res_cats as $rc) {
+            if ($rc != '')
+                ExecuteQuery("INSERT INTO res_cat SET res_id = $id, cat_id = $rc ");
+        }
         if (!$res) {
             echo "error";
         }
@@ -91,17 +100,20 @@ if (isset($_POST['submit']) && ($_POST['submit'] != '')) {
 
     $resource = $fields;
 }
-$resource['is_parent'] = ($resource['is_parent'] == '' || is_null($resource['is_parent'])) ? '0' : $resource['is_parent'];
+$resource['is_approved'] = ($resource['is_approved'] == '' || is_null($resource['is_approved'])) ? '0' : $resource['is_approved'];
 
 PreparePage(array(
     'title' => 'Resource: Modify', // Required
     'page_type' => 'Resource', // Required
     'page_action' => '', // Optional
     'page_extra_detail' => "$action", // Optional
-    'page_heading' => ($resource['name'] == null || $action == 'create') ? 'New Page' : $resource['name'], // Required
+    'page_heading' => ($resource['name'] == null || $action == 'create') ? 'New Resource' : $resource['name'], // Required
 ));
+
+$res_ins = new Resource();
+$cat_ins = new Category();
 ?>
-<script type="text/javascript" src="js/category.js"></script>
+<script type="text/javascript" src="js/resource_category.js"></script>
 <div class="data_container">
     <div class="form_fields">
         <form method="post" action="<?= $table_name ?>_modify.php?<?= $_SERVER['QUERY_STRING'] ?>">
@@ -128,12 +140,23 @@ PreparePage(array(
                     <input id="author" type='text' required name="q[author]" value="<?= $resource['author'] ?>" title="Author of the resource"/>
                 </li>
             </ul>
-            <table width="95%" style="font-size: 1.11em;">
+            <table width="95%" style="font-size: 1.11em;" id='res_cat_table'>
                 <?
                 // Autocomplete categories and category class for cat search with breadcrumbs
-                include 'resources_li_cat.php';
+                $i = 1;
+                if ($resource['resource_id'] != '') {
+                    $res_cats = $res_ins->GetResourceCategories($resource['resource_id']);
+                    foreach ($res_cats as $res_cat) {
+                        $cat_name = $cat_ins->GetCategoryFullName($res_cat);
+                        include 'resources_tr_cat.php';
+                        $i++;
+                    }
+                } else {
+                    include 'resources_tr_cat.php';
+                }
                 ?>
             </table>
+            <button class='form_button' id="add_cat" onclick="return false;"c>Add a category</button><br/><br/>
             <div class='form_button'>
                 <input class="button" type="submit" name="submit" value="<?= $action ?> Resource"/>
             </div>

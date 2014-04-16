@@ -47,6 +47,9 @@ if (isset($_POST['submit']) && ($_POST['submit'] != '')) {
     $set_str = 'SET ';
     $message = '';
     foreach ($fields as $k => $v) {
+        if ($k == 'is_parent')
+            continue;
+
         $v = TextToDB(trim($v));
         $set_str .= " $k = '$v', ";
     }
@@ -54,9 +57,11 @@ if (isset($_POST['submit']) && ($_POST['submit'] != '')) {
     if ($fields['name'] == '' || $fields['is_parent'] == '') {
         $message = "Please enter required information";
     }
-    
+
     if ($fields['is_parent'] == '0' && $fields['parent_id'] == '') {
         $message = "Choose a parent";
+    } elseif ($fields['is_parent'] == '1') {
+        $fields['parent_id'] = '0';
     }
 
     $set_str = (trim($set_str, ' ,'));
@@ -91,7 +96,7 @@ if (isset($_POST['submit']) && ($_POST['submit'] != '')) {
 
     $cats = $fields;
 }
-$cats['is_parent'] = ($cats['is_parent'] == '' || is_null($cats['is_parent'])) ? '0' : $cats['is_parent'];
+$cats['is_parent'] = ($cats['parent_id'] == '0') ? '1' : '0';
 
 PreparePage(array(
     'title' => 'Category: Modify', // Required
@@ -122,7 +127,7 @@ PreparePage(array(
                     <select id="parent" name="q[parent_id]">
                         <option value=''>Select a Parent</option>
                         <?
-                        $all_cats = GetRows($table_name, 'active = 1 AND is_parent = 1 ORDER BY name');
+                        $all_cats = GetRows($table_name, 'active = 1 AND parent_id = 0 ORDER BY name');
                         //var_dump($all_cats);
                         foreach ($all_cats as $cat) {
                             echo "<option value='{$cat['cat_id']}' ";
