@@ -542,32 +542,6 @@ a.anchor_button:link, a.anchor_button:visited, a.anchor_button:active, a.anchor_
     width: auto !important;
 }
 
-.synonym_word_block_right{
-    width: 30%;
-    float: right;
-    margin: 0;
-}
-.synonym_word_block_left{
-    width: 31%;
-    float: left;
-    margin-right: 2.2%;
-}
-.synonym_search_box{
-    width: 97.5%;
-    padding: .5%;
-}
-.synonym_word_list{
-    padding: 5px;
-    margin-top: 10px; 
-    height: 500px; 
-}
-.synonym_heading{
-    text-align: center;
-    font-size: 1.15em;
-}
-.add_main_word_button{
-    height: 50px;
-}
 .prst_underlay{
     display:none;
     position:fixed;
@@ -598,4 +572,8 @@ a.anchor_button:link, a.anchor_button:visited, a.anchor_button:active, a.anchor_
 .add_to_main_word{
     width: 35%;
     margin: 0 auto;
+}
+
+.last_row{
+    border-bottom: 1px solid black;
 }

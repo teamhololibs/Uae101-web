@@ -1,7 +1,7 @@
 <?
 require_once '../admin.common.prepend.php';
 
-$table_name = 'resources';
+$table_name = 'authors';
 CheckPermissions($table_name);
 
 if (isset($_GET['x'])) {
@@ -49,31 +49,26 @@ if (isset($_GET['x'])) {
     $$var = 'selected';
     $where = implode(" AND ", $where_array);
     $where = trim($where, 'AND');
-} else {
-    $where = 'active = 1 AND is_approved = 1';
-    $active = 'selected';
-    $order = 'name';
+    $where = "WHERE " . $where;
 }
 
 if ($scope_where != '')
     $scope_where = " AND $scope_where";
 
-$resources = GetRowsAsAssocArray("SELECT * FROM $table_name WHERE $where ");
-$active_count = GetCount($table_name, "active = 1 AND is_approved = 1 $scope_where");
-$delete_count = GetCount($table_name, "active = 0 AND is_approved = 1 $scope_where");
-$notapproved_count = GetCount($table_name, "is_approved = 0 $scope_where");
+$resources = GetRowsAsAssocArray("SELECT * FROM $table_name $where ");
+$active_count = GetCount($table_name, "$scope_where");
 $scope_prefix = GetUrlPrefix();
 
 $res = new Resource();
 $category = new Category();
 
 PreparePage(array(
-    'title' => 'Resources', // Required
-    'page_type' => 'Resources', // Required
+    'title' => 'Authors', // Required
+    'page_type' => 'Authors', // Required
     'page_action' => '', // Optional
     'page_extra_detail' => '', // Optional
-    'page_heading' => 'Resources', // Required
-    'create_button' => '<a class="make_dialog anchor_button create_button_text" href="' . $table_name . '_modify.php?action=create">Create a New Resource</a>' // Optional
+    'page_heading' => 'Authors', // Required
+    'create_button' => '<a class="make_dialog anchor_button create_button_text" href="' . $table_name . '_modify.php?action=create">Create a New Author</a>' // Optional
 ));
 ?>
 <script type="text/javascript" src="js/resource_category.js"></script>
@@ -111,12 +106,6 @@ PreparePage(array(
         <span class="<?= $active ?>">
             <a href="<?= $scope_prefix ?>&x[scope]=1">Active<span> (<?= $active_count ?>)</span></a>
         </span>
-        <span class="<?= $deleted ?>">
-            <a href="<?= $scope_prefix ?>&x[scope]=0">Deleted<span> (<?= $delete_count ?>)</span></a>
-        </span>
-        <span class="<?= $notapproved ?>">
-            <a href="<?= $scope_prefix ?>&x[scope]=-1">Not Approved<span> (<?= $notapproved_count ?>)</span></a>
-        </span>
     </div>
     <div class="data_container">
         <table class="paginated_data" cellspacing='0' cellpadding="0">
@@ -137,8 +126,8 @@ PreparePage(array(
             foreach ($resources as $resource) {
                 ?>
                 <tr <?= ($i++ % 2 != 0) ? "class='odd'" : '' ?> >
-                    <td style="width: 7%;"><?= $resource['resource_id'] ?></td>
-                    <td><a href='<?= $resource['url'] ?>'><?= $resource['name'] ?></a></td>
+                    <td><?= $resource['resource_id'] ?></td>
+                    <td><?= $resource['name'] ?></td>
                     <td><?= TextFromDB($resource['description']) ?></td>
                     <td>
                         <?
@@ -159,29 +148,7 @@ PreparePage(array(
                     </td>
                     <? if (ACTION) { ?>
                         <td>
-                            <? if ($resource['is_approved'] == '0') { ?>
-                                <a onclick="return confirm('Are you sure you want to approve?');" href="<?= $table_name ?>_modify.php?action=approve&id=<?= $resource['resource_id'] ?>"/>Approve</a><br/>
-                            <? } else { ?>
-                                <a onclick="return confirm('Are you sure you want to disapprove?');" href="<?= $table_name ?>_modify.php?action=disapprove&id=<?= $resource['resource_id'] ?>"/>Disapprove</a><br/>
-                                   <?
-                               }
-                               if (EDIT) {
-                                   ?>
-                                <a class="make_dialog" title="<?= $resource['name'] ?>" href="<?= $table_name ?>_modify.php?action=edit&id=<?= $resource['resource_id'] ?>"/>Edit</a><br/>
-                                <?
-                            }
-                            if (DELETE) {
-                                if ($resource['active'] == '1') {
-                                    ?>
-                                    <a onclick="return confirm('Are you sure you want t
-                                                                                    o delete?');" href="<?= $table_name ?>_modify.php?action=delete&id=<?= $resource['resource_id'] ?>"/>Delete</a><br/>
-                                   <? } else { ?>
-                                    <a onclick="return confirm('Are you sure you want t
-                                                                                            o enable?');" href="<?= $table_name ?>_modify.php?action=enable&id=<?= $resource['resource_id'] ?>"/>Enable</a><br/>
-                                       <?
-                                   }
-                               }
-                               ?>
+                            <? if (EDIT) { ?><a class="make_dialog" title="<?= $resource['name'] ?>" href="<?= $table_name ?>_modify.php?action=edit&id=<?= $resource['resource_id'] ?>"/>Edit</a><br/><? } ?>
                         </td>
                     <? } ?>
                 </tr>

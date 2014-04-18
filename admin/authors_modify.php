@@ -1,7 +1,7 @@
 <?
 require_once '../admin.common.prepend.php';
 
-$table_name = 'resources';
+$table_name = 'authors';
 CheckPermissions($table_name);
 
 if (isset($_REQUEST['action']) && $_REQUEST['action'] != '')
@@ -42,28 +42,6 @@ if ($action == 'enable' && $id) {
         echo "error";
     }
     SetConfirmationMessage("Resource Successfully enabled");
-    header("Location: {$table_name}_manage.php");
-    exit;
-}
-
-if ($action == 'approve' && $id) {
-    $qs = "UPDATE {$table_name} SET is_approved = 1 WHERE resource_id = $id ";
-    $res = ExecuteQuery($qs);
-    if (!$res) {
-        echo "error";
-    }
-    SetConfirmationMessage("Resource Successfully approved");
-    header("Location: {$table_name}_manage.php");
-    exit;
-}
-
-if ($action == 'disapprove' && $id) {
-    $qs = "UPDATE {$table_name} SET is_approved = 0 WHERE resource_id = $id ";
-    $res = ExecuteQuery($qs);
-    if (!$res) {
-        echo "error";
-    }
-    SetConfirmationMessage("Resource Successfully disapproved");
     header("Location: {$table_name}_manage.php");
     exit;
 }
@@ -125,11 +103,11 @@ if (isset($_POST['submit']) && ($_POST['submit'] != '')) {
 $resource['is_approved'] = ($resource['is_approved'] == '' || is_null($resource['is_approved'])) ? '0' : $resource['is_approved'];
 
 PreparePage(array(
-    'title' => 'Resource: Modify', // Required
-    'page_type' => 'Resource', // Required
+    'title' => 'Author: Modify', // Required
+    'page_type' => 'Author', // Required
     'page_action' => '', // Optional
     'page_extra_detail' => "$action", // Optional
-    'page_heading' => ($resource['name'] == null || $action == 'create') ? 'New Resource' : $resource['name'], // Required
+    'page_heading' => ($resource['name'] == null || $action == 'create') ? 'New Author' : $resource['name'], // Required
 ));
 
 $res_ins = new Resource();
@@ -143,10 +121,6 @@ $cat_ins = new Category();
                 <li class="wide">
                     <label for="name">Resource Name:</label>
                     <input id="name" type='text' required name="q[name]" value="<?= $resource['name'] ?>" title="Name of the resource"/>
-                </li>
-                <li class="wide">
-                    <label for="name">URL:</label>
-                    <input id="name" type='text' required name="q[url]" value="<?= $resource['url'] ?>" title="URL of the resource"/>
                 </li>
                 <li class="wide">
                     <label for="name">Resource Description:</label>
@@ -170,8 +144,7 @@ $cat_ins = new Category();
                 <?
                 // Autocomplete categories and category class for cat search with breadcrumbs
                 $i = 1;
-                if ($resource['resource_id'] != '')
-                    $res_cats = $res_ins->GetResourceCategories($resource['resource_id']);
+                $res_cats = $res_ins->GetResourceCategories($resource['resource_id']);
                 if ($resource['resource_id'] == '' || count($res_cats) == 0) {
                     include 'resources_tr_cat.php';
                 } else {
@@ -183,7 +156,7 @@ $cat_ins = new Category();
                 }
                 ?>
             </table>
-            <button class='form_button' type='button' id="add_cat" onclick="return false;"c>Add a category</button><br/><br/>
+            <button class='form_button' id="add_cat" onclick="return false;"c>Add a category</button><br/><br/>
             <div class='form_button'>
                 <input class="button" type="submit" name="submit" value="<?= $action ?> Resource"/>
             </div>

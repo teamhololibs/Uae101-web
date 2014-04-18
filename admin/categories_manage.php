@@ -99,43 +99,46 @@ PreparePage(array(
             $i = 0;
             foreach ($cats_parent as $cp) {
                 $cc = GetRowsAsAssocArray("SELECT * FROM {$table_name} WHERE $where AND parent_id = {$cp['cat_id']} ORDER BY name"); //cats_child
-                $cccount = count($cc);
-                if ($cccount == 0) {
-                    $class = ($i++ % 2 != 0) ? "class='odd'" : '';
-                    echo "<tr $class>";
-                    echo "<td>{$cp['cat_id']}</td>";
-                    echo "<td>{$cp['name']}</td>";
-                    echo "<td></td>";
-                    echo "<td></td>";
-                    echo "<td>#</td>";
-                    echo "<td>{$cp['updated']}</td>";
-                    if (ACTION) {
-                        echo "<td>";
-                        if (EDIT) {
-                            echo "<a class='make_dialog' title='{$cp['name']}' href='{$table_name}'_modify.php?action=edit&id={$cp['cat_id']}'>Edit</a><br/>";
-                        }
-                        if (DELETE) {
-                            if ($cp['active'] == '1') {
-                                echo "<a onclick='return confirm(\"Are you sure you want to delete?\");' "
-                                . "href='{$table_name}_modify.php?action=delete&id={$cp['cat_id']}'>Delete</a><br/>";
-                            } else {
-                                echo "<a onclick='return confirm(\"Are you sure you want to enable?\");' "
-                                . "href='{$table_name}_modify.php?action=enable&id={$cp['cat_id']}'>Enable</a><br/>";
-                            }
-                        }
-                        echo "</td>";
+                $cccount = count($cc) + 1;
+                $last = '';
+                if ($cccount == 1)
+                    $last = 'last_row';
+                $class = "class='";
+                $class .= ($i++ % 2 != 0) ? "odd" : '';
+                $class .= " $last '";
+                echo "<tr $class>";
+                echo "<td rowspan='" . $cccount . "' >{$cp['cat_id']}</td>";
+                echo "<td rowspan='" . $cccount . "' >{$cp['name']}</td>";
+                echo "<td>$cccount</td>";
+                echo "<td></td>";
+                echo "<td><a href='resources_manage.php?x[cat_id]={$cp['cat_id']}'>" . GetCount("res_cat", "cat_id = '{$cp['cat_id']}'", "DISTINCT(res_id)") . "</a></td>";
+                echo "<td>{$cp['updated']}</td>";
+                if (ACTION) {
+                    echo "<td>";
+                    if (EDIT) {
+                        echo "<a class='make_dialog' title='{$cp['name']}' href='{$table_name}'_modify.php?action=edit&id={$cp['cat_id']}'>Edit</a><br/>";
                     }
-                    echo "</tr>";
-                } else {
+                    if (DELETE) {
+                        if ($cp['active'] == '1') {
+                            echo "<a onclick='return confirm(\"Are you sure you want to delete?\");' "
+                            . "href='{$table_name}_modify.php?action=delete&id={$cp['cat_id']}'>Delete</a><br/>";
+                        } else {
+                            echo "<a onclick='return confirm(\"Are you sure you want to enable?\");' "
+                            . "href='{$table_name}_modify.php?action=enable&id={$cp['cat_id']}'>Enable</a><br/>";
+                        }
+                    }
+                    echo "</td>";
+                }
+                echo "</tr>";
+
+                if ($cccount > 1) {
                     $class = ($i++ % 2 != 0) ? "class='odd'" : '';
                     echo "<tr $class>";
-                    echo "<td rowspan='$cccount' >{$cp['cat_id']}</td>";
-                    echo "<td rowspan='$cccount' >{$cp['name']}</td>";
-                    $j = 0;
+                    $j = 1;
                     foreach ($cc as $c) {
-                        echo "<td>{$c['cat_id']}</td>";
+                        echo "<td>{$c['cat_id']}$j</td>";
                         echo "<td>{$c['name']}</td>";
-                        echo "<td>#</td>";
+                        echo "<td><a href='resources_manage.php?x[cat_id]={$c['cat_id']}'>" . GetCount("res_cat", "cat_id = '{$c['cat_id']}'", "DISTINCT(res_id)") . "</a></td>";
                         echo "<td>{$cp['updated']}</td>";
                         if (ACTION) {
                             echo "<td>";
@@ -155,7 +158,12 @@ PreparePage(array(
                         }
                         if ($j != $cccount - 1) {
                             echo "</tr>";
-                            $class = ($i++ % 2 != 0) ? "class='odd'" : '';
+                            $last = '';
+                            if ($j == $cccount - 2)
+                                $last = 'last_row';
+                            $class = "class='";
+                            $class .= ($i++ % 2 != 0) ? "odd" : '';
+                            $class .= " $last '";
                             echo "<tr $class>";
                         }
                         $j++;
