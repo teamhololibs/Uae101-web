@@ -17,37 +17,36 @@ if (isset($_GET['id']) && $_GET['id'] != '')
     $id = TextFromDB($_GET['id']);
 
 if ($action == 'edit' && $id) {
-    $resource = GetRowById($table_name, 'resource_id', $id);
+    $author = GetRowById($table_name, 'author_id', $id);
 }
 
-foreach ($resource as $key => $value) {
-    $resource[$key] = TextFromDB($value);
+foreach ($author as $key => $value) {
+    $author[$key] = TextFromDB($value);
 }
 
 if ($action == 'delete' && $id) {
-    $qs = "UPDATE $table_name SET active = 0 WHERE resource_id = $id ";
+    $qs = "UPDATE $table_name SET active = 0 WHERE author_id = $id ";
     $res = ExecuteQuery($qs);
     if (!$res) {
         echo "error";
     }
-    SetConfirmationMessage("Resource Successfully deleted");
+    SetConfirmationMessage("Author Successfully deleted");
     header("Location: {$table_name}_manage.php");
     exit;
 }
 
 if ($action == 'enable' && $id) {
-    $qs = "UPDATE {$table_name} SET active = 1 WHERE resource_id = $id ";
+    $qs = "UPDATE {$table_name} SET active = 1 WHERE author_id = $id ";
     $res = ExecuteQuery($qs);
     if (!$res) {
         echo "error";
     }
-    SetConfirmationMessage("Resource Successfully enabled");
+    SetConfirmationMessage("Author Successfully enabled");
     header("Location: {$table_name}_manage.php");
     exit;
 }
 
 if (isset($_POST['submit']) && ($_POST['submit'] != '')) {
-    $fields_res_cats = $_POST['res_cats'];
     $fields = $_POST['q'];
     $set_str = 'SET ';
     $message = '';
@@ -56,7 +55,7 @@ if (isset($_POST['submit']) && ($_POST['submit'] != '')) {
         $set_str .= " $k = '$v', ";
     }
 
-    if ($fields['name'] == '' || $fields['description'] == '' || $fields['author'] == '') {
+    if ($fields['name'] == '') {
         $message = "Please enter required information";
     }
 
@@ -64,9 +63,9 @@ if (isset($_POST['submit']) && ($_POST['submit'] != '')) {
 
     $action_str = false;
     if ($action == 'edit' && $id) {
-        $where_validation = " AND resource_id != $id ";
+        $where_validation = " AND author_id != $id ";
         $action_str = "UPDATE";
-        $where_str = "WHERE resource_id=$id";
+        $where_str = "WHERE author_id=$id";
     }
     if ($action == 'create')
         $action_str = "INSERT INTO";
@@ -75,19 +74,11 @@ if (isset($_POST['submit']) && ($_POST['submit'] != '')) {
         $qs = "$action_str {$table_name} $set_str $where_str";
 
     if (GetCount($table_name, "name = '{$fields['name']}' $where_validation ")) {
-        $message = "This resource already exists. Please recheck";
+        $message = "This author already exists. Please recheck";
     }
 
     if ($message == '') {
         $res = ExecuteQuery($qs);
-        if ($id == '') {
-            $id = GetLastInsertId();
-        }
-        ExecuteQuery("DELETE FROM res_cat WHERE res_id = " . $id);
-        foreach ($fields_res_cats as $rc) {
-            if ($rc != '')
-                ExecuteQuery("INSERT INTO res_cat SET res_id = $id, cat_id = $rc ");
-        }
         if (!$res) {
             echo "error";
         }
@@ -98,67 +89,34 @@ if (isset($_POST['submit']) && ($_POST['submit'] != '')) {
         SetConfirmationMessage($message, 'error');
     }
 
-    $resource = $fields;
+    $author = $fields;
 }
-$resource['is_approved'] = ($resource['is_approved'] == '' || is_null($resource['is_approved'])) ? '0' : $resource['is_approved'];
 
 PreparePage(array(
     'title' => 'Author: Modify', // Required
     'page_type' => 'Author', // Required
     'page_action' => '', // Optional
     'page_extra_detail' => "$action", // Optional
-    'page_heading' => ($resource['name'] == null || $action == 'create') ? 'New Author' : $resource['name'], // Required
+    'page_heading' => ($author['name'] == null || $action == 'create') ? 'New Author' : $author['name'], // Required
 ));
 
-$res_ins = new Resource();
-$cat_ins = new Category();
 ?>
-<script type="text/javascript" src="js/resource_category.js"></script>
+<script type="text/javascript" src="js/author_category.js"></script>
 <div class="data_container">
     <div class="form_fields">
         <form method="post" action="<?= $table_name ?>_modify.php?<?= $_SERVER['QUERY_STRING'] ?>">
             <ul>
                 <li class="wide">
-                    <label for="name">Resource Name:</label>
-                    <input id="name" type='text' required name="q[name]" value="<?= $resource['name'] ?>" title="Name of the resource"/>
+                    <label for="name">Author Name:</label>
+                    <input id="name" type='text' required name="q[name]" value="<?= $author['name'] ?>" placeholder="Name of the author"/>
                 </li>
                 <li class="wide">
-                    <label for="name">Resource Description:</label>
-                    <textarea id="name" name="q[description]" required placeholder="">
-                        <?= $resource['description'] ?>
-                    </textarea>
-                </li>
-                <li class="wide">
-                    <label style="padding: 0;" for="">Is this resource approved?:</label>
-                    <label class="form_radio" for="is_approved_yes">Yes</label>
-                    <input class="form_radio" required id="is_approved_yes" type='radio' class="required" name="q[is_approved]" value="1" <?= ($resource['is_approved'] == '1') ? "checked" : '' ?> />
-                    <label class="form_radio" for="is_approved_no">No</label>
-                    <input class="form_radio" required id="is_approved_no" type='radio' class="required" name="q[is_approved]" value="0" <?= ($resource['is_approved'] == '0') ? "checked" : '' ?>/>
-                </li>
-                <li class="wide">
-                    <label for="author">Author:</label>
-                    <input id="author" type='text' required name="q[author]" value="<?= $resource['author'] ?>" title="Author of the resource"/>
+                    <label for="url">Author URL:</label>
+                    <input id="url" type='text' name="q[url]" value="<?= $author['url'] ?>" placeholder="URL of the author"/>
                 </li>
             </ul>
-            <table width="95%" style="font-size: 1.11em;" id='res_cat_table'>
-                <?
-                // Autocomplete categories and category class for cat search with breadcrumbs
-                $i = 1;
-                $res_cats = $res_ins->GetResourceCategories($resource['resource_id']);
-                if ($resource['resource_id'] == '' || count($res_cats) == 0) {
-                    include 'resources_tr_cat.php';
-                } else {
-                    foreach ($res_cats as $res_cat) {
-                        $cat_name = $cat_ins->GetCategoryFullName($res_cat);
-                        include 'resources_tr_cat.php';
-                        $i++;
-                    }
-                }
-                ?>
-            </table>
-            <button class='form_button' id="add_cat" onclick="return false;"c>Add a category</button><br/><br/>
             <div class='form_button'>
-                <input class="button" type="submit" name="submit" value="<?= $action ?> Resource"/>
+                <input class="button" type="submit" name="submit" value="<?= $action ?> Author"/>
             </div>
         </form>
     </div>

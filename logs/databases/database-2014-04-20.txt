@@ -1,0 +1,2 @@
+00:05:40 - DELETE FROM res_cat WHERE res_id = 2 
+00:09:11 - DELETE FROM res_cat WHERE res_id = 1 

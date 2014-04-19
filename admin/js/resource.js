@@ -1,9 +1,19 @@
 $(document).ready(function() {
+    // category = 1 for TagAuto 
+    // author = 2 for TagAuto 
     $(document).on("keyup", ".cat_autocomplete", function(event) {
         //console.log($(this).val().length);
-        TagAutocomplete($(this));
-        if($(this).val().length == 0){
+        TagAutocomplete($(this), 1);
+        if ($(this).val().length == 0) {
             $("#id_" + $(this).attr('id')).val('');
+        }
+    });
+
+    $(document).on("keyup", ".author_autocomplete", function(event) {
+        //console.log($(this).val().length);
+        TagAutocomplete($(this), 2);
+        if ($(this).val().length == 0) {
+            $("#author_id").val('');
         }
     });
 
@@ -24,25 +34,45 @@ $(document).ready(function() {
 
     });
 
-    function TagAutocomplete(element) {
+    function TagAutocomplete(element, type) {
         var id = $(element).attr('id');
         var autocomplete_value = $(element).val();
         //console.log(id);
+        //Category
+        if (type == 1) {
+            var url = "categories_ajax.php?operation=get_categories";
+            var auto_id = '#id_' + id;
+            var auto_label = '#' + id;
+        }
+        //Author
+        else if (type == 2) {
+            var url = 'authors_ajax.php?operation=get_authors';
+            var auto_id = '#author_id';
+            var auto_label = '#author_name';
+        }
         $(element).autocomplete({
             minLength: 2,
             source: function(request, response) {
                 $.ajax({
-                    url: "categories_ajax.php?operation=get_categories",
+                    url: url,
                     type: 'post',
                     dataType: "json",
                     data: {
-                        category_str: autocomplete_value,
+                        auto_str: autocomplete_value,
                     },
                     success: function(data) {
                         response($.map(data, function(item) {
-                            return {
-                                label: item.full_name,
-                                value: item.category_id
+                            if (type == 1) {
+                                return {
+                                    label: item.full_name,
+                                    value: item.category_id
+                                }
+                            }
+                            if (type == 2) {
+                                return {
+                                    label: item.name,
+                                    value: item.author_id
+                                }
                             }
                         }));
                     },
@@ -53,8 +83,8 @@ $(document).ready(function() {
             },
             select: function(event, ui) {
                 //console.log(ui);
-                $('#id_' + id).val(ui.item.value);
-                $('#' + id).val(ui.item.label);
+                $(auto_id).val(ui.item.value);
+                $(auto_label).val(ui.item.label);
                 return false;
             }
         });

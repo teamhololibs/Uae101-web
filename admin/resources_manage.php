@@ -76,7 +76,7 @@ PreparePage(array(
     'create_button' => '<a class="make_dialog anchor_button create_button_text" href="' . $table_name . '_modify.php?action=create">Create a New Resource</a>' // Optional
 ));
 ?>
-<script type="text/javascript" src="js/resource_category.js"></script>
+<script type="text/javascript" src="js/resource.js"></script>
 <? if (SEARCH) { ?>
     <div class="search_options">
         <a class="anchor_button search_button_text">Search Options <span class="indicator">+</span><span class="indicator minus">-</span></a>
@@ -150,7 +150,7 @@ PreparePage(array(
                     </td>
                     <td>
                         <?
-                        echo "Author: auth<br/><br/>";
+                        echo "Author: ". GetInfoById("authors", "author_id", $resource['author_id'], "name") ."<br/><br/>";
                         echo "Submitter: subbb<br/><br/>";
                         echo "Points: " . $resource['points'] . "<br/><br/>";
                         echo "Views: " . $resource['views'] . "<br/><br/>";
@@ -163,25 +163,23 @@ PreparePage(array(
                                 <a onclick="return confirm('Are you sure you want to approve?');" href="<?= $table_name ?>_modify.php?action=approve&id=<?= $resource['resource_id'] ?>"/>Approve</a><br/>
                             <? } else { ?>
                                 <a onclick="return confirm('Are you sure you want to disapprove?');" href="<?= $table_name ?>_modify.php?action=disapprove&id=<?= $resource['resource_id'] ?>"/>Disapprove</a><br/>
-                                   <?
-                               }
-                               if (EDIT) {
-                                   ?>
+                                <?
+                            }
+                            if (EDIT) {
+                                ?>
                                 <a class="make_dialog" title="<?= $resource['name'] ?>" href="<?= $table_name ?>_modify.php?action=edit&id=<?= $resource['resource_id'] ?>"/>Edit</a><br/>
                                 <?
                             }
                             if (DELETE) {
                                 if ($resource['active'] == '1') {
                                     ?>
-                                    <a onclick="return confirm('Are you sure you want t
-                                                                                    o delete?');" href="<?= $table_name ?>_modify.php?action=delete&id=<?= $resource['resource_id'] ?>"/>Delete</a><br/>
-                                   <? } else { ?>
-                                    <a onclick="return confirm('Are you sure you want t
-                                                                                            o enable?');" href="<?= $table_name ?>_modify.php?action=enable&id=<?= $resource['resource_id'] ?>"/>Enable</a><br/>
-                                       <?
-                                   }
-                               }
-                               ?>
+                                    <a onclick="return confirm('Are you sure you want to delete?');" href="<?= $table_name ?>_modify.php?action=delete&id=<?= $resource['resource_id'] ?>"/>Delete</a><br/>
+                                <? } else { ?>
+                                    <a onclick="return confirm('Are you sure you want to enable?');" href="<?= $table_name ?>_modify.php?action=enable&id=<?= $resource['resource_id'] ?>"/>Enable</a><br/>
+                                    <?
+                                }
+                            }
+                            ?>
                         </td>
                     <? } ?>
                 </tr>

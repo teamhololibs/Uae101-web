@@ -78,7 +78,7 @@ if (isset($_POST['submit']) && ($_POST['submit'] != '')) {
         $set_str .= " $k = '$v', ";
     }
 
-    if ($fields['name'] == '' || $fields['description'] == '' || $fields['author'] == '') {
+    if ($fields['name'] == '' || $fields['description'] == '' || $fields['author_id'] == '') {
         $message = "Please enter required information";
     }
 
@@ -135,7 +135,7 @@ PreparePage(array(
 $res_ins = new Resource();
 $cat_ins = new Category();
 ?>
-<script type="text/javascript" src="js/resource_category.js"></script>
+<script type="text/javascript" src="js/resource.js"></script>
 <div class="data_container">
     <div class="form_fields">
         <form method="post" action="<?= $table_name ?>_modify.php?<?= $_SERVER['QUERY_STRING'] ?>">
@@ -161,11 +161,18 @@ $cat_ins = new Category();
                     <label class="form_radio" for="is_approved_no">No</label>
                     <input class="form_radio" required id="is_approved_no" type='radio' class="required" name="q[is_approved]" value="0" <?= ($resource['is_approved'] == '0') ? "checked" : '' ?>/>
                 </li>
-                <li class="wide">
-                    <label for="author">Author:</label>
-                    <input id="author" type='text' required name="q[author]" value="<?= $resource['author'] ?>" title="Author of the resource"/>
-                </li>
             </ul>
+            <table width="95%" style="font-size: 1.11em;" id='author_table'>
+                <tr>
+                    <td width="21.5%" class=""><label for="">Author:</label></td>
+                    <td width="" >
+                        <input style="width:95%;" id="author_name" class="author_autocomplete" autocomplete="off" type='text' name="" value="<?= GetInfoById("authors", "author_id", $resource['author_id'], "name") ?>" placeholder="Search for author..." title="Category Search"/>
+                    </td>
+                    <td  width="20%" >
+                        <input style="width:100%; background-color: lightgrey" id="author_id" type='text' readonly name="q[author_id]" value="<?= $resource['author_id'] ?>" title="Author ID"/>
+                    </td>
+                </tr>
+            </table> 
             <table width="95%" style="font-size: 1.11em;" id='res_cat_table'>
                 <?
                 // Autocomplete categories and category class for cat search with breadcrumbs
