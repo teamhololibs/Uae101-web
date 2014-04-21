@@ -1,6 +1,6 @@
 # Git ignores these files/patterns
 
 *sublime*
-config.libra.com.php
-config.admin.libra.com.php
+config.*libra*.php
 nbproject/
+.htpasswd
