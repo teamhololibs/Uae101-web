@@ -8,8 +8,8 @@ Android Library Hub
 Connecting to server:
 
 u/p: libra/bits <br/>
-adminlibra.prasanthnair.info
-libra.prasanthnair.info
+http://adminlibra.prasanthnair.info <br/>
+http://libra.prasanthnair.info
 
 ===
 
