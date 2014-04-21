@@ -5,6 +5,14 @@ Android Library Hub
 
 ===
 
+Connecting to server:
+
+u/p: libra/bits <br/>
+adminlibra.prasanthnair.info
+libra.prasanthnair.info
+
+===
+
 Potential site names to be added below, and we'll pick one later (use < br / > for intentation):
 
 libdroid.com <br/>
@@ -26,7 +34,6 @@ holojars.com<br/>
 findviewbyid.com<br/>
 onresume.net<br/>
 omniholo.com<br/>
-
 
 ===
 
