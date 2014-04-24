@@ -1,0 +1,64 @@
+<?php
+
+$page_load_time = microtime(true);
+
+$file_path = dirname(__FILE__) . '/';
+
+session_start();
+
+require_once "$file_path/config." . $_SERVER['HTTP_HOST'] . ".php";
+
+if (!defined('TEST_SITE'))
+    define('TEST_SITE', $TEST_SITE);
+
+if (!defined('WEB_DIRECTORY'))
+    define('WEB_DIRECTORY', $WEB_DIRECTORY);
+
+if (!defined('SERVER_PATH'))
+    define('SERVER_PATH', $SERVER_PATH);
+
+if (!defined('PIC_PATH'))
+    define('PIC_PATH', $PIC_PATH);
+
+if (!defined('SITE_NAME'))
+    define('SITE_NAME', $SITE_NAME);
+
+foreach ($db_details as $key => $value) {
+    if (!defined($key)) {
+        define(strtoupper($key), $value);
+    }
+}
+
+if (!isset($TEST_SITE) || !$TEST_SITE) {
+    ini_set('display_errors', '0');
+    error_reporting(E_ALL && ~E_STRICT && ~E_NOTICE);
+    //error_log($file_path)
+} else {
+    error_reporting(E_ALL ^ E_NOTICE ^ E_WARNING);
+}
+
+define('DB_SLAVE_EXISTS', false);
+
+$classes_path = "modules/classes";
+$functions_path = "modules/functions";
+$plugins_path = "modules/plugins";
+$admin_path = "admin";
+
+$files = array(
+    "$classes_path/Config.class.php",
+    "$classes_path/Database.class.php",
+    "$classes_path/Letter.class.php",
+    "$classes_path/Log.class.php",
+    "$functions_path/access.functions.php",
+    "$functions_path/database.functions.php",
+    "$functions_path/overall.functions.php",
+    "$functions_path/php.functions.php",
+    "$functions_path/task.functions.php",
+    "$plugins_path/lightopenid/openid.php"
+);
+
+foreach ($files as $file) {
+    require_once "$file_path/$file";
+}
+
+?>
