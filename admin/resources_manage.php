@@ -67,13 +67,17 @@ $scope_prefix = GetUrlPrefix();
 $res = new Resource();
 $category = new Category();
 
+if(isset($fields['cat_id'])){
+    $cat_name = " (Category: " . $category->GetCategoryFullName($fields['cat_id']) . ")";
+}
+
 PreparePage(array(
     'title' => 'Resources', // Required
     'page_type' => 'Resources', // Required
     'page_action' => '', // Optional
     'page_extra_detail' => '', // Optional
-    'page_heading' => 'Resources', // Required
-    'create_button' => '<a class="make_dialog anchor_button create_button_text" href="' . $table_name . '_modify.php?action=create">Create a New Resource</a>' // Optional
+    'page_heading' => "Resources $cat_name", // Required
+    'create_button' => '<a class="  anchor_button create_button_text" href="' . $table_name . '_modify.php?action=create">Create a New Resource</a>' // Optional
 ));
 ?>
 <script type="text/javascript" src="js/resource.js"></script>
@@ -123,11 +127,11 @@ PreparePage(array(
             <tr>
                 <th>Resource #</th>
                 <th>Name</th>
-                <th>Description</th>
-                <th>Category</th>
+                <th style="width: 45%;">Description</th>
+                <th style="width: 14%;">Category</th>
                 <th style="width: 11%;">Information</th>
                 <? if (ACTION) { ?>
-                    <th>
+                    <th style="width: 6%;">
                         Action
                     </th>
                 <? } ?>
@@ -139,19 +143,19 @@ PreparePage(array(
                 <tr <?= ($i++ % 2 != 0) ? "class='odd'" : '' ?> >
                     <td style="width: 7%;"><?= $resource['resource_id'] ?></td>
                     <td><a href='<?= $resource['url'] ?>'><?= $resource['name'] ?></a></td>
-                    <td><?= TextFromDB($resource['description']) ?></td>
+                    <td class="content_desc"><?= TextFromDB($resource['description']) ?></td>
                     <td>
                         <?
                         $res_cats = $res->GetResourceCategories($resource['resource_id']);
                         foreach ($res_cats as $res_cat) {
-                            echo $category->GetCategoryFullName($res_cat) . "<br/><br/>";
+                            echo "<a href='resources_manage.php?x[cat_id]={$res_cat}'>" . $category->GetCategoryFullName($res_cat) . "</a><br/><br/>";
                         }
                         ?>
                     </td>
                     <td>
                         <?
                         echo "Author: ". GetInfoById("authors", "author_id", $resource['author_id'], "name") ."<br/><br/>";
-                        echo "Submitter: subbb<br/><br/>";
+                        echo "User: user<br/><br/>";
                         echo "Points: " . $resource['points'] . "<br/><br/>";
                         echo "Views: " . $resource['views'] . "<br/><br/>";
                         echo "Updated: " . $resource['updated'] . "<br/><br/>";
@@ -167,7 +171,7 @@ PreparePage(array(
                             }
                             if (EDIT) {
                                 ?>
-                                <a class="make_dialog" title="<?= $resource['name'] ?>" href="<?= $table_name ?>_modify.php?action=edit&id=<?= $resource['resource_id'] ?>"/>Edit</a><br/>
+                                <a class=" " title="<?= $resource['name'] ?>" href="<?= $table_name ?>_modify.php?action=edit&id=<?= $resource['resource_id'] ?>"/>Edit</a><br/>
                                 <?
                             }
                             if (DELETE) {

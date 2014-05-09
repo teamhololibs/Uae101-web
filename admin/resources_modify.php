@@ -8,7 +8,7 @@ if (isset($_REQUEST['action']) && $_REQUEST['action'] != '')
     $action = $_REQUEST['action'];
 else {
     SetConfirmationMessage("Invalid URL parameters", 'error');
-    header("Location: {$table_name}_manage.php");
+    header("Location: {$table_name}");
     exit;
 }
 
@@ -31,7 +31,7 @@ if ($action == 'delete' && $id) {
         echo "error";
     }
     SetConfirmationMessage("Resource Successfully deleted");
-    header("Location: {$table_name}_manage.php");
+    header("Location: {$table_name}");
     exit;
 }
 
@@ -42,7 +42,7 @@ if ($action == 'enable' && $id) {
         echo "error";
     }
     SetConfirmationMessage("Resource Successfully enabled");
-    header("Location: {$table_name}_manage.php");
+    header("Location: {$table_name}");
     exit;
 }
 
@@ -53,7 +53,7 @@ if ($action == 'approve' && $id) {
         echo "error";
     }
     SetConfirmationMessage("Resource Successfully approved");
-    header("Location: {$table_name}_manage.php");
+    header("Location: {$table_name}");
     exit;
 }
 
@@ -64,7 +64,7 @@ if ($action == 'disapprove' && $id) {
         echo "error";
     }
     SetConfirmationMessage("Resource Successfully disapproved");
-    header("Location: {$table_name}_manage.php");
+    header("Location: {$table_name}");
     exit;
 }
 
@@ -114,7 +114,7 @@ if (isset($_POST['submit']) && ($_POST['submit'] != '')) {
             echo "error";
         }
         SetConfirmationMessage("Category {$action}ed successfully");
-        header("Location: {$table_name}_manage.php");
+        header("Location: {$table_name}");
         exit;
     } else {
         SetConfirmationMessage($message, 'error');
@@ -145,12 +145,12 @@ $cat_ins = new Category();
                     <input id="name" type='text' required name="q[name]" value="<?= $resource['name'] ?>" title="Name of the resource"/>
                 </li>
                 <li class="wide">
-                    <label for="name">URL:</label>
-                    <input id="name" type='text' required name="q[url]" value="<?= $resource['url'] ?>" title="URL of the resource"/>
+                    <label for="URL">URL:</label>
+                    <input id="URL" type='text' required name="q[url]" value="<?= $resource['url'] ?>" title="URL of the resource"/>
                 </li>
                 <li class="wide">
-                    <label for="name">Resource Description:</label>
-                    <textarea id="name" name="q[description]" required placeholder="">
+                    <label for="description">Resource Description:</label>
+                    <textarea id="description" name="q[description]" required placeholder="">
                         <?= $resource['description'] ?>
                     </textarea>
                 </li>

@@ -1,6 +1,14 @@
 $(document).ready(function() {
     // category = 1 for TagAuto 
     // author = 2 for TagAuto 
+
+    tinymce.init({
+        selector: "#description",
+        //width: '100%',
+        plugins: [ "advlist autolink lists link image charmap print preview anchor","searchreplace visualblocks code fullscreen","insertdatetime media table contextmenu paste"],
+        toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"
+    });
+
     $(document).on("keyup", ".cat_autocomplete", function(event) {
         //console.log($(this).val().length);
         TagAutocomplete($(this), 1);
