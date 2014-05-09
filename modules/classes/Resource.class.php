@@ -7,8 +7,8 @@ class Resource {
     private $res_cat = array();
     private $name;
     private $desc;
-    private $author;
-    private $submitter;
+    private $author_id;
+    private $user_id;
     private $points;
     private $views;
     private $is_approved;

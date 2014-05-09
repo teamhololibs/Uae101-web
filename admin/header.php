@@ -10,16 +10,29 @@
         <link rel="stylesheet" type="text/css" href="css/ui-lightness/jquery-ui-1.10.2.custom.css"/>
         <!--link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.0/themes/base/jquery-ui.css"/-->
         <link rel="stylesheet" type="text/css" href="css/main.css"/>
-        <link rel='stylesheet' type='text/css' href='http://fonts.googleapis.com/css?family=Quintessential|Arimo|Asap|Fauna+One' />
+        <link rel='stylesheet' type='text/css' href='//fonts.googleapis.com/css?family=Quintessential|Arimo|Asap|Fauna+One' />
         <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
         <script type="text/javascript">
-            if (typeof jQuery == 'undefined'){
+            if (typeof jQuery == 'undefined') {
                 document.write("<script type='text/javascript' src='js/jquery-1.9.1.js'><\/script>");
                 //console.log('Server copy of jQuery Loaded');
             }
         </script>
         <!--script type="text/javascript" src="js/jquery-ui-1.10.2.custom.js"></script-->
-        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.1/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.1/jquery-ui.min.js"></script>
+        <!--script type='text/javascript' src="//tinymce.cachefly.net/4.0/tinymce.min.js"></script-->
+        <script type='text/javascript' src="js/tinymce/tinymce.min.js"></script>
+        <script type="text/javascript">
+            if (typeof (tinyMCE) == "undefined") {
+                document.write("<script type='text/javascript' src='js/tinymce/tinymce.min.js'><\/script>");
+            }
+//            is_tinyMCE_active = false;
+//            if (typeof (tinyMCE) != "undefined") {
+//                if (tinyMCE.activeEditor == null || tinyMCE.activeEditor.isHidden() != false) {
+//                    is_tinyMCE_active = true;
+//                } 
+//            }
+        </script>
         <script type="text/javascript" src="js/js.functions.js"></script>
         <!--[if IE]>
         <style type="text/css">

@@ -13,6 +13,9 @@ PreparePage(array(
     'page_heading' => 'Welcome ' . $admin->GetAdminName(), // Required 
 ));
 
-echo "Some information";
+echo "\"Argh! I'm telling you! This page doesn't exist!\"<br/><br/>";
+echo "\"Doesn't exist? Or am I not allowed to see?\"<br/><br/>";
+echo "\"I don't know dude, just.. Try again..\"<br/><br/>";
+
 footer();
 ?>

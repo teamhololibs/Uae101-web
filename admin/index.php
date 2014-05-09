@@ -13,6 +13,9 @@ PreparePage(array(
     'page_heading' => 'Welcome ' . $admin->GetAdminName(), // Required 
 ));
 
-echo "Some information";
+echo "Welcome!<br/><br/>";
+
+//var_dump($_GET);
+
 footer();
 ?>
