@@ -15,6 +15,8 @@ http://libra.prasanthnair.info
 
 Potential site names to be added below, and we'll pick one later (use < br / > for intentation):
 
+https://instantdomainsearch.com/
+
 libdroid.com <br/>
 android-libs.com <br/>
 droidlibs.com <br/>
