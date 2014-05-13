@@ -98,6 +98,8 @@ PreparePage(array(
             <?
             $i = 0;
             foreach ($cats_parent as $cp) {
+                
+                // for the first row of the parent cat ie the parent itself
                 $cc = GetRowsAsAssocArray("SELECT * FROM {$table_name} WHERE $where AND parent_id = {$cp['cat_id']} ORDER BY name"); //cats_child
                 $cccount = count($cc) + 1;
                 $last = '';
@@ -109,8 +111,9 @@ PreparePage(array(
                 echo "<tr $class>";
                 echo "<td rowspan='" . $cccount . "' >{$cp['cat_id']}</td>";
                 echo "<td rowspan='" . $cccount . "' >{$cp['name']}</td>";
-                echo "<td>$cccount</td>";
                 echo "<td></td>";
+                $child_count = $cccount - 1;
+                echo "<td>($child_count children)</td>";
                 echo "<td><a href='resources_manage.php?x[cat_id]={$cp['cat_id']}'>" . GetCount("res_cat", "cat_id = '{$cp['cat_id']}'", "DISTINCT(res_id)") . "</a></td>";
                 echo "<td>{$cp['updated']}</td>";
                 if (ACTION) {
@@ -131,12 +134,13 @@ PreparePage(array(
                 }
                 echo "</tr>";
 
+                // if parent have children
                 if ($cccount > 1) {
                     $class = ($i++ % 2 != 0) ? "class='odd'" : '';
                     echo "<tr $class>";
                     $j = 1;
                     foreach ($cc as $c) {
-                        echo "<td>{$c['cat_id']}$j</td>";
+                        echo "<td>{$c['cat_id']}</td>";
                         echo "<td>{$c['name']}</td>";
                         echo "<td><a href='resources_manage.php?x[cat_id]={$c['cat_id']}'>" . GetCount("res_cat", "cat_id = '{$c['cat_id']}'", "DISTINCT(res_id)") . "</a></td>";
                         echo "<td>{$cp['updated']}</td>";
