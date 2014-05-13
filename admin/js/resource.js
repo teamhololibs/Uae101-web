@@ -2,12 +2,38 @@ $(document).ready(function() {
     // category = 1 for TagAuto 
     // author = 2 for TagAuto 
 
-    tinymce.init({
-        selector: "#description",
-        //width: '100%',
-        plugins: [ "advlist autolink lists link image charmap print preview anchor","searchreplace visualblocks code fullscreen","insertdatetime media table contextmenu paste"],
-        toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"
-    });
+    /*
+     tinymce.init({
+     selector: "#description",
+     //width: '100%',
+     plugins: ["advlist autolink lists link image charmap print preview anchor", "searchreplace visualblocks code fullscreen", "insertdatetime media table contextmenu paste"],
+     toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
+     paste_auto_cleanup_on_paste: true,
+     paste_postprocess: function(pl, o) {
+     // remove &nbsp
+     o.node.innerHTML = o.node.innerHTML.replace(/&nbsp;/ig, " ");
+     },
+     cleanup_callback: 'my_cleanup_callback'
+     });
+     
+     function my_cleanup_callback(type, value) {
+     switch (type) {
+     case 'get_from_editor':
+     // Remove &nbsp; characters
+     value = value.replace(/&nbsp;/ig, ' ');
+     break;
+     case 'insert_to_editor':
+     case 'submit_content':
+     case 'get_from_editor_dom':
+     case 'insert_to_editor_dom':
+     case 'setup_content_dom':
+     case 'submit_content_dom':
+     default:
+     break;
+     }
+     return value;
+     }
+     */
 
     $(document).on("keyup", ".cat_autocomplete", function(event) {
         //console.log($(this).val().length);

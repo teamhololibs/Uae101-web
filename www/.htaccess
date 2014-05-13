@@ -65,4 +65,4 @@ RewriteRule    ^tag/(.*)$    /tag.php?tags=$1    [NC,L]    # Rule :
 
 
 RewriteRule    ^index-(([0-9]+)(A[a-z]+))$    /htaccess.php?x1=$1&x2=$2&x3=$3    [NC,L]    # Rule : 
-RewriteRule    ^(.*)(\.png$)|(\.jpg$)|(\.log$)|(\.csv$)|(\.doc$)|(\.xls$)|(\.pdf$)  403.html  [L,F]    # Rule : 
+#RewriteRule    ^(.*)(\.png$)|(\.jpg$)|(\.log$)|(\.csv$)|(\.doc$)|(\.xls$)|(\.pdf$)  403.html  [L,F]    # Rule : 

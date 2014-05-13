@@ -149,10 +149,8 @@ $cat_ins = new Category();
                     <input id="URL" type='text' required name="q[url]" value="<?= $resource['url'] ?>" title="URL of the resource"/>
                 </li>
                 <li class="wide">
-                    <label for="description">Resource Description:</label>
-                    <textarea id="description" name="q[description]" required placeholder="">
-                        <?= $resource['description'] ?>
-                    </textarea>
+                    <label for="description">Short Description:</label>
+                    <textarea id="description" name="q[description]" cols="" rows="6" required placeholder=""><?= $resource['description'] ?></textarea>
                 </li>
                 <li class="wide">
                     <label style="padding: 0;" for="">Is this resource approved?:</label>

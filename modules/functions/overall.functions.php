@@ -1,51 +1,6 @@
 <?php
 
 /**
- * @param MAIN_CONTENT - html page rendered using Smarty fetch method
- * @desc Renders the whole page along with the main content in the middle
- */
-function RenderPage($MAIN_CONTENT) {
-
-    $tpl = new Smarty;
-
-    $user = new User();
-    $tpl->assign('USER_LOGGED_IN', $user->IsUserLoggedIn());
-    $tpl->assign('USER_ID', $user->GetUserID());
-    $tpl->assign('USERNAME', $user->GetUserUsername());
-    $tpl->assign('USER_EMAIL', $user->GetUserEmail());
-    $tpl->assign('USER_INFORMATION', $user->GetUserInformation());
-
-    switch ($GLOBALS['selected_page']) {
-        case '':
-        case '/':
-            $page = "TAGS";
-            break;
-        case 'REGISTER':
-            $page = "REGISTER";
-            break;
-        case 'DUMMY':
-            $page = "DUMMY";
-            break;
-        default:
-            $page = "TAGS";
-    }
-    $tpl->assign("SELECTED_$page", "selected");
-
-    if (IsUserLoggedIn())
-        $tpl->assign('USER_INFORMATION_OR_LOGIN_AREA', GetUserInformationArea());
-    else
-        $tpl->assign('USER_INFORMATION_OR_LOGIN_AREA', GetUserLogin());
-
-    $tpl->assign('PAGE_TITLE', $GLOBALS['page_title']);
-    $tpl->assign('MAIN_CONTENT', $MAIN_CONTENT);
-
-    if (defined('USE_PQP_PROFILER') && USE_PQP_PROFILER)
-        $_SESSION['PQP_SHOW'] = true;
-
-    return $tpl->fetch('main.tpl');
-}
-
-/**
  * @return array 
  * @desc Mainly used for db queries debuging. Returns an array with the line and file where the query was executed
  */
@@ -60,14 +15,6 @@ function backtrace() {
         }
     }
     return $return_data;
-}
-
-function MainSearchPage() {
-    $tpl = new Smarty;
-    GetRowsAsAssocArray("select * from users");
-    $res = $tpl->fetch('searching/main.page.search.tpl');
-
-    return RenderPage($res);
 }
 
 function ValidateFileExistsFromUrl($url) {
@@ -183,7 +130,7 @@ function SaveDbToServer() {
     }
 
     //save file
-    
+
     $name = SITE_NAME . '-BackUp-' . date('m-d-Y') . "-at-" . date('H.i') . "hrs.sql";
     $full_filepath = SERVER_PATH . "/db_backups/" . $name;
     $handle = fopen($full_filepath, 'w+');
@@ -193,7 +140,7 @@ function SaveDbToServer() {
 
     fwrite($handle, $return);
     fclose($handle);
-    
+
     return $full_filepath;
 }
 
@@ -275,6 +222,14 @@ function MultiDimensionalArraySort(&$array, $subkey, $sortType = SORT_ASC) {
         $keys[] = $subarray[$subkey];
     }
     array_multisort($keys, $sortType, $array);
+}
+
+function ConvertSpacesToHyphens($string) {
+    return str_replace(" ", "-", $string);
+}
+
+function ConvertHyphensToSpaces($string) {
+    return str_replace("-", " ", $string);
 }
 
 ?>

@@ -67,7 +67,7 @@ foreach ($files as $file) {
 }
 
 if(!defined('CHECK_IF_LOGGED_IN')){
-    define('CHECK_IF_LOGGED_IN', true);
+    define('CHECK_IF_LOGGED_IN', false);
 }
 
 if (CHECK_IF_LOGGED_IN) {

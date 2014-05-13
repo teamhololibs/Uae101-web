@@ -9,6 +9,28 @@ class Category {
     private $parent_id;
     private $parent_info = array();
     private $categories = array();
+    static private $full_categories_tree = array();
+
+    /**
+     * @return array Full Category tree array
+     */
+    static public function GetCategoryFullTree() {
+        if (CATEGORY_TREE_SESSION_FLAG == true) {
+            if (time() - $_SESSION['category_last_retrieved'] < CATEGORY_TREE_SESSION_TIMEOUT) {
+                self::$full_categories_tree = $_SESSION['FULL_CATEGORIES_TREE'];
+                return $_SESSION['FULL_CATEGORIES_TREE'];
+            }
+        }
+        $parents = GetRows("categories", "parent_id = 0 AND active = 1 ORDER BY name");
+        foreach ($parents as $parent) {
+            self::$full_categories_tree[$parent['cat_id']] = $parent;
+            self::$full_categories_tree[$parent['cat_id']]['children'] = GetRows("categories", "parent_id = {$parent['cat_id']} AND active = 1 ORDER BY name", 
+                    "*, REPLACE(name,' ','-') AS hyphenated_name ");
+        }
+        $_SESSION['FULL_CATEGORIES_TREE'] = self::$full_categories_tree;
+        return self::$full_categories_tree;
+        //Debug::dump(self::$full_categories_tree);
+    }
 
     public function SetCategoryId($cat_id) {
         if ($cat_id != '')
@@ -36,14 +58,35 @@ class Category {
         return GetRowById("categories", "cat_id", $cat_id);
     }
 
+    //Used to retrieve info categories for a resource
+    public function GetCategoryFullInfo($cat_id = '') {
+        if ($cat_id != '')
+            $this->SetCategoryId($cat_id);
+
+        $this->category_info = $this->GetCategoryInfo($this->category_id);
+
+        if ($this->category_info['parent_id'] != '0') {
+            $this->parent_id = $this->category_info['parent_id'];
+            $this->parent_info = $this->GetCategoryInfo($this->parent_id);
+            $this->category_info['full_name'] = $this->parent_info['name'] . " > ";
+        }
+
+        $this->category_info['full_name'] .= $this->category_info['name'];
+        $this->category_info['hyphenated_name'] = ConvertSpacesToHyphens($this->category_info['name']);
+
+        return $this->category_info;
+    }
+
     public function GetCategoryFullName($cat_id = '') {
         if ($cat_id != '')
             $this->SetCategoryId($cat_id);
 
         $this->GetCategoryParentId();
 
+
+        return $this->category_full_name;
         $this->category_full_name = '';
-        
+
         if ($this->parent_id != '0') {
             $this->parent_info = $this->GetCategoryInfo($this->parent_id);
             $this->category_full_name = $this->parent_info['name'] . " > ";
@@ -60,6 +103,7 @@ class Category {
             $this->SetCategoryString($category_str);
     }
 
+    //used to allocate categories to resources
     public function GetCategorySearchFullInfo($category_str = '') {
         if ($category_str != '')
             $this->SetCategoryString($category_str);
@@ -73,10 +117,6 @@ class Category {
             );
         }
         return $this->categories;
-    }
-
-    public function GetCategoryFullTree() {
-        
     }
 
     public function GetCategoryChildren($parent_id = '') {

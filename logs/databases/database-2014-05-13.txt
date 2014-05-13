@@ -1,0 +1,14 @@
+21:53:24 - DELETE FROM res_cat WHERE res_id = 2 
+22:06:27 - DELETE FROM res_cat WHERE res_id = 2 
+22:11:25 - DELETE FROM res_cat WHERE res_id = 2 
+22:39:26 - DELETE FROM res_cat WHERE res_id = 3 
+22:40:29 - DELETE FROM res_cat WHERE res_id = 3 
+22:41:09 - DELETE FROM res_cat WHERE res_id = 3 
+22:42:07 - DELETE FROM res_cat WHERE res_id = 1 
+22:46:39 - DELETE FROM res_cat WHERE res_id = 3 
+22:53:35 - DELETE FROM res_cat WHERE res_id = 1 
+22:53:46 - DELETE FROM res_cat WHERE res_id = 1 
+22:54:42 - DELETE FROM res_cat WHERE res_id = 1 
+22:56:40 - DELETE FROM res_cat WHERE res_id = 1 
+22:58:23 - DELETE FROM res_cat WHERE res_id = 1 
+22:58:36 - DELETE FROM res_cat WHERE res_id = 1 
