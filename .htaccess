@@ -3,7 +3,7 @@ RewriteEngine On
 RewriteBase /
 AuthType Basic
 AuthName "Libra!"
-Require valid-user
+#Require valid-user
 
 #AuthUserFile /var/www/libra/.htpasswd 
-AuthUserFile /var/www/libra.com/p/.htpasswd
+#AuthUserFile /var/www/libra.com/p/.htpasswd
