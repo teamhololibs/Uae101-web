@@ -4,14 +4,9 @@ $(document).ready(function() {
     $(window).resize(function() {
         windowResize();
     });
-
-    $('.expand_resource').click(function() {
-        //console.log('resouce');
-        return false;
-    });
     $('.left_category_menu a').click(function() {
         //console.log('a');
-        return false;
+        //return false;
     });
     $('.dropdown').click(function() {
         var parent_id = $(this).attr('alt');
@@ -20,25 +15,114 @@ $(document).ready(function() {
         $('.expand_parent_' + parent_id).toggle();
         $('.minimize_parent_' + parent_id).toggle();
     });
+    $(document).on("click", ".expand_resource", function(event) {
+        var res_url = $(this).attr('href');
+        var res_id = $(this).attr('alt');
+        $.ajax({
+            //url: "",
+            type: 'get',
+            data: {
+                res_id: res_id,
+                ajax: 1,
+            },
+            success: function(data) {
+                $('.content_holder').html(data);
+            }
+        });
+        window.history.pushState({res_id: res_id}, "", res_url);
+        return false;
+    });
     $('.resource_name').ellipsis({
         row: 2,
         char: '...', //$('a.readmore'),
         callback: function() {
-            console.log('el');
+            //console.log('el');
         }
     });
-    $('.resource_desc').dotdotdot({
-        ellipsis: ' ',
-        height: 170,
-        watch: window,
-        after: "a.readmore",
-    });
-//    $('.resource_name').dotdotdot({
-//        ellipsis: '11',
-//        height: 40,
+//    $('.resource_desc').dotdotdot({
+//        ellipsis: ' ',
+//        height: 170,
 //        watch: window,
+//        after: "a.readmore",
 //    });
+    $('.input_resource_search').keyup(function() {
+        var resource_search = $(this).val();
+        var historystate, historyurl;
+        console.log(current_href);
+        if (resource_search.length == 0) {
+            resource_search = '';
+            historystate = {search: ''};
+            historyurl = current_href;
+            $('.input_resource_search').val('');
+            //return;
+        } else {
+            historystate = {search: resource_search};
+            historyurl = '?search=' + resource_search;
+        }
+        resourceSearch(resource_search);
+        window.history.pushState(historystate, "", historyurl);
+
+    });
+    var QueryString = function() {
+        // This function is anonymous, is executed immediately and 
+        // the return value is assigned to QueryString!
+        var query_string = {};
+        var query = window.location.search.substring(1);
+        var vars = query.split("&");
+        for (var i = 0; i < vars.length; i++) {
+            var pair = vars[i].split("=");
+            // If first entry with this name
+            if (typeof query_string[pair[0]] === "undefined") {
+                query_string[pair[0]] = pair[1];
+                // If second entry with this name
+            } else if (typeof query_string[pair[0]] === "string") {
+                var arr = [query_string[pair[0]], pair[1]];
+                query_string[pair[0]] = arr;
+                // If third or later entry with this name
+            } else {
+                query_string[pair[0]].push(pair[1]);
+            }
+        }
+
+        // Now the parameters before ?
+        var urlpathname = window.location.pathname;
+        vars = urlpathname.split("/");
+        var i = 0;
+        for (var i = 0; i < vars.length; i++) {
+            //console.log(vars[i]);
+        }
+        return query_string;
+    }();
+    //console.log(QueryString);
 });
+
+window.onpopstate = function(event) {
+    console.log("location: " + document.location + ", state: " + JSON.stringify(event.state));
+    //console.log(event);
+    var search;
+    if (event.state == null) {
+        console.log('fds');
+        search = '';
+    } else {
+        search = event.state.search;
+    }
+    resourceSearch(search);
+    $('.input_resource_search').val(search);
+};
+function resourceSearch(resource_search) {
+    //console.log(resource_search);
+    $.ajax({
+        //url: "",
+        type: 'get',
+        data: {
+            search: resource_search,
+            ajax: 1,
+        },
+        success: function(data) {
+            $('.content_holder').html(data);
+        }
+    });
+}
 function windowResize() {
     var content_holder_width = $(document).width() - $('.left_menu').width() - 30;
     $('.content_holder').width(content_holder_width);

@@ -94,7 +94,7 @@ html{
 }
 
 body{
-    
+
 }
 
 .wrapper{
@@ -113,7 +113,12 @@ body{
     height: 50px;
     width: 100%;
 }
-
+.input_resource_search{
+    font-size: 1.1em;
+    display: block;
+    margin: 0 auto;
+    width: 450px
+}
 /* HEADER END*/
 
 /* LEFT MENU CSS */
@@ -238,8 +243,16 @@ body{
 }
 .resource_desc{
     font-size: 0.9em;
+    height: 150px;
+    overflow: hidden;
 }
 .resource_star{
     width: 16px;
+}
+.resource_desc li{
+    margin-left: 0.3%;
+}
+.resource_desc ul, ol{
+    list-style: circle inside;
 }
 /* RESOURCE BOX CSS END */

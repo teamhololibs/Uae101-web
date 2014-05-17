@@ -2,38 +2,50 @@ $(document).ready(function() {
     // category = 1 for TagAuto 
     // author = 2 for TagAuto 
 
-    /*
-     tinymce.init({
-     selector: "#description",
-     //width: '100%',
-     plugins: ["advlist autolink lists link image charmap print preview anchor", "searchreplace visualblocks code fullscreen", "insertdatetime media table contextmenu paste"],
-     toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
-     paste_auto_cleanup_on_paste: true,
-     paste_postprocess: function(pl, o) {
-     // remove &nbsp
-     o.node.innerHTML = o.node.innerHTML.replace(/&nbsp;/ig, " ");
-     },
-     cleanup_callback: 'my_cleanup_callback'
-     });
-     
-     function my_cleanup_callback(type, value) {
-     switch (type) {
-     case 'get_from_editor':
-     // Remove &nbsp; characters
-     value = value.replace(/&nbsp;/ig, ' ');
-     break;
-     case 'insert_to_editor':
-     case 'submit_content':
-     case 'get_from_editor_dom':
-     case 'insert_to_editor_dom':
-     case 'setup_content_dom':
-     case 'submit_content_dom':
-     default:
-     break;
-     }
-     return value;
-     }
-     */
+    tinymce.init({
+        selector: "#description",
+//        width: '100%',
+//        theme: "advanced",
+//        force_br_newlines: false,
+//        force_p_newlines: false,
+        mode: "textareas",
+        forced_root_block: '',
+        plugins: ["advlist autolink lists link image charmap print preview anchor", "searchreplace visualblocks code fullscreen", "insertdatetime media table contextmenu paste"],
+        toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
+        paste_auto_cleanup_on_paste: true,
+        paste_postprocess: function(pl, o) {
+            // remove &nbsp
+            o.node.innerHTML = o.node.innerHTML.replace(/&nbsp;/ig, " ");
+        },
+        cleanup_callback: 'my_cleanup_callback'
+    });
+
+    function my_cleanup_callback(type, value) {
+        switch (type) {
+            case 'get_from_editor':
+                // Remove &nbsp; characters
+                value = value.replace(/&nbsp;/ig, ' ');
+                break;
+            case 'insert_to_editor':
+            case 'submit_content':
+            case 'get_from_editor_dom':
+            case 'insert_to_editor_dom':
+            case 'setup_content_dom':
+            case 'submit_content_dom':
+            default:
+                break;
+        }
+        return value;
+    }
+
+    $('.author_autocomplete').bind('paste', function(e) {
+        //setTimeout(function() {$('.author_autocomplete').trigger(TagAutocomplete($('.author_autocomplete'), 2));}, 0);
+        TagAutocomplete($('.author_autocomplete'), 2);
+    });
+    $('.cat_autocomplete').bind('paste', function(e) {
+        //setTimeout(function() {$('.author_autocomplete').trigger(TagAutocomplete($('.author_autocomplete'), 2));}, 0);
+        TagAutocomplete($('.cat_autocomplete'), 1);
+    });
 
     $(document).on("keyup", ".cat_autocomplete", function(event) {
         //console.log($(this).val().length);
@@ -85,7 +97,7 @@ $(document).ready(function() {
             var auto_label = '#author_name';
         }
         $(element).autocomplete({
-            minLength: 2,
+            minLength: 0,
             source: function(request, response) {
                 $.ajax({
                     url: url,
@@ -99,7 +111,7 @@ $(document).ready(function() {
                             if (type == 1) {
                                 return {
                                     label: item.full_name,
-                                    value: item.category_id
+                                    value: item.cat_id
                                 }
                             }
                             if (type == 2) {

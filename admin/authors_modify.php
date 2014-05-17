@@ -14,14 +14,14 @@ else {
 
 $id = false;
 if (isset($_GET['id']) && $_GET['id'] != '')
-    $id = TextFromDB($_GET['id']);
+    $id = TextToDB($_GET['id']);
 
 if ($action == 'edit' && $id) {
     $author = GetRowById($table_name, 'author_id', $id);
 }
 
 foreach ($author as $key => $value) {
-    $author[$key] = TextFromDB($value);
+    $author[$key] = TextToDB($value);
 }
 
 if ($action == 'delete' && $id) {
@@ -99,7 +99,6 @@ PreparePage(array(
     'page_extra_detail' => "$action", // Optional
     'page_heading' => ($author['name'] == null || $action == 'create') ? 'New Author' : $author['name'], // Required
 ));
-
 ?>
 <script type="text/javascript" src="js/author_category.js"></script>
 <div class="data_container">
@@ -108,11 +107,11 @@ PreparePage(array(
             <ul>
                 <li class="wide">
                     <label for="name">Author Name:</label>
-                    <input id="name" type='text' required name="q[name]" value="<?= $author['name'] ?>" placeholder="Name of the author"/>
+                    <input id="name" type='text' required name="q[name]" value="<?= htmlspecialchars(TextFromDB($author['name'])) ?>" placeholder="Name of the author"/>
                 </li>
                 <li class="wide">
                     <label for="url">Author URL:</label>
-                    <input id="url" type='text' name="q[url]" value="<?= $author['url'] ?>" placeholder="URL of the author"/>
+                    <input id="url" type='text' name="q[url]" value="<?= TextFromDB($author['url']) ?>" placeholder="URL of the author"/>
                 </li>
             </ul>
             <div class='form_button'>

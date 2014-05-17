@@ -27,7 +27,7 @@ if ($action == 'delete' && $id) {
         echo "error";
     }
     SetConfirmationMessage("Category Successfully deleted");
-    header("Location: {$table_name}.php");
+    header("Location: {$table_name}");
     exit;
 }
 
@@ -38,7 +38,7 @@ if ($action == 'enable' && $id) {
         echo "error";
     }
     SetConfirmationMessage("Category Successfully enabled");
-    header("Location: {$table_name}.php");
+    header("Location: {$table_name}");
     exit;
 }
 
@@ -88,7 +88,7 @@ if (isset($_POST['submit']) && ($_POST['submit'] != '')) {
             echo "error";
         }
         SetConfirmationMessage("Category {$action}ed successfully");
-        header("Location: {$table_name}.php");
+        header("Location: {$table_name}");
         exit;
     } else {
         SetConfirmationMessage($message, 'error');

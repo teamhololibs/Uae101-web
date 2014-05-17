@@ -25,7 +25,7 @@ if (isset($_GET['x'])) {
 //if ($scope_where != '')
 //  $scope_where = " AND $scope_where";
 
-$authors = GetRowsAsAssocArray("SELECT * FROM $table_name $where ");
+$authors = GetRowsAsAssocArray("SELECT * FROM $table_name $where ORDER BY name ");
 $active_count = GetCount($table_name, "$scope_where");
 $scope_prefix = GetUrlPrefix();
 
@@ -83,11 +83,11 @@ PreparePage(array(
                 ?>
                 <tr <?= ($i++ % 2 != 0) ? "class='odd'" : '' ?> >
                     <td><?= $author['author_id'] ?></td>
-                    <td><?= $author['name'] ?></td>
-                    <td><a href="<?= TextFromDB($author['url']) ?>"><?= TextFromDB($author['url']) ?></a></td>
+                    <td><?= TextFromDB($author['name']) ?></td>
+                    <td><a target='_blank' href="<?= TextFromDB($author['url']) ?>"><?= TextFromDB($author['url']) ?></a></td>
                     <? if (ACTION) { ?>
                         <td>
-                            <? if (EDIT) { ?><a class="make_dialog" title="<?= $author['name'] ?>" href="<?= $table_name ?>_modify.php?action=edit&id=<?= $author['author_id'] ?>"/>Edit</a><br/><? } ?>
+                            <? if (EDIT) { ?><a class="make_dialog" title="<?= TextFromDB($author['name']) ?>" href="<?= $table_name ?>_modify.php?action=edit&id=<?= $author['author_id'] ?>"/>Edit</a><br/><? } ?>
                         </td>
                     <? } ?>
                 </tr>

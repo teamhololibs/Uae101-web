@@ -36,9 +36,12 @@ function RenderPage($MAIN_CONTENT) {
 //    else
 //        $tpl->assign('USER_INFORMATION_OR_LOGIN_AREA', GetUserLogin());
 
-    $tpl->assign('META_TITLE', $GLOBALS['page_title']);
     $tpl->assign('MAIN_CONTENT', $MAIN_CONTENT);
     $tpl->assign('LEFT_MENU', GetLeftMenu());
+
+    if (isset($_GET['search']) && $_GET['search'] != '') {
+        $tpl->assign('search_text', $_GET['search']);
+    }
 
     if (defined('USE_PQP_PROFILER') && USE_PQP_PROFILER)
         $_SESSION['PQP_SHOW'] = true;
@@ -55,14 +58,42 @@ function GetLeftMenu() {
 }
 
 function ResourcesPage() {
-    $GLOBALS['page_title'] = 'Yuhoo! Hololibs';
-    //$cat_text = $_GET['cat_text'];
-    $resources_ins = new Resource;
-    $resources = $resources_ins->GetResources();
-    
     $tpl = new SmartyCustom;
-    $tpl->assign('resources', $resources);
-    $html = $tpl->fetch('resource_box.tpl');
-    
-    return RenderPage($html);
+    $resources_ins = new Resource;
+    $resource_search = '';
+    if (isset($_GET['res_id']) && $_GET['res_id'] != '') {
+        $res_id = TextToDB($_GET['res_id']);
+        //$GLOBALS['page_title'] = "$resource_search - Search in ";
+        $resources[0] = $resources_ins->GetResourceInfo($res_id);
+        $tpl->assign('resources', $resources);
+        $html = $tpl->fetch('resource_box.tpl');
+        return $html;
+    }
+
+    if (isset($_GET['search']) && $_GET['search'] != '') {
+        $resource_search = TextToDB($_GET['search']);
+        $GLOBALS['page_title'] = "$resource_search - Search in ";
+    }
+    $category_search_id = '';
+    if (isset($_GET['tag']) && $_GET['tag'] != '') {
+        $category_search_id = TextToDB($_GET['tag']);
+    }
+
+    $GLOBALS['page_title'] .= "Hololibs";
+    $resources = $resources_ins->GetResources($resource_search, $category_search_id);
+
+    if (count($resources) > 0) {
+        $tpl->assign('resources', $resources);
+        $html = $tpl->fetch('resource_box.tpl');
+    } else {
+        $html = $tpl->fetch('resource_box_notfound.tpl');
+    }
+
+    return $html;
+}
+
+function Page404() {
+    $tpl = new SmartyCustom;
+    $html = $tpl->fetch('404.tpl');
+    return $html;
 }

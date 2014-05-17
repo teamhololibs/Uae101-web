@@ -11,6 +11,10 @@ if (isset($_GET['x'])) {
     }
     $where_array = array();
 
+    if ($fields['author_id'] != '') {
+        $where_array[] = "author_id = {$fields['author_id']}";
+    }
+    
     if ($fields['cat_id'] != '') {
         $res_with_cats = GetColumnInfoByQuery("SELECT distinct(res_id) res_id FROM res_cat WHERE cat_id = {$fields['cat_id']} ");
         $where_array[] = "resource_id IN (" . implode(" , ", $res_with_cats) . ")";
@@ -58,7 +62,7 @@ if (isset($_GET['x'])) {
 if ($scope_where != '')
     $scope_where = " AND $scope_where";
 
-$resources = GetRowsAsAssocArray("SELECT * FROM $table_name WHERE $where ");
+$resources = GetRowsAsAssocArray("SELECT * FROM $table_name WHERE $where ORDER BY name");
 $active_count = GetCount($table_name, "active = 1 AND is_approved = 1 $scope_where");
 $delete_count = GetCount($table_name, "active = 0 AND is_approved = 1 $scope_where");
 $notapproved_count = GetCount($table_name, "is_approved = 0 $scope_where");
@@ -67,8 +71,14 @@ $scope_prefix = GetUrlPrefix();
 $res = new Resource();
 $category = new Category();
 
-if(isset($fields['cat_id'])){
-    $cat_name = " (Category: " . $category->GetCategoryFullName($fields['cat_id']) . ")";
+if (isset($fields['cat_id'])) {
+    $cat_full_name = $category->GetCategoryFullInfo($fields['cat_id']);
+    $cat_full_name = $cat_full_name['full_name'];
+    $info = " (Category: $cat_full_name)";
+}
+if (isset($fields['author_id'])) {
+    $author_name = GetInfoById("authors", "author_id", $fields['author_id'], 'name');
+    $info = " (Author: $author_name)";
 }
 
 PreparePage(array(
@@ -76,7 +86,7 @@ PreparePage(array(
     'page_type' => 'Resources', // Required
     'page_action' => '', // Optional
     'page_extra_detail' => '', // Optional
-    'page_heading' => "Resources $cat_name", // Required
+    'page_heading' => "Resources $info", // Required
     'create_button' => '<a class="  anchor_button create_button_text" href="' . $table_name . '_modify.php?action=create">Create a New Resource</a>' // Optional
 ));
 ?>
@@ -125,11 +135,11 @@ PreparePage(array(
     <div class="data_container">
         <table class="paginated_data" cellspacing='0' cellpadding="0">
             <tr>
-                <th>Resource #</th>
+                <th style="width: 3%;">#</th>
                 <th>Name</th>
                 <th style="width: 45%;">Description</th>
                 <th style="width: 14%;">Category</th>
-                <th style="width: 11%;">Information</th>
+                <th style="width: 17%;">Information</th>
                 <? if (ACTION) { ?>
                     <th style="width: 6%;">
                         Action
@@ -141,20 +151,21 @@ PreparePage(array(
             foreach ($resources as $resource) {
                 ?>
                 <tr <?= ($i++ % 2 != 0) ? "class='odd'" : '' ?> >
-                    <td style="width: 7%;"><?= $resource['resource_id'] ?></td>
-                    <td><a href='<?= $resource['url'] ?>'><?= $resource['name'] ?></a></td>
-                    <td class="content_desc"><?= TextFromDB($resource['description']) ?></td>
+                    <td><?= $resource['resource_id'] ?></td>
+                    <td><a target='_blank' href='<?= $resource['url'] ?>'><?= TextFromDB($resource['name']) ?></a></td>
+                    <td class="content_desc"><?= (TextFromDB($resource['description'])) ?></td>
                     <td>
                         <?
                         $res_cats = $res->GetResourceCategories($resource['resource_id']);
                         foreach ($res_cats as $res_cat) {
-                            echo "<a href='resources_manage.php?x[cat_id]={$res_cat}'>" . $category->GetCategoryFullName($res_cat) . "</a><br/><br/>";
+                            $cat_info = $category->GetCategoryFullInfo($res_cat);
+                            echo "<a href='resources_manage.php?x[cat_id]={$res_cat}'>{$cat_info['full_name']}</a><br/><br/>";
                         }
                         ?>
                     </td>
                     <td>
                         <?
-                        echo "Author: ". GetInfoById("authors", "author_id", $resource['author_id'], "name") ."<br/><br/>";
+                        echo "Author: <a href='resources_manage.php?x[author_id]={$resource['author_id']}'>" . GetInfoById("authors", "author_id", $resource['author_id'], "name") . "</a><br/><br/>";
                         echo "User: user<br/><br/>";
                         echo "Points: " . $resource['points'] . "<br/><br/>";
                         echo "Views: " . $resource['views'] . "<br/><br/>";

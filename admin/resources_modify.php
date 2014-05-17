@@ -122,7 +122,7 @@ if (isset($_POST['submit']) && ($_POST['submit'] != '')) {
 
     $resource = $fields;
 }
-$resource['is_approved'] = ($resource['is_approved'] == '' || is_null($resource['is_approved'])) ? '0' : $resource['is_approved'];
+$resource['is_approved'] = ($resource['is_approved'] == '' || is_null($resource['is_approved'])) ? '1' : $resource['is_approved'];
 
 PreparePage(array(
     'title' => 'Resource: Modify', // Required
@@ -150,7 +150,7 @@ $cat_ins = new Category();
                 </li>
                 <li class="wide">
                     <label for="description">Short Description:</label>
-                    <textarea id="description" name="q[description]" cols="" rows="6" required placeholder=""><?= $resource['description'] ?></textarea>
+                    <textarea id="description" name="q[description]" cols="" rows="6" placeholder=""><?= htmlspecialchars(TextFromDB($resource['description'])) ?></textarea>
                 </li>
                 <li class="wide">
                     <label style="padding: 0;" for="">Is this resource approved?:</label>
@@ -164,13 +164,14 @@ $cat_ins = new Category();
                 <tr>
                     <td width="21.5%" class=""><label for="">Author:</label></td>
                     <td width="" >
-                        <input style="width:95%;" id="author_name" class="author_autocomplete" autocomplete="off" type='text' name="" value="<?= GetInfoById("authors", "author_id", $resource['author_id'], "name") ?>" placeholder="Search for author..." title="Category Search"/>
+                        <input style="width:95%;" id="author_name" class="author_autocomplete" autocomplete="off" type='text' name="" value="<?= htmlspecialchars(TextFromDB(GetInfoById("authors", "author_id", $resource['author_id'], "name"))) ?>" placeholder="Search for author..." title="Category Search"/>
                     </td>
                     <td  width="20%" >
                         <input style="width:100%; background-color: lightgrey" id="author_id" type='text' readonly name="q[author_id]" value="<?= $resource['author_id'] ?>" title="Author ID"/>
                     </td>
                 </tr>
             </table> 
+            <br/><br/>
             <table width="95%" style="font-size: 1.11em;" id='res_cat_table'>
                 <?
                 // Autocomplete categories and category class for cat search with breadcrumbs
@@ -181,7 +182,7 @@ $cat_ins = new Category();
                     include 'resources_tr_cat.php';
                 } else {
                     foreach ($res_cats as $res_cat) {
-                        $cat_name = $cat_ins->GetCategoryFullName($res_cat);
+                        $cat_info = $cat_ins->GetCategoryFullInfo($res_cat);
                         include 'resources_tr_cat.php';
                         $i++;
                     }

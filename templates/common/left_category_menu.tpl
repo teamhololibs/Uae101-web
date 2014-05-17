@@ -4,10 +4,10 @@
             <li id="">
                 {if count($cat.children) > 0}
                     <span alt='{$cat.cat_id}' class="dropdown down_parent expand_parent_{$cat.cat_id}">
-                        <img src="/images/disclosure_down.png" alt=""/>
+                        <img src="{$PIC_PATH}/disclosure_down.png" alt=""/>
                     </span>
                     <span alt='{$cat.cat_id}' class="dropdown up_parent minimize_parent_{$cat.cat_id}">
-                        <img src="/images/disclosure_up.png" alt=""/>
+                        <img src="{$PIC_PATH}/disclosure_up.png" alt=""/>
                     </span>
                 {/if}
                 <a class="" alt='{$cat.cat_id}' href="/tag/{$cat.cat_id}/{$cat.hyphenated_name}">
