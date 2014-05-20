@@ -5,33 +5,37 @@ $(document).ready(function() {
         windowResize();
     });
     $('.left_category_menu a').click(function() {
-        //console.log('a');
-        //return false;
+//console.log('a');
+//return false;
     });
+    $('.textbox_android').after("<span class='textbox_android_after'></span>");
     $('.dropdown').click(function() {
         var parent_id = $(this).attr('alt');
         //console.log('parent' + $(this).attr('alt'));
         $('.children_' + parent_id).toggle('fast');
         $('.expand_parent_' + parent_id).toggle();
         $('.minimize_parent_' + parent_id).toggle();
+//        if ($('.wrapper').height() < window.innerHeight) {
+//            $('.wrapper').height(window.innerHeight - $('.header').height());
+//        }
     });
-    $(document).on("click", ".expand_resource", function(event) {
-        var res_url = $(this).attr('href');
-        var res_id = $(this).attr('alt');
-        $.ajax({
-            //url: "",
-            type: 'get',
-            data: {
-                res_id: res_id,
-                ajax: 1,
-            },
-            success: function(data) {
-                $('.content_holder').html(data);
-            }
-        });
-        window.history.pushState({res_id: res_id}, "", res_url);
-        return false;
-    });
+//    $(document).on("click", ".expand_resource", function(event) {
+//        var res_url = $(this).attr('href');
+//        var res_id = $(this).attr('alt');
+//        $.ajax({
+//            //url: "",
+//            type: 'get',
+//            data: {
+//                res_id: res_id,
+//                ajax: 1,
+//            },
+//            success: function(data) {
+//                $('.content_holder').html(data);
+//            }
+//        });
+//        window.history.pushState({res_id: res_id}, "", res_url);
+//        return false;
+//    });
     $('.resource_name').ellipsis({
         row: 2,
         char: '...', //$('a.readmore'),
@@ -61,7 +65,6 @@ $(document).ready(function() {
         }
         resourceSearch(resource_search);
         window.history.pushState(historystate, "", historyurl);
-
     });
     var QueryString = function() {
         // This function is anonymous, is executed immediately and 
@@ -94,8 +97,21 @@ $(document).ready(function() {
         return query_string;
     }();
     //console.log(QueryString);
-});
+    $('.left_menu').css('top', $('.header').outerHeight());
+    $(".nano").nanoScroller();
+    //console.log($('.header').position().top + $('.header').outerHeight(true));
+    $(window).scroll(function() {
+        var winTop = $(this).scrollTop();
+        var headerHeight = $('.header').outerHeight();
+        if (winTop > headerHeight) {
+            $('.left_menu').css('top', 0);
+        } else {
+            $('.left_menu').css('top', headerHeight - winTop);
 
+        }
+        $(".nano").nanoScroller();
+    });
+});
 window.onpopstate = function(event) {
     console.log("location: " + document.location + ", state: " + JSON.stringify(event.state));
     //console.log(event);
@@ -124,7 +140,7 @@ function resourceSearch(resource_search) {
     });
 }
 function windowResize() {
-    var content_holder_width = $(document).width() - $('.left_menu').width() - 30;
+    var content_holder_width = $(document).width() - $('.left_menu').width();
     $('.content_holder').width(content_holder_width);
 //    console.log($(document).height());
 //    console.log(window.innerHeight);
@@ -136,7 +152,7 @@ function windowResize() {
 //    }
 }
 function get_current_page_name() {
-    // Get current page name
+// Get current page name
     var current_path = window.location.pathname;
     var current_page = current_path.substring(current_path.lastIndexOf('/') + 1);
     return current_page;
@@ -199,7 +215,6 @@ function SetCookie(cookie_name, value, expiry_days, current_expiry) {
 
 function GetCookie(cookie_name) {
     var cookies = document.cookie.split(";");
-
     for (var i = 0; i < cookies.length; i++) {
         var cookie = cookies[i].substr(0, cookies[i].indexOf("="));
         var value = cookies[i].substr(cookies[i].indexOf("=") + 1);

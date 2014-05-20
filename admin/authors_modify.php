@@ -73,7 +73,7 @@ if (isset($_POST['submit']) && ($_POST['submit'] != '')) {
     if ($action_str)
         $qs = "$action_str {$table_name} $set_str $where_str";
 
-    if (GetCount($table_name, "name = '{$fields['name']}' $where_validation ")) {
+    if (GetCount($table_name, "name = \"{$fields['name']}\" $where_validation ")) {
         $message = "This author already exists. Please recheck";
     }
 

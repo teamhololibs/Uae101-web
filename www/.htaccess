@@ -75,5 +75,6 @@ ErrorDocument 403 /404.php
 #RewriteRule    ^.php$    /__$1.php    [QSA,NC]    # Rule : Pages with php
 RewriteRule    ^([a-z]+)$    /__$1.php    [QSA,NC]    # Rule : Pages are sent to _xyz.php
 RewriteRule    ^tag/([0-9]+)/*([A-Za-z0-9\_\-\.]*)/*$    /index.php?tag=$1    [QSA,NC,L]    # Rule : 
+RewriteRule    ^resource/([0-9]+)/*([A-Za-z0-9\_\-\.]*)/*$    /index.php?resource=$1    [QSA,NC,L]    # Rule : 
 RewriteRule    ^(.*)(\.log$)  404.php [L]    # Rule : All disallowed extensions are send to 404/403
 

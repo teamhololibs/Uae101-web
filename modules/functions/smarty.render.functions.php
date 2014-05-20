@@ -74,13 +74,17 @@ function ResourcesPage() {
         $resource_search = TextToDB($_GET['search']);
         $GLOBALS['page_title'] = "$resource_search - Search in ";
     }
+    if (isset($_GET['resource']) && $_GET['resource'] != '') {
+        $resource_id = TextToDB($_GET['resource']);
+        $GLOBALS['page_title'] = "$resource_id - Search in ";
+    }
     $category_search_id = '';
     if (isset($_GET['tag']) && $_GET['tag'] != '') {
         $category_search_id = TextToDB($_GET['tag']);
     }
 
     $GLOBALS['page_title'] .= "Hololibs";
-    $resources = $resources_ins->GetResources($resource_search, $category_search_id);
+    $resources = $resources_ins->GetResources($resource_search, $category_search_id, $resource_id);
 
     if (count($resources) > 0) {
         $tpl->assign('resources', $resources);
