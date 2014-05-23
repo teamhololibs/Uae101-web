@@ -131,7 +131,7 @@ function CreateMenuHTML($full_menu, $pages_to_display) {
             $tag = $item[1];
             if (array_search($tag, $pages_to_display) !== false) {
                 $html .= "<li";
-                if (trim($_SERVER['PHP_SELF'], " /") == $href)
+                if (trim($_SERVER['REDIRECT_URL'], " /") == $href)
                     $html .= " class = 'selected' ";
                 $html .= "><a href = '$href'>$menu_name</a></li>";
             }
