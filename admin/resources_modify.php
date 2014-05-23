@@ -3,6 +3,8 @@ require_once '../admin.common.prepend.php';
 
 $table_name = 'resources';
 CheckPermissions($table_name);
+$cfg = new Config;
+$desc_maxlength = $cfg->GetConfig("RESOURCE_DESCRIPTION_MAXLENGTH");
 
 if (isset($_REQUEST['action']) && $_REQUEST['action'] != '')
     $action = $_REQUEST['action'];
@@ -73,6 +75,7 @@ if (isset($_POST['submit']) && ($_POST['submit'] != '')) {
     $fields = $_POST['q'];
     $set_str = 'SET ';
     $message = '';
+    $fields['description'] = substr($fields['description'], 0, $desc_maxlength);
     foreach ($fields as $k => $v) {
         $v = TextToDB(trim($v));
         $set_str .= " $k = '$v', ";
@@ -81,7 +84,6 @@ if (isset($_POST['submit']) && ($_POST['submit'] != '')) {
     if ($fields['name'] == '' || $fields['description'] == '' || $fields['author_id'] == '') {
         $message = "Please enter required information";
     }
-
     $set_str = (trim($set_str, ' ,'));
 
     $action_str = false;
@@ -150,7 +152,8 @@ $cat_ins = new Category();
                 </li>
                 <li class="wide">
                     <label for="description">Short Description:</label>
-                    <textarea id="description" name="q[description]" cols="" rows="6" placeholder=""><?= htmlspecialchars(TextFromDB($resource['description'])) ?></textarea>
+                    <textarea id="description" name="q[description]" maxlength='<?= $desc_maxlength ?>' required cols="" rows="6" placeholder=""><?= htmlspecialchars(TextFromDB($resource['description'])) ?></textarea><br/>
+                    <span class='textarea_length_display'></span>
                 </li>
                 <li class="wide">
                     <label style="padding: 0;" for="">Is this resource approved?:</label>
@@ -159,7 +162,15 @@ $cat_ins = new Category();
                     <label class="form_radio" for="is_approved_no">No</label>
                     <input class="form_radio" required id="is_approved_no" type='radio' class="required" name="q[is_approved]" value="0" <?= ($resource['is_approved'] == '0') ? "checked" : '' ?>/>
                 </li>
+                <li class="wide">
+                    <br/><br/>
+                    <label for="rating">Rating:</label>
+                    <input id="rating" style="width: 3%;" type='text' required name="q[rating]" value="<?= $resource['rating'] ?>" title="Rating of the resource"/>
+                    <div id="slider" style="margin-left: 5%;width: 50%;display: inline-block;"></div>
+                    <br/><br/>
+                </li>
             </ul>
+            <div style="clear: both"></div>
             <table width="95%" style="font-size: 1.11em;" id='author_table'>
                 <tr>
                     <td width="21.5%" class=""><label for="">Author:</label></td>

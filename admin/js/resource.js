@@ -2,23 +2,23 @@ $(document).ready(function() {
     // category = 1 for TagAuto 
     // author = 2 for TagAuto 
 
-    tinymce.init({
-        selector: "#description",
-//        width: '100%',
-//        theme: "advanced",
-//        force_br_newlines: false,
-//        force_p_newlines: false,
-        mode: "textareas",
-        forced_root_block: '',
-        plugins: ["advlist autolink lists link image charmap print preview anchor", "searchreplace visualblocks code fullscreen", "insertdatetime media table contextmenu paste"],
-        toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
-        paste_auto_cleanup_on_paste: true,
-        paste_postprocess: function(pl, o) {
-            // remove &nbsp
-            o.node.innerHTML = o.node.innerHTML.replace(/&nbsp;/ig, " ");
-        },
-        cleanup_callback: 'my_cleanup_callback'
-    });
+//    tinymce.init({
+//        selector: "#description",
+////        width: '100%',
+////        theme: "advanced",
+////        force_br_newlines: false,
+////        force_p_newlines: false,
+//        mode: "textareas",
+//        forced_root_block: '',
+//        plugins: ["advlist autolink lists link image charmap print preview anchor", "searchreplace visualblocks code fullscreen", "insertdatetime media table contextmenu paste"],
+//        toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
+//        paste_auto_cleanup_on_paste: true,
+//        paste_postprocess: function(pl, o) {
+//            // remove &nbsp
+//            o.node.innerHTML = o.node.innerHTML.replace(/&nbsp;/ig, " ");
+//        },
+//        cleanup_callback: 'my_cleanup_callback'
+//    });
 
     function my_cleanup_callback(type, value) {
         switch (type) {
@@ -37,6 +37,21 @@ $(document).ready(function() {
         }
         return value;
     }
+
+    $("#slider").slider({
+        //value: 5,
+        min: 1,
+        max: 10,
+        step: 1,
+        slide: function(event, ui) {
+            $("#rating").val(ui.value);
+        }
+    });
+    $("#slider").slider("value", $("#rating").val());
+    $(document).on("blur", "#rating", function(event) {
+        var new_val = $(this).val();
+        $("#slider").slider("value", new_val);
+    });
 
     $('.author_autocomplete').bind('paste', function(e) {
         //setTimeout(function() {$('.author_autocomplete').trigger(TagAutocomplete($('.author_autocomplete'), 2));}, 0);

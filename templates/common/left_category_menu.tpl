@@ -26,4 +26,4 @@
         </li>
     {/foreach}
 </ul>
-<div style='clear: both'></div>
+<!--div style='clear: both'></div-->

@@ -84,7 +84,7 @@ function ResourcesPage() {
     }
 
     $GLOBALS['page_title'] .= "Hololibs";
-    $resources = $resources_ins->GetResources($resource_search, $category_search_id, $resource_id);
+    $resources = $resources_ins->GetResources($resource_search, $category_search_id, $resource_id, $author_id);
 
     if (count($resources) > 0) {
         $tpl->assign('resources', $resources);

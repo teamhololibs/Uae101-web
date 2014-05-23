@@ -1,0 +1,5 @@
+12:22:22 - DELETE FROM res_cat WHERE res_id = 23 
+12:27:34 - DELETE FROM res_cat WHERE res_id = 23 
+12:29:35 - DELETE FROM res_cat WHERE res_id = 23 
+12:41:37 - DELETE FROM res_cat WHERE res_id = 23 
+12:42:07 - DELETE FROM res_cat WHERE res_id = 23 

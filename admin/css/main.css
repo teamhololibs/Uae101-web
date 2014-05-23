@@ -505,6 +505,9 @@ a.anchor_button:link, a.anchor_button:visited, a.anchor_button:active, a.anchor_
     font-size: 1.11em;
 }
 
+.form_fields li.wide > span{
+    margin-left: 20%;
+}
 .form_fields li.wide > div{
     width: 75%;
     margin-left: 20%;
@@ -512,12 +515,12 @@ a.anchor_button:link, a.anchor_button:visited, a.anchor_button:active, a.anchor_
 
 .form_fields li.wide  select{
     width: 75%;
-    
+
 }
 .form_fields li.wide .input_box{
     /*float: left;*/
     width: 75%;
-    
+
 }
 .form_fields li.wide > input{
     width: 75%;

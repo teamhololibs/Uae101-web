@@ -56,6 +56,11 @@ $(document).ready(function() {
         return false;
     });
 
+    $(document).on('keyup blur focus', "textarea[maxlength]", function() {
+        textAreaLength($(this));
+    });
+    //textAreaLength($('textarea[maxlength]'));
+
     check_search_visibility();
 
     CheckConfirmationMessage();
@@ -63,10 +68,22 @@ $(document).ready(function() {
 });
 
 window.onpopstate = function(event) {
-    $( ".jquery-dialog" ).dialog( "close" );
+    $(".jquery-dialog").dialog("close");
     console.log("location: " + document.location + ", state: " + JSON.stringify(event.state));
 };
 
+function textAreaLength(element) {
+    //console.log(element);
+    // Store the maxlength and value of the field.
+    var maxlength = $(element).attr('maxlength');
+    var val = $(element).val();
+    var current_length = maxlength - $(element).val().length;
+    $(element).parent().find('.textarea_length_display').html("Characters left: " + current_length);
+    // Trim the field if it has content over the maxlength.
+    if (val.length > maxlength) {
+        $(element).val(val.slice(0, maxlength));
+    }
+}
 function SetConfirmationMessage(message, type) {
     $('.confirmation_message').attr('class', 'confirmation_message');
     $('.confirmation_message').fadeIn(500);

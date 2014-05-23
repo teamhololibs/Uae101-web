@@ -22,6 +22,16 @@
             }
         </script>
         <script type="text/javascript" src="/js/js.functions.js"></script>
+        <script type="text/javascript">
+            (function() {
+                var po = document.createElement('script');
+                po.type = 'text/javascript';
+                po.async = true;
+                po.src = 'https://plus.google.com/js/client:plusone.js?onload=start';
+                var s = document.getElementsByTagName('script')[0];
+                s.parentNode.insertBefore(po, s);
+            })();
+        </script>
         <title>{$META_TITLE}</title>
     </head>
     <body>
@@ -38,5 +48,44 @@
             {include file="common/footer.tpl"}
             <div style='clear: both'></div>
         </div>
+        <script type="text/javascript">
+            // Google+ Sign in
+            function signInCallback(authResult) {
+                console.log(authResult);
+                if (authResult['code']) {
+
+                    // Hide the sign-in button now that the user is authorized, for example:
+                    $('#signinButton').attr('style', 'display: none');
+
+                    // Send the code to the server
+                    $.ajax({
+                        type: 'POST',
+                        url: 'gplus?storeToken',
+                        contentType: 'application/octet-stream; charset=utf-8',
+                        success: function(result) {
+                            // Handle or verify the server response if necessary.
+
+                            // Prints the list of people that the user has allowed the app to know
+                            // to the console.
+                            console.log(result);
+                            if (result['profile'] && result['people']) {
+                                $('#results').html('Hello ' + result['profile']['displayName'] + '. You successfully made a server side call to people.get and people.list');
+                            } else {
+                                $('#results').html('Failed to make a server-side call. Check your configuration and console.');
+                            }
+                        },
+                        processData: false,
+                        data: authResult['code']
+                    });
+                } else if (authResult['error']) {
+                    // There was an error.
+                    // Possible error codes:
+                    //   "access_denied" - User denied access to your app
+                    //   "immediate_failed" - Could not automatially log in the user
+                    console.log('There was an error: ' + authResult['error']);
+                }
+            }
+            //po.src = 'https://apis.google.com/js/client:plusone.js?lang=en-US&';
+        </script>
     </body>
 </html>

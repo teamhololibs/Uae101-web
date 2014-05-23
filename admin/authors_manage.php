@@ -10,24 +10,36 @@ if (isset($_GET['x'])) {
         $fields[$k] = TextToDB(trim($v));
     }
     $where_array = array();
+    $where_array[] = "1";
 
     if ($fields['name'] != '') {
         $where_array[] = "name LIKE '%" . $fields['name'] . "%'";
     }
-
+    if ($fields['order'] != '') {
+        switch ($fields['order']) {
+            case 'author_id':
+                $order = 'author_id DESC';
+                break;
+            case 'name':
+            default: $order = 'name';
+        }
+    }
     $scope_where = trim(implode(" AND ", $where_array), "AND");
 
     $where = implode(" AND ", $where_array);
     $where = trim($where, 'AND');
-    $where = "WHERE " . $where;
+} else {
+    $where = '1';
+    $order = 'name';
 }
 
 //if ($scope_where != '')
 //  $scope_where = " AND $scope_where";
 
-$authors = GetRowsAsAssocArray("SELECT * FROM $table_name $where ORDER BY name ");
+$authors = GetRowsAsAssocArray("SELECT * FROM $table_name WHERE $where ORDER BY $order ");
 $active_count = GetCount($table_name, "$scope_where");
 $scope_prefix = GetUrlPrefix();
+$order_prefix = GetUrlPrefix('order');
 
 $res = new Resource();
 $category = new Category();
@@ -68,8 +80,8 @@ PreparePage(array(
     <div class="data_container">
         <table class="paginated_data" cellspacing='0' cellpadding="0">
             <tr>
-                <th>Resource #</th>
-                <th>Name</th>
+                <th><a href="<?= $order_prefix ?>&x[order]=author_id">#</a></th>
+                <th><a href="<?= $order_prefix ?>&x[order]=name">Name</a></th>
                 <th>URL</th>
                 <? if (ACTION) { ?>
                     <th>

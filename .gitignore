@@ -4,5 +4,5 @@
 config.*libra*.php
 nbproject/
 .htpasswd
-test_debug_class.php
+#test_debug_class.php
 templates_c/*

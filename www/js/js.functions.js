@@ -15,9 +15,7 @@ $(document).ready(function() {
         $('.children_' + parent_id).toggle('fast');
         $('.expand_parent_' + parent_id).toggle();
         $('.minimize_parent_' + parent_id).toggle();
-//        if ($('.wrapper').height() < window.innerHeight) {
-//            $('.wrapper').height(window.innerHeight - $('.header').height());
-//        }
+        $(".nano").nanoScroller();
     });
 //    $(document).on("click", ".expand_resource", function(event) {
 //        var res_url = $(this).attr('href');

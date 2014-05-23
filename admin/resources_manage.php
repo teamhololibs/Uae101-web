@@ -14,7 +14,7 @@ if (isset($_GET['x'])) {
     if ($fields['author_id'] != '') {
         $where_array[] = "author_id = {$fields['author_id']}";
     }
-    
+
     if ($fields['cat_id'] != '') {
         $res_with_cats = GetColumnInfoByQuery("SELECT distinct(res_id) res_id FROM res_cat WHERE cat_id = {$fields['cat_id']} ");
         $where_array[] = "resource_id IN (" . implode(" , ", $res_with_cats) . ")";
@@ -27,7 +27,16 @@ if (isset($_GET['x'])) {
         }
     }
 
-
+    if ($fields['order'] != '') {
+        switch ($fields['order']) {
+            case 'resource_id':
+                $order = 'resource_id DESC';
+                break;
+            case 'name':
+            default: $order = 'name';
+        }
+    }
+    
     if ($fields['name'] != '') {
         $where_array[] = "name LIKE '%" . $fields['name'] . "%'";
     }
@@ -62,11 +71,12 @@ if (isset($_GET['x'])) {
 if ($scope_where != '')
     $scope_where = " AND $scope_where";
 
-$resources = GetRowsAsAssocArray("SELECT * FROM $table_name WHERE $where ORDER BY name");
+$resources = GetRowsAsAssocArray("SELECT * FROM $table_name WHERE $where ORDER BY $order");
 $active_count = GetCount($table_name, "active = 1 AND is_approved = 1 $scope_where");
 $delete_count = GetCount($table_name, "active = 0 AND is_approved = 1 $scope_where");
 $notapproved_count = GetCount($table_name, "is_approved = 0 $scope_where");
 $scope_prefix = GetUrlPrefix();
+$order_prefix = GetUrlPrefix('order');
 
 $res = new Resource();
 $category = new Category();
@@ -135,8 +145,8 @@ PreparePage(array(
     <div class="data_container">
         <table class="paginated_data" cellspacing='0' cellpadding="0">
             <tr>
-                <th style="width: 3%;">#</th>
-                <th>Name</th>
+                <th style="width: 3%;"><a href="<?= $order_prefix ?>&x[order]=resource_id">#</a></th>
+                <th><a href="<?= $order_prefix ?>&x[order]=name">Name</a></th>
                 <th style="width: 45%;">Description</th>
                 <th style="width: 14%;">Category</th>
                 <th style="width: 17%;">Information</th>

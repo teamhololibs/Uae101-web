@@ -11,6 +11,7 @@
         <!--link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.0/themes/base/jquery-ui.css"/-->
         <link rel="stylesheet" type="text/css" href="css/main.css"/>
         <link rel='stylesheet' type='text/css' href='//fonts.googleapis.com/css?family=Quintessential|Arimo|Asap|Fauna+One' />
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css"/>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
         <script type="text/javascript">
             if (typeof jQuery == 'undefined') {
@@ -22,6 +23,7 @@
         <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.1/jquery-ui.min.js"></script>
         <!--script type='text/javascript' src="//tinymce.cachefly.net/4.0/tinymce.min.js"></script-->
         <script type='text/javascript' src="js/tinymce/tinymce.min.js"></script>
+<!--        <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>-->
         <script type="text/javascript">
             if (typeof (tinyMCE) == "undefined") {
                 document.write("<script type='text/javascript' src='js/tinymce/tinymce.min.js'><\/script>");

@@ -1,7 +1,7 @@
 {foreach from=$resources item=res}
     <div class='resource_box'>
         <p>
-            <a class='expand_resource resource_name' alt="{$res.resource_id}" href="/resource/{$res.resource_id}/{$res.hyphenated_name}" >{$res.name}</a>
+            <a class='expand_resource resource_name' alt="{$res.resource_id}" href="/library/{$res.resource_id}/{$res.hyphenated_name}" >{$res.name}</a>
         </p>
         <p>
             <a class='author_name' alt="{$res.author_id}" href="/author/{$res.author_id}/{$res.author_info.hyphenated_name}" >{$res.author_info.hyphenated_name}</a>
@@ -30,9 +30,11 @@
                 </tr>
             </table>
         </div>
-        <div class="submitter">
-            <a class='author_name' alt="{$res.author_id}" href="/author/{$res.author_id}/{$res.author_info.hyphenated_name}" >Submitted by: {$res.author_info.hyphenated_name}</a>
-        </div>
+        {if $res.user_id != '0'}
+            <div class="submitter">
+                <a class='author_name' alt="{$res.author_id}" href="/author/{$res.author_id}/{$res.author_info.hyphenated_name}" >Submitted by: {$res.author_info.hyphenated_name}</a>
+            </div>
+        {/if}
     </div>
 {/foreach}
-<div style='clear: both'>&nbsp;</div>
+{*<div style='clear: both'>&nbsp;</div>*}

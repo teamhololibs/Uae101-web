@@ -36,13 +36,15 @@ foreach ($db_details as $key => $value) {
     }
 }
 
-if (!isset($TEST_SITE) || !$TEST_SITE) {
-    ini_set('display_errors', '0');
-    error_reporting(E_ALL && ~E_STRICT && ~E_NOTICE);
-    //error_log($file_path)
-} else {
-    error_reporting(E_ALL ^ E_NOTICE ^ E_WARNING);
-}
+/*
+  if (!isset($TEST_SITE) || !$TEST_SITE) {
+  ini_set('display_errors', '0');
+  error_reporting(E_ALL && ~E_STRICT && ~E_NOTICE);
+  //error_log($file_path)
+  } else {
+  error_reporting(E_ALL ^ E_NOTICE ^ E_WARNING);
+  }
+ */
 
 define('DB_SLAVE_EXISTS', false);
 
@@ -82,12 +84,12 @@ $files = array(
     "$functions_path/overall.functions.php",
     "$functions_path/php.functions.php",
     "$functions_path/task.functions.php",
-    "$functions_path/smarty.render.functions.php",
-    "$plugins_path/lightopenid/openid.php"
+    "$functions_path/smarty.render.functions.php"
+    //"$plugins_path/lightopenid/openid.php"
+    //"/www/Google/Client.php"
 );
 
 foreach ($files as $file) {
     require_once "$file_path/$file";
 }
-
 ?>
