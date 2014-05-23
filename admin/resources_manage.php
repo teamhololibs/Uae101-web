@@ -27,16 +27,15 @@ if (isset($_GET['x'])) {
         }
     }
 
-    if ($fields['order'] != '') {
-        switch ($fields['order']) {
-            case 'resource_id':
-                $order = 'resource_id DESC';
-                break;
-            case 'name':
-            default: $order = 'name';
-        }
+    switch ($fields['order']) {
+        case 'resource_id':
+            $order = 'resource_id DESC';
+            break;
+        case 'name':
+        default:
+            $order = 'name';
     }
-    
+
     if ($fields['name'] != '') {
         $where_array[] = "name LIKE '%" . $fields['name'] . "%'";
     }
@@ -176,9 +175,10 @@ PreparePage(array(
                     <td>
                         <?
                         echo "Author: <a href='resources_manage.php?x[author_id]={$resource['author_id']}'>" . GetInfoById("authors", "author_id", $resource['author_id'], "name") . "</a><br/><br/>";
-                        echo "User: user<br/><br/>";
-                        echo "Points: " . $resource['points'] . "<br/><br/>";
-                        echo "Views: " . $resource['views'] . "<br/><br/>";
+                        echo "Rating: " . $resource['rating'] . "<br/><br/>";
+                        //echo "User: user<br/><br/>";
+                        //echo "Points: " . $resource['points'] . "<br/><br/>";
+                        //echo "Views: " . $resource['views'] . "<br/><br/>";
                         echo "Updated: " . $resource['updated'] . "<br/><br/>";
                         ?>
                     </td>

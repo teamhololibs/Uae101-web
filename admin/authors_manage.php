@@ -15,14 +15,12 @@ if (isset($_GET['x'])) {
     if ($fields['name'] != '') {
         $where_array[] = "name LIKE '%" . $fields['name'] . "%'";
     }
-    if ($fields['order'] != '') {
-        switch ($fields['order']) {
-            case 'author_id':
-                $order = 'author_id DESC';
-                break;
-            case 'name':
-            default: $order = 'name';
-        }
+    switch ($fields['order']) {
+        case 'author_id':
+            $order = 'author_id DESC';
+            break;
+        case 'name':
+        default: $order = 'name';
     }
     $scope_where = trim(implode(" AND ", $where_array), "AND");
 
@@ -82,6 +80,7 @@ PreparePage(array(
             <tr>
                 <th><a href="<?= $order_prefix ?>&x[order]=author_id">#</a></th>
                 <th><a href="<?= $order_prefix ?>&x[order]=name">Name</a></th>
+                <th># of Resources</th>
                 <th>URL</th>
                 <? if (ACTION) { ?>
                     <th>
@@ -96,6 +95,7 @@ PreparePage(array(
                 <tr <?= ($i++ % 2 != 0) ? "class='odd'" : '' ?> >
                     <td><?= $author['author_id'] ?></td>
                     <td><?= TextFromDB($author['name']) ?></td>
+                    <td><?= GetCount('resources', "author_id = {$author['author_id']}") ?></td>
                     <td><a target='_blank' href="<?= TextFromDB($author['url']) ?>"><?= TextFromDB($author['url']) ?></a></td>
                     <? if (ACTION) { ?>
                         <td>
