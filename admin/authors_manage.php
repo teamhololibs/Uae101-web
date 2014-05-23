@@ -95,7 +95,7 @@ PreparePage(array(
                 <tr <?= ($i++ % 2 != 0) ? "class='odd'" : '' ?> >
                     <td><?= $author['author_id'] ?></td>
                     <td><?= TextFromDB($author['name']) ?></td>
-                    <td><?= GetCount('resources', "author_id = {$author['author_id']}") ?></td>
+                    <td><a href='resources_manage.php?x[author_id]=<?= $author['author_id'] ?>'><?= GetCount('resources', "active = 1 AND author_id = {$author['author_id']}") ?></td>
                     <td><a target='_blank' href="<?= TextFromDB($author['url']) ?>"><?= TextFromDB($author['url']) ?></a></td>
                     <? if (ACTION) { ?>
                         <td>
