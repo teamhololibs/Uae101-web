@@ -8,7 +8,8 @@ PreparePage(array(
 ));
 
 if ($_POST['create_backup']) {
-    BackUpAndDownloadDatabase();
+    //BackUpAndDownloadDatabase();
+    SaveDbToServer();
 } else {
     ?>
     <form method="post" action="">
