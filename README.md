@@ -7,10 +7,10 @@ Android Library Hub
 
 Login credentials for
 
-namecheap.com
-gmail.com
-github.com
-digitalocean.com
+namecheap.com<br/>
+gmail.com<br/>
+github.com<br/>
+digitalocean.com<br/>
 
 email:    teamhololibs@gmail.com<br/>
 username: teamhololibs<br/>
