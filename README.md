@@ -5,45 +5,26 @@ Android Library Hub
 
 ===
 
-teamhololibs@gmail.com
+Login credentials for
 
-L1bradev
+namecheap.com
+gmail.com
+github.com
+digitalocean.com
+
+email:    teamhololibs@gmail.com
+username: teamhololibs
+password: L1bradev
 
 ===
 
-Connecting to server:
+Connecting to Sites:
 
 u/p: libra/bits <br/>
 http://adminlibra.prasanthnair.info <br/>
 http://libra.prasanthnair.info
 
 ====
-
-Potential site names to be added below, and we'll pick one later (use < br / > for intentation):
-
-https://instantdomainsearch.com/
-
-libdroid.com <br/>
-android-libs.com <br/>
-droidlibs.com <br/>
-libradroid.com <br/>
-devdriod.com <br/>
-droidalpha.com <br/>
-libs.guru ($20) <br/>
-omnilibs.com <br/>
-actionbar.guru <br/>
-quodroid.com - quo means more in latin <br/>
-droidfrenzy.com <br/>
-semicolon.guru <br/>
-libsactivity.com <br/>
-droidactivity.com <br/>
-hololibs.com<br/>
-holojars.com<br/>
-findviewbyid.com<br/>
-onresume.net<br/>
-omniholo.com<br/>
-
-===
 
 When commiting any change, in the commit message specify what part of the project this commit corresponds to. For example, if the changes are related to admin portal then the msg should start "Admin: added a page" and if its the site then "Site: 404 page". 
 
