@@ -12,9 +12,9 @@ gmail.com
 github.com
 digitalocean.com
 
-email:    teamhololibs@gmail.com
-username: teamhololibs
-password: L1bradev
+email:    teamhololibs@gmail.com<br/>
+username: teamhololibs<br/>
+password: L1bradev<br/>
 
 ===
 
