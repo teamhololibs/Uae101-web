@@ -1,0 +1,110 @@
+
+/* LOADER ANIMATION */
+.blokje
+{
+    position:absolute;
+    width:10px;
+    height:10px;
+    top:94px;
+}
+#blok1{
+    -o-animation: mover 2s -.2s infinite  cubic-bezier(0, 0.8, 0.9, 0.0);
+    -ms-animation: mover 2s -.2s infinite  cubic-bezier(0, 0.8, 0.9, 0.0);
+    -moz-animation: mover 2s -.2s infinite  cubic-bezier(0, 0.8, 0.9, 0.0);
+    -webkit-animation: mover 2s -.2s infinite  cubic-bezier(0, 0.8, 0.9, 0.0);
+    animation: mover 2s -.2s infinite  cubic-bezier(0, 0.8, 0.9, 0.0);
+    background: #B2DB2F;
+}
+#blok2{
+    -webkit-animation: mover 2s -.4s infinite  cubic-bezier(0, 0.8, 0.9, 0.0);
+    -moz-animation: mover 2s -.4s infinite  cubic-bezier(0, 0.8, 0.9, 0.0);
+    -ms-animation: mover 2s -.4s infinite  cubic-bezier(0, 0.8, 0.9, 0.0);
+    -o-animation: mover 2s -.4s infinite  cubic-bezier(0, 0.8, 0.9, 0.0);
+    animation: mover 2s -.4s infinite  cubic-bezier(0, 0.8, 0.9, 0.0);
+    background: #93B32E ;
+}
+#blok3{
+    -webkit-animation: mover 2s -.6s infinite  cubic-bezier(0, 0.8, 0.9, 0.0);
+    -moz-animation: mover 2s -.6s infinite  cubic-bezier(0, 0.8, 0.9, 0.0);
+    -ms-animation: mover 2s -.6s infinite  cubic-bezier(0, 0.8, 0.9, 0.0);
+    -o-animation: mover 2s -.6s infinite  cubic-bezier(0, 0.8, 0.9, 0.0);
+    animation: mover 2s -.6s infinite  cubic-bezier(0, 0.8, 0.9, 0.0);
+    background: #8CAA2E ;
+}
+#blok4{
+    -webkit-animation: mover 2s -.8s infinite  cubic-bezier(0, 0.8, 0.9, 0.0);
+    -moz-animation: mover 2s -.8s infinite  cubic-bezier(0, 0.8, 0.9, 0.0);
+    -ms-animation: mover 2s -.8s infinite  cubic-bezier(0, 0.8, 0.9, 0.0);
+    -o-animation: mover 2s -.8s infinite  cubic-bezier(0, 0.8, 0.9, 0.0);
+    animation: mover 2s -.8s infinite  cubic-bezier(0, 0.8, 0.9, 0.0);
+    background: #93B32E; 
+}
+#blok5{
+    -webkit-animation: mover 2s -1s infinite  cubic-bezier(0, 0.8, 0.9, 0.0);
+    -moz-animation: mover 2s -1s infinite  cubic-bezier(0, 0.8, 0.9, 0.0);
+    -ms-animation: mover 2s -1s infinite  cubic-bezier(0, 0.8, 0.9, 0.0);
+    -o-animation: mover 2s -1s infinite  cubic-bezier(0, 0.8, 0.9, 0.0);
+    animation: mover 2s -1s infinite  cubic-bezier(0, 0.8, 0.9, 0.0);
+    background: #B2DB2F;
+}
+@-o-keyframes mover
+{
+    0%
+    {
+        left:250px;
+
+    }
+
+    100%{
+        left:100%;
+    }
+}
+@-ms-keyframes mover
+{
+    0%
+    {
+        left:250px;
+
+    }
+
+    100%{
+        left:100%;
+    }
+}
+@-moz-keyframes mover
+{
+    0%
+    {
+        left:250px;
+
+    }
+
+    100%{
+        left:100%;
+    }
+}
+@-webkit-keyframes mover
+{
+    0%
+    {
+        left:25%;
+
+    }
+
+    100%{
+        left:99%;
+    }
+}
+@keyframes mover
+{
+    0%
+    {
+        left:250px;
+
+    }
+
+    100%{
+        left:100%;
+    }
+}
+

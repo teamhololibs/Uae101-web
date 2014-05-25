@@ -33,6 +33,7 @@
             })();
         </script>
         <title>{$META_TITLE}</title>
+        <link rel="stylesheet" type="text/css" href="/css/blockmoving.css"/>
     </head>
     <body>
         <div id="wrapper" class="wrapper">
@@ -43,6 +44,23 @@
                 </div>
             </div>
             <div class='content_holder'>
+                <div class="loading_animation">
+                    <div id="blok1" class="blokje"></div>
+                    <div id="blok2" class="blokje"></div>
+                    <div id="blok3" class="blokje"></div>
+                    <div id="blok4" class="blokje"></div>
+                    <div id="blok5" class="blokje"></div>
+                </div>
+                {*<div id="loadingProgressG">
+                <div id="loadingProgressG_1" class="loadingProgressG">
+                </div>
+                </div>*}
+                {*<div id="movingBallG">
+                <div class="movingBallLineG">
+                </div>
+                <div id="movingBallG_1" class="movingBallG">
+                </div>
+                </div>*}
                 {$MAIN_CONTENT}
             </div>
             {include file="common/footer.tpl"}

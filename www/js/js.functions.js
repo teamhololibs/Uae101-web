@@ -125,6 +125,7 @@ window.onpopstate = function(event) {
 };
 function resourceSearch(resource_search) {
     //console.log(resource_search);
+    $('.loading_animation').show();
     $.ajax({
         //url: "",
         type: 'get',
@@ -134,6 +135,7 @@ function resourceSearch(resource_search) {
         },
         success: function(data) {
             $('.content_holder').html(data);
+            $('.loading_animation').hide();
         }
     });
 }
