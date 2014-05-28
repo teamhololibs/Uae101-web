@@ -20,13 +20,13 @@
                     <td align="left">
                         <a class='' href="{$res.url}">VIEW SOURCE</a>
                     </td>
-                    <td align="right">
+                    {*<td align="right">
                         <span class=''>{$res.points}</span>
                         <img class='resource_point' src='{$PIC_PATH}/like.png'/>
                     </td>
                     <td align="right">
                         <img class='resource_star' src='{$PIC_PATH}/favourites.png'/>
-                    </td>
+                    </td>*}
                 </tr>
             </table>
         </div>

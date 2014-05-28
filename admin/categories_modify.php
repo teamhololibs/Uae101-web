@@ -46,13 +46,6 @@ if (isset($_POST['submit']) && ($_POST['submit'] != '')) {
     $fields = $_POST['q'];
     $set_str = 'SET ';
     $message = '';
-    foreach ($fields as $k => $v) {
-        if ($k == 'is_parent')
-            continue;
-
-        $v = TextToDB(trim($v));
-        $set_str .= " $k = '$v', ";
-    }
 
     if ($fields['name'] == '' || $fields['is_parent'] == '') {
         $message = "Please enter required information";
@@ -64,6 +57,14 @@ if (isset($_POST['submit']) && ($_POST['submit'] != '')) {
         $fields['parent_id'] = '0';
     }
 
+    foreach ($fields as $k => $v) {
+        if ($k == 'is_parent')
+            continue;
+
+        $v = TextToDB(trim($v));
+        $set_str .= " $k = '$v', ";
+    }
+    
     $set_str = (trim($set_str, ' ,'));
 
     $action_str = false;

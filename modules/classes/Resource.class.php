@@ -24,7 +24,7 @@ class Resource {
             $this->resource_search_text = TextToDB($res_text);
     }
 
-    public function GetResources($res_text = '', $cat_id = '', $res_id = '') {
+    public function GetResources($res_text = '', $cat_id = '', $res_id = '', $author_id='', $limit_search_to_cats = 'true') {
         if ($res_text != '')
             $this->SetResourceText($res_text);
 
@@ -32,10 +32,10 @@ class Resource {
         if ($this->resource_search_text != '') {
             $query[] = " name LIKE '%{$this->resource_search_text}%' ";
         }
-        if ($cat_id != '') {
+        if ($cat_id != '' && $limit_search_to_cats != 'false') {
             $query[] = " r.resource_id IN (SELECT rc.res_id FROM res_cat rc WHERE rc.cat_id = $cat_id) ";
         }
-        if ($res_id != '') {
+        if ($res_id != '' && $res_text == '') {
             $query[] = " r.resource_id = $res_id ";
         }
 
@@ -77,6 +77,39 @@ class Resource {
         }
         //array_push($this->resource_info, $this->res_cat);
         return $this->resource_info;
+    }
+
+    public function SubmitNewResource($fields) {
+        if ($fields['name'] == '' || !isset($fields['name'])) {
+            return 'Name is missing';
+        }
+        if ($fields['url'] == '' || !isset($fields['url'])) {
+            return 'URL is missing';
+        }
+
+        foreach ($fields as $k => $v) {
+            $v = TextToDB(trim($v));
+            $set_str .= " $k = '$v', ";
+        }
+
+        $fields['url'] = trim($fields['url'], '/ ');
+        if (strpos($fields['url'], "http://") === 0) {
+            $fields['url'] = substr($fields['url'], 7);
+        }
+        if (strpos($fields['url'], "https://") === 0) {
+            $fields['url'] = substr($fields['url'], 8);
+        }
+        if (GetCount("resources", "url LIKE '%{$fields['url']}%'") > 0) {
+            return 'Library with this URL already exists';
+        }
+        if (GetCount("resources", "name = '{$fields['name']}'") > 0) {
+            return 'Library with this name already exists';
+        }
+        
+        $qs = "INSERT INTO resources SET name='{$fields['name']}', url='{$fields['url']}', is_approved=0, description='{$fields['description']}'";
+        ExecuteQuery($qs);
+        return true;
+        //$url = ltrim($fields['url'], 'https://');
     }
 
 }

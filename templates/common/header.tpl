@@ -3,11 +3,13 @@
         <li style='margin-left: 30px;'>
             <a href="/"><img class='logo' src='{$PIC_PATH}/android icon.png'/></a>
         </li>
-        <li>
+        <li style='margin-left: 253px;'>
             <input type='text' class='input_resource_search' placeholder="SEARCH HERE" value="{$search_text}"/>
+            <span id='in_all_tags' style='margin-left: 15px; display: none'><input id='in_all_tags_checkbox' type='checkbox' checked value="1"/> 
+                <label for='in_all_tags_checkbox'>Limit search to this category?</label></span>
         </li>
         <li>
-            SUBMIT A LIBRARY
+            <a id='submit_library' href="/submit">SUBMIT A LIBRARY</a>
             {*<span class='login_dropdown'>LOGIN</span>
             {include file="common/login_dropdown.tpl" var_name1=$HEADER_VARS}*}
         </li>

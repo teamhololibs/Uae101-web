@@ -9,11 +9,13 @@
         <link rel="shortcut icon" href="/favicon.ico" />
         <link rel="stylesheet" type="text/css" href="/css/main.css"/>
         <link rel="stylesheet" type="text/css" href="/css/nanoscroller.css"/>
+{*        <link rel="stylesheet" type="text/css" href="/css/jquery.fancybox.css"/>*}
         <link rel='stylesheet' type='text/css' href='//fonts.googleapis.com/css?family=Quintessential|Arimo|Asap|Fauna+One' />
         <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
         <script type="text/javascript" src="/js/jquery.ellipsis.min.js"></script>
         <script type="text/javascript" src="/js/jquery.dotdotdot.min.js"></script>
         <script type="text/javascript" src="/js/jquery.nanoscroller.min.js"></script>
+{*        <script type="text/javascript" src="/js/fancybox/source/jquery.fancybox.js"></script>*}
         <script type="text/javascript">
             if (typeof jQuery == 'undefined') {
                 document.write("<script type='text/javascript' src='js/jquery-1.9.1.js'><\/script>");
@@ -22,7 +24,7 @@
             }
         </script>
         <script type="text/javascript" src="/js/js.functions.js"></script>
-        <script type="text/javascript">
+        {*<script type="text/javascript">
             (function() {
                 var po = document.createElement('script');
                 po.type = 'text/javascript';
@@ -31,7 +33,7 @@
                 var s = document.getElementsByTagName('script')[0];
                 s.parentNode.insertBefore(po, s);
             })();
-        </script>
+        </script>*}
         <title>{$META_TITLE}</title>
         <link rel="stylesheet" type="text/css" href="/css/blockmoving.css"/>
     </head>

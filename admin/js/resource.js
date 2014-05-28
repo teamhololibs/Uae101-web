@@ -41,7 +41,7 @@ $(document).ready(function() {
     $("#slider").slider({
         //value: 5,
         min: 1,
-        max: 10,
+        max: 3,
         step: 1,
         slide: function(event, ui) {
             $("#rating").val(ui.value);

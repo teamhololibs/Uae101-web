@@ -22,9 +22,11 @@ class Category {
             }
         }
         $parents = GetRows("categories", "parent_id = 0 AND active = 1 ORDER BY name", "*, REPLACE(name,' ','-') AS hyphenated_name ");
+        $i = 0;
         foreach ($parents as $parent) {
-            self::$full_categories_tree[$parent['cat_id']] = $parent;
-            self::$full_categories_tree[$parent['cat_id']]['children'] = GetRows("categories", "parent_id = {$parent['cat_id']} AND active = 1 ORDER BY name", "cat_id, active, name, parent_id, REPLACE(name,' ','-') AS hyphenated_name ");
+            self::$full_categories_tree[$i] = $parent;
+            self::$full_categories_tree[$i]['children'] = GetRows("categories", "parent_id = {$parent['cat_id']} AND active = 1 ORDER BY name", "cat_id, active, name, parent_id, REPLACE(name,' ','-') AS hyphenated_name ");
+            $i++;
         }
         $_SESSION['FULL_CATEGORIES_TREE'] = self::$full_categories_tree;
         return self::$full_categories_tree;

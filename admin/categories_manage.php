@@ -119,7 +119,7 @@ PreparePage(array(
                 if (ACTION) {
                     echo "<td>";
                     if (EDIT) {
-                        echo "<a class='make_dialog' title='{$cp['name']}' href='{$table_name}'_modify.php?action=edit&id={$cp['cat_id']}'>Edit</a><br/>";
+                        echo "<a class='make_dialog' title='{$cp['name']}' href='{$table_name}_modify.php?action=edit&id={$cp['cat_id']}'>Edit</a><br/>";
                     }
                     if (DELETE) {
                         if ($cp['active'] == '1') {
@@ -147,7 +147,7 @@ PreparePage(array(
                         if (ACTION) {
                             echo "<td>";
                             if (EDIT) {
-                                echo "<a class='make_dialog' title='{$c['name']}' href='{$table_name}'_modify.php?action=edit&id={$c['cat_id']}'>Edit</a><br/>";
+                                echo "<a class='make_dialog' title='{$c['name']}' href='{$table_name}_modify.php?action=edit&id={$c['cat_id']}'>Edit</a><br/>";
                             }
                             if (DELETE) {
                                 if ($c['active'] == '1') {

@@ -52,6 +52,28 @@ function RenderPage($MAIN_CONTENT) {
 function GetLeftMenu() {
     $categories_tree = Category::GetCategoryFullTree();
     $tpl = new SmartyCustom;
+    if (isset($_GET['tag']) && $_GET['tag'] != '') {
+        $category_id = $_GET['tag'];
+        $selected = 0;
+        for ($i = 0; $i < count($categories_tree); $i++) {
+            if ($categories_tree[$i]['cat_id'] == $category_id) {
+                $categories_tree[$i]['selected'] = 'selected';
+                $selected = 1;
+                break;
+            }
+            if ($selected == 0 && count($categories_tree[$i]['children']) > 0) {
+                for ($j = 0; $j < count($categories_tree[$i]['children']); $j++) {
+                    if ($categories_tree[$i]['children'][$j]['cat_id'] == $category_id) {
+                        $categories_tree[$i]['children'][$j]['selected'] = 'selected';
+                        $selected_id = 1;
+                        break;
+                    }
+                }
+            }
+            if ($selected == 1)
+                break;
+        }
+    }
     $tpl->assign('categories_tree', $categories_tree);
     $html = $tpl->fetch('common/left_category_menu.tpl');
     return $html;
@@ -70,6 +92,9 @@ function ResourcesPage() {
         return $html;
     }
 
+    if (isset($_GET['limit_search_to_cats']) && $_GET['limit_search_to_cats'] != '') {
+        $limit_search_to_cats = TextToDB($_GET['limit_search_to_cats']);
+    }
     if (isset($_GET['search']) && $_GET['search'] != '') {
         $resource_search = TextToDB($_GET['search']);
         $GLOBALS['page_title'] = "$resource_search - Search in ";
@@ -83,8 +108,8 @@ function ResourcesPage() {
         $category_search_id = TextToDB($_GET['tag']);
     }
 
-    $GLOBALS['page_title'] .= "Hololibs";
-    $resources = $resources_ins->GetResources($resource_search, $category_search_id, $resource_id, $author_id);
+    $GLOBALS['page_title'] .= SITE_NAME;
+    $resources = $resources_ins->GetResources($resource_search, $category_search_id, $resource_id, $author_id, $limit_search_to_cats);
 
     if (count($resources) > 0) {
         $tpl->assign('resources', $resources);
@@ -99,5 +124,30 @@ function ResourcesPage() {
 function Page404() {
     $tpl = new SmartyCustom;
     $html = $tpl->fetch('404.tpl');
+    return $html;
+}
+
+function SubmitLibrary() {
+    $tpl = new SmartyCustom;
+    $cfg = new Config;
+    $res_ins = new Resource;
+    $submitted = 0;
+    $fields = $_POST['f'];
+    if ($fields['stuff'] != '') {
+        $error = 'Argh! You are a robot!';
+    } else if (isset($_POST['f']) && count($_POST['f']) > 0) {
+        $res = $res_ins->SubmitNewResource($fields);
+        if ($res === true) {
+            $submitted = 1;
+        } else {
+            $error = $res;
+        }
+    }
+    $desc_maxlength = $cfg->GetConfig("RESOURCE_DESCRIPTION_MAXLENGTH");
+    $tpl->assign('error', $error);
+    $tpl->assign('submitted', $submitted);
+    $tpl->assign('desc_maxlength', $desc_maxlength);
+    $tpl->assign('f', $fields);
+    $html = $tpl->fetch('submit_library.tpl');
     return $html;
 }
