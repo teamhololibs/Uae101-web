@@ -1,0 +1,118 @@
+Name,Short Description,Author,URL,Rating,Child Category,Parent
+ActionBar-PullToRefresh,ActionBar-PullToRefresh provides an easy way to add a modern version of the pull-to-refresh interaction to your application.,chrisbanes,http://github.com/chrisbanes/ActionBar-PullToRefresh,,"Pull To Refreah/UI, ListView/UI",UI
+Android Asset Studio,"Excellent community tools to generate custom graphics for Actionbars , UI controls and icons.",Community,http://android-ui-utils.googlecode.com/hg/asset-studio/dist/index.html?utm_source=twitterfeed&utm_medium=twitter,,Tools/Development,Development
+Android Asynchronous Http Client,"An asynchronous callback-based Http client for Android built on top of Apache’s HttpClient libraries. All requests are made outside of your app’s main UI thread, but any callback logic will be executed on the same thread as the callback was created using Android’s Handler message passing.",loopj,http://github.com/loopj/android-async-http,,Http Clients/Networking,Networking
+android-iconify,Integration of FontAwesome for Android,JoanZapata,https://github.com/JoanZapata/android-iconify,3,Icons/UI,
+android-menudrawer,"A slide-out menu implementation, which allows users to navigate between views in your app. Most commonly the menu is revealed by either dragging the edge of the screen, or clicking the 'up' button in the action bar.",SimonTV,https://github.com/SimonVT/android-menudrawer,,Drawer/UI,UI
+android-sqllite-asset-helper,"An Android helper class to manage database creation and version management using an application's raw asset files.
+
+This class provides developers with a simple way to ship their Android app with an existing SQLite database (which may be pre-populated with data) and to manage its initial creation and any upgrades required with subsequent version releases.",jgilfelt,https://github.com/jgilfelt/android-sqlite-asset-helper,,Databases,
+android-stackblur,"Android StackBlur is a library that can perform a blurry effect on a Bitmap based on a gradient or radius, and return the result. The library is based on the code of Mario Klingemann.",kikoso,https://github.com/kikoso/android-stackblur,,ImageView/UI,
+android-styled-dialogs,This library makes styling and using dialogs a piece of cake.,inmite,https://github.com/inmite/android-styled-dialogs,,dialog/UI,
+Android-SwipeToDismiss,Sample code that shows how to make ListView or other views support the swipe-to-dismiss Android UI pattern.,romannurik,https://github.com/romannurik/Android-SwipeToDismiss,,Listview/UI,
+Android-Universal-Image-Loader,"Powerful and flexible library for loading, caching and displaying images on Android.",nostra13,https://github.com/nostra13/Android-Universal-Image-Loader,,Image Loading/Networking,Networking
+Android-ViewPagerIndicator,Paging indicator widgets that are compatible with the ViewPager from the Android Support Library to improve discoverability of content.,JakeWharton,https://github.com/JakeWharton/Android-ViewPagerIndicator,,ViewPager/UI,
+Android-Wheel-Menu,A wheel menu for android,anupcowkur,https://github.com/anupcowkur/Android-Wheel-Menu,,wheel menu/UI,
+AndroidDrawableFactory,A Java Application to create appropriate Drawable resources for your Android application,tizionario,https://github.com/tizionario/AndroidDrawableFactory,,Tools/Development,Development
+AndroidFaceCropper,A library for cropping faces out of a bitmap and ImageViews.,lafosca,https://github.com/lafosca/AndroidFaceCropper,,"Camera, ImageView/UI",
+AndroidFloatLabel,Textview that implements the floating label pattern.,weddingparty,https://github.com/weddingparty/AndroidFloatLabel,,TextView/UI,
+androidicons-adt-template,Android Studio / Eclipse ADT template for androidicons.com resources,jgilfelt,https://github.com/jgilfelt/androidicons-adt-template,,Tools/Development,Development
+AndroidSlidingUpPanel,The 2.2 version of the Umano Android app features a sexy sliding up draggable panel for the currently playing article. This type of a panel is a common pattern also used in the Google Music app and the Rdio app. This is an open source implementation of this component that you are free to take advantage of in your apps. ,umano,https://github.com/umano/AndroidSlidingUpPanel,,Drawer/UI,
+AndroidStaggeredGrid,An Android staggered grid view which supports multiple columns with rows of varying sizes.,etsy,http://www.androidviews.net/2014/01/androidstaggeredgrid-view/,,Listview/UI,
+AnimatedExpandableListView,"An extendable, flexible ExpandableListView widget that supports animations.
+
+This project is dedicated to J Withey for giving me the motivation to write and release this source.",idunnololz,https://github.com/idunnololz/AnimatedExpandableListView,,Listview/UI,
+Application Crash Reports for Android,ACRA is a library enabling Android Application to automatically post their crash reports to a GoogleDoc form. It is targetted to android applications developers to help them get data from their applications when they crash or behave erroneously.,ACRA,https://github.com/ACRA/acra,,Bug Tracking/Development,Development
+Bugsense,"BugSense is the leading developer tool to help you manage the Android fragmentation.
+
+Lightweight
+Proguard integration
+ACRA
+Capture LogCat
+Maven / Gradle",Bugsense,https://www.bugsense.com/docs/android,,Bug Tracking/Development,
+butterknife,"View ""injection"" library for Android.",JakeWharton,https://github.com/JakeWharton/butterknife,,Dependancy Injection/UI,
+butterknife-zelezny,Android Studio plug-in for generating ButterKnife injections from selected layout XML.,inmite,https://github.com/inmite/android-butterknife-zelezny,,"Tools/Development,Dependancy Injection/UI",
+Caldroid,"Caldroid is a fragment that display calendar with dates in a month. Caldroid can be used as embedded fragment, or as dialog fragment. User can also swipe left/right to navigate to different months.
+
+",roomorama,https://github.com/roomorama/Caldroid,,CalenderView/UI,
+Calligraphy,Custom fonts in Android the easy way.,chrisjenx,https://github.com/chrisjenx/Calligraphy,,Fonts/UI,
+cardsui,"An open source library offering the popular Google Now & Google Play cards views, additionnal features, view recycling and an optional Model-View-Controller structure.",nadavfima,https://github.com/nadavfima/cardsui-for-android,,Listview/UI,
+Crouton,"Crouton is a class that can be used by Android developers that feel the need for an alternative to the Context insensitive Toast.
+A Crouton will be displayed at the position the developer decides. Standard will be the top of an application window. You can line up multiple Croutons for display, that will be shown one after another.",keyboardsurfer,https://github.com/keyboardsurfer/Crouton,,toasts/UI,
+cwac-endless,"AJAX Web sites have sometimes taken up the ""endless page"" model, where scrolling automatically loads in new content, so you never have to click a ""Next"" link or anything like that.
+
+EndlessAdapter is one approach to solving this problem.
+
+It is designed to wrap around another adapter, where you have your ""real"" data. Hence, it follows the Decorator pattern, augmenting your current adapter with new Endless Technology(TM).",commonsguy,https://github.com/commonsguy/cwac-endless,,Listview/UI,
+dagger,A fast dependency injector for Android and Java.,square,https://github.com/square/dagger,,Dependancy Injection/UI,
+DebugLog,Create a simple and more understandable Android logs.,MustafaFerhan,https://github.com/MustafaFerhan/DebugLog,,Debugging/Development,
+discreet-app-rate,A lightweight non intrusive app rate reminder for Android,PomepuyN,https://github.com/PomepuyN/discreet-app-rate,,Feedback/Development,
+DobSliding,DobSliding is an Open Source Android library that allows developers to develop applications with vertical sliding menus just like the Android notifications menu.,Startappz,https://github.com/Startappz/DobSliding,,Drawer/UI,
+DraggablePanel,Android library used to create an awesome Android UI based on a draggable element similar to the last YouTube graphic component.,pedrovgs,https://github.com/pedrovgs/DraggablePanel,,other/UI,
+easy-adapter,"Using AdapterViews has never been so easy. Inspired by the view holder design pattern, this library provides an easier way of linking AdapterViews and the underlying data for that view without having to implement your own Adapter. The EasyAdapter will do the tedious work for you.",ribot,https://github.com/ribot/easy-adapter,,ListView/UI,
+EventBus,"Android optimized event bus that simplifies communication between Activities, Fragments, Threads, Services, etc. Less code, better quality.",greenrobot,https://github.com/greenrobot/EventBus,,Event Bus/Development,
+Fading ActionBar,"Android library implementing a fading effect for the action bar, similar to the one found in the Play Music app",ManuelPeinado,http://www.androidviews.net/2013/05/fading-actionbar/,,ActionBar/UI,
+FlipView,"A small, easy to use android library for implementing flipping between views as seen in the popular Flipboard application",emilsjolander,https://github.com/emilsjolander/android-FlipView,,"other/UI, ViewPager/UI",
+flow,A small library that helps with describing an app as a collection of moderately independent screens.,square,https://github.com/square/flow,,other/UI,
+FreeFlow,A layout engine for Android that decouples layouts from the View containers that manage scrolling and view recycling. FreeFlow makes it really easy to create custom layouts and beautiful transition animations as layouts are changed.,Comcast,https://github.com/Comcast/FreeFlow,,other/UI,
+Genymotion,"Genymotion is the next generation of the AndroVM open source project, already trusted by 900,000 developers.
+
+It’s even easier to use and has lots more functionalitie",Genymotion,http://www.genymotion.com/,,Tools/Development,
+Glide,"Glide is fast and efficient image loading library for Android that wraps image downloading, resizing, memory and disk caching, and bitmap recycling into one simple and easy to use interface. By default, Glide includes an implementation for fetching images over http based on Google's Volley project for fast, parallelized network operations on Android.",bumptech,https://github.com/bumptech/glide,,Image Loading/Networking,
+greenDAO,greenDAO is a light & fast ORM solution for Android that maps objects to SQLite databases.,greenrobot,https://github.com/greenrobot/greenDAO,,Databases,
+gson,Gson is a Java library that can be used to convert Java Objects into their JSON representation. It can also be used to convert a JSON string to an equivalent Java object. Gson can work with arbitrary Java objects including pre-existing objects that you do not have source-code of.,google,https://code.google.com/p/google-gson/,,JSON/Networking,
+InfiniteViewPager,Augment Android's ViewPager with wrap-around functionality.,antonyt,https://github.com/antonyt/InfiniteViewPager,,ViewPager/UI,
+ion,Android Asynchronous Networking and Image Loading,Koush,https://github.com/koush/ion,,"Http Clients/Networking, Image Loading/Networking",
+Joda-Time,"Joda-Time provides a quality replacement for the Java date and time classes. The design allows for multiple calendar systems, while still providing a simple API. The 'default' calendar is the ISO8601 standard which is used by XML. The Gregorian, Julian, Buddhist, Coptic, Ethiopic and Islamic systems are also included, and we welcome further additions. Supporting classes include time zone, duration, format and parsing.",JodaOrg,https://github.com/JodaOrg/joda-time,,CalenderView/UI,
+KenBurnsView,Android ImageViews animated by Ken Burns Effect,flavioarfaria,https://github.com/flavioarfaria/KenBurnsView,,ImageView/UI,
+ListViewAnimations,"ListViewAnimations provides the following features:
+
+Appearance animations for items in ListViews, GridViews, and other AbsListViews;
+Built in animations include Alpha, SwingRightIn, SwingLeftIn, SwingBottomIn, SwingRightIn and ScaleIn.
+Other animations can easily be added
+Swipe-to-Dismiss, Swipe-To-Dismiss with contextual undo (and optionally count down);
+Drag-and-Drop reordering;
+Animate dismissal of items;
+Animate addition of items;
+Smoothly expand your items to reveal more content;",nhaarman,https://github.com/nhaarman/ListViewAnimations,,ListView/UI,
+Mirror,"Mirror: Live previews of Android layouts
+
+
+Code layouts in Eclipse or Android Studio*
+Preview on real devices with Mirror, instantly
+Save time, write better code",Jimu Labs,http://jimulabs.com/,,Tools,
+mortar,"Mortar eases the use of Dagger to divide Android apps into composable modules. It is not a framework: there are no abstract Application or Activity classes here. Mortar eschews magic. Rather, Mortar is a simple library that makes it easy to pair thin views with dedicated controllers (Presenters), isolated from most of the vagaries of the Activity life cycle.",square,https://github.com/square/mortar,,other/UI,
+Motion,"An Android library allowing images to exhibit a parallax effect. By replacing static pictures and backgrounds with a fluid images that reacts to screen tilt and orientation, Android applications can add a perceived depth and layering to their content. Motion works great for both full screen background images and smaller sized pictures to give users a whole new perspective on how they interact with their phone. This project was inspired in part by iOS 7's new parallax effect.",nvanbenschoten,https://github.com/nvanbenschoten/motion,,ImageView/UI,
+OrmLite,Object Relational Mapping Lite (ORM Lite) provides some lightweight functionality for persisting Java objects to SQL databases while avoiding the complexity and overhead of more standard ORM packages. It supports a number of SQL databases using JDBC and also supports Sqlite with native calls to Android OS database APIs.,,http://ormlite.com/sqlite_java_android_orm.shtml,,Databases,
+otto,"Otto is an event bus designed to decouple different parts of your application while still allowing them to communicate efficiently.
+
+Forked from Guava, Otto adds unique functionality to an already refined event bus as well as specializing it to the Android platform.",square,https://github.com/square/otto,,Event Bus/Development,
+PanningView,PanningView is a library which implements the animated background in the now playing screen of the Play Music app.,flavienlaurent,https://github.com/flavienlaurent/PanningView,,other/UI,
+Photoview,"Implementation of ImageView for Android that supports zooming, by various touch gestures.",chrisbanes,https://github.com/chrisbanes/PhotoView,,ImageView/UI,
+poppyview,"Android library implementing a poppy view on scroll, similar to the one found in the Google Plus app",flavienlaurent,https://github.com/flavienlaurent/poppyview,,Listview/UI,
+Retrofit,Type-safe REST client for Android and Java.,Square,http://square.github.io/retrofit/,,Http Clients,
+robotium,"Robotium is an Android test framework that has full support for WebViews, Activities, Dialogs, Toasts, Menus and Context Menus. ",RobotiumTech,https://github.com/RobotiumTech/robotium,,Tools/Development,
+RoundedImageView,a fast ImageView that supports rounded corners and ovals or circles,vinc3m1,https://github.com/vinc3m1/RoundedImageView,,ImageView/UI,
+scalpel,A surgical debugging tool to uncover the layers under your app.,JakeWharton,https://github.com/JakeWharton/scalpel,,Debugging/Development,
+segmented-control,"This implementation is inspired by Segmented Controls for iOS.
+
+A custom View for Android which is based on RadioGroup and RadioButton widget.",hoang8f,https://github.com/hoang8f/android-segmented-control,,RadioButton/UI,
+ShakeDetector,This library provides a easy way to detect a shake movement using the build-in accelerometer and fire a callback on the UI thread every times it happens.,tbouron,https://github.com/tbouron/ShakeDetector,,Sensors,
+Shimmer-android,An Android TextView with a shimmering effect,RomainPiel,https://github.com/RomainPiel/Shimmer-android,,TextView/UI,
+SlidingMenu,"SlidingMenu is an Open Source Android library that allows developers to easily create applications with sliding menus like those made popular in the Google+, YouTube, and Facebook apps.",jfeinstein10,https://github.com/jfeinstein10/SlidingMenu,,Drawer/UI,
+SmoothProgressBar,Small library allowing you to make a smooth indeterminate progress bar.,castorflex,https://github.com/castorflex/SmoothProgressBar,,progressbar/UI,
+Sprinkles,"Sprinkles is a boiler-plate-reduction-library for dealing with databases in android applications. Some would call it a kind of ORM but I don't see it that way. Sprinkles lets SQL do what it is good at, making complex queries. SQL however is a mess (in my opinion) when is comes to everything else. This is why sprinkles helps you with things such as inserting, updating, and destroying models. Sprinkles will also help you with the tedious task of unpacking a cursor into a model. ",emilsjolander,https://github.com/emilsjolander/sprinkles,,Databases,
+StickyListHeaders,StickyListHeaders is an Android library that makes it easy to integrate section headers in your ListView. ,emilsjolander,https://github.com/emilsjolander/StickyListHeaders,,Listview/UI,
+Sugar,"It is intended to simplify the interaction with SQLite database in Android.
+
+It eliminates writing SQL queries to interact with SQLite db.
+It takes care of creating your database.
+It manages object relationships too.
+It provides you with clear and simple APIs for db operations",Satyan,https://github.com/satyan/sugar,,Databases,
+SuperToasts,"The SuperToasts library enhances and builds upon the Android Toast class. Some of the features of this library include context sensitive toasts (SuperActivityToasts), toasts with buttons and icons, non context sensitive toasts (SuperToasts), and a new style of toasts (SuperCardToasts) with many customization options for each. ",JohnPersano,https://github.com/JohnPersano/SuperToasts,,toasts/UI,
+TimesSquare,Standalone Android widget for picking a single date from a calendar view.,square,https://github.com/square/android-times-square,,CalenderView/UI,
+ViewPager,"An easy to use ViewPager that adds an awesome set of custom swiping animations. Just change your ViewPagers to JazzyViewPagers, two more steps, and you're good to go!",jfeinstein10,https://github.com/jfeinstein10/JazzyViewPager,,ViewPager/UI,
+Volley,"Volley is a library that makes networking for Android apps easier and most importantly, faster. We'll give an overview of how it works, common patterns that work well with it, and a walkthrough of how you can easily load thumbnail images for your ListView from the network in parallel.                     
+
+https://developers.google.com/events/io/sessions/325304728
+",google,https://android.googlesource.com/platform/frameworks/volley/,,Http Clients/Networking,

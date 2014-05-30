@@ -45,4 +45,26 @@ class Author {
         return $return_info;
     }
 
+    /**
+     */
+    public function InsertAuthor($name = '', $url = '', $github_author_id = '', $is_github = '') {
+        if ($name == '' && $github_author_id == '') {
+            return;
+        }
+
+        $name = TextToDB($name);
+        $url = TextToDB($url);
+        $github_author_id = TextToDB($github_author_id);
+        $is_github = TextToDB($is_github);
+
+        $author_id = GetInfoById("authors", "name", "$name", "author_id");
+        $git_id = GetInfoById("authors", "github_author_id", "$github_author_id", "author_id", "github_author_id != ''");
+        if ($author_id == null && $git_id == null) {
+            $qs = "INSERT INTO authors SET name='$name', url='$url', github_author_id='$github_author_id', is_github='$is_github' ";
+            ExecuteQuery($qs);
+            $author_id = GetLastInsertId();
+        }
+        return $author_id;
+    }
+
 }

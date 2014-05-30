@@ -137,7 +137,7 @@ function SubmitLibrary() {
         $error = 'Argh! You are a robot!';
     } else if (isset($_POST['f']) && count($_POST['f']) > 0) {
         $res = $res_ins->SubmitNewResource($fields);
-        if ($res === true) {
+        if ($res > 0) {
             $submitted = 1;
         } else {
             $error = $res;

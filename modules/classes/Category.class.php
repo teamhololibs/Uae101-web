@@ -110,4 +110,33 @@ class Category {
         
     }
 
+    public function InsertCategory($category_name = '', $parent_name_or_id = '') {
+        if ($category_name == '' && $parent_name_or_id == '') {
+            return;
+        }
+
+        $category_name = TextToDB($category_name);
+        $parent_name_or_id = TextToDB($parent_name_or_id);
+
+        $cat_id = GetInfoById("categories", "name", "$category_name", "cat_id");
+        if ($cat_id == null) {
+            $p_id1 = GetInfoById("categories", "name", "$parent_name_or_id", "cat_id");
+            $p_id2 = GetInfoById("categories", "cat_id", "$parent_name_or_id", "cat_id", "cat_id != ''");
+            if ($p_id1 == null && $p_id2 == null && $parent_name_or_id != '') {
+                $parent_id = $this->InsertCategory($parent_name_or_id);
+            }
+
+            if ($p_id1 == null && $p_id2 != null) {
+                $parent_id = $p_id2;
+            } elseif ($p_id1 != null && $p_id2 == null) {
+                $parent_id = $p_id1;
+            }
+
+            $qs = "INSERT INTO categories SET name='$category_name', parent_id='$parent_id' ";
+            ExecuteQuery($qs);
+            $cat_id = GetLastInsertId();
+        }
+        return $cat_id;
+    }
+
 }

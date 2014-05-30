@@ -25,6 +25,9 @@ if (!defined('PIC_PATH'))
 if (!defined('SITE_NAME'))
     define('SITE_NAME', $SITE_NAME);
 
+if (!defined('GIT_CURL_USERAGENT_HEADER'))
+    define('GIT_CURL_USERAGENT_HEADER', "teamhololibs");
+
 foreach ($db_details as $key => $value) {
     if (!defined($key)) {
         define(strtoupper($key), $value);

@@ -50,6 +50,10 @@ if (isset($_GET['x'])) {
             $where_array[] = "is_approved = 0";
             $var = 'notapproved';
             break;
+        case 'notgit' :
+            $where_array[] = "is_github = 0";
+            $var = 'notgit';
+            break;
         case '1' :
         default :
             $where_array[] = "active = 1";
@@ -74,6 +78,7 @@ $resources = GetRowsAsAssocArray("SELECT * FROM $table_name WHERE $where ORDER B
 $active_count = GetCount($table_name, "active = 1 AND is_approved = 1 $scope_where");
 $delete_count = GetCount($table_name, "active = 0 AND is_approved = 1 $scope_where");
 $notapproved_count = GetCount($table_name, "is_approved = 0 $scope_where");
+$notgit_count = GetCount($table_name, "is_github = 0 $scope_where");
 $scope_prefix = GetUrlPrefix();
 $order_prefix = GetUrlPrefix('order');
 
@@ -140,6 +145,9 @@ PreparePage(array(
         <span class="<?= $notapproved ?>">
             <a href="<?= $scope_prefix ?>&x[scope]=-1">Not Approved<span> (<?= $notapproved_count ?>)</span></a>
         </span>
+        <span class="<?= $notgit ?>">
+            <a href="<?= $scope_prefix ?>&x[scope]=notgit">Not Github<span> (<?= $notgit_count ?>)</span></a>
+        </span>
     </div>
     <div class="data_container">
         <table class="paginated_data" cellspacing='0' cellpadding="0">
@@ -161,7 +169,10 @@ PreparePage(array(
                 ?>
                 <tr <?= ($i++ % 2 != 0) ? "class='odd'" : '' ?> >
                     <td><?= $resource['resource_id'] ?></td>
-                    <td><a target='_blank' href='<?= $resource['url'] ?>'><?= TextFromDB($resource['name']) ?></a></td>
+                    <td>
+                        <a target='_blank' href='<?= $resource['url'] ?>'><?= TextFromDB($resource['name']) ?></a><br/><br/>
+                        <a target='_blank' href='<?= $res->GetGithubApiUrl($resource['url']) ?>'><?= $res->GetGithubApiUrl($resource['url']) ?></a>
+                    </td>
                     <td class="content_desc"><?= (TextFromDB($resource['description'])) ?></td>
                     <td>
                         <?
@@ -177,8 +188,9 @@ PreparePage(array(
                         echo "Author: <a href='resources_manage.php?x[author_id]={$resource['author_id']}'>" . GetInfoById("authors", "author_id", $resource['author_id'], "name") . "</a><br/><br/>";
                         echo "Rating: " . $resource['rating'] . "<br/><br/>";
                         //echo "User: user<br/><br/>";
-                        //echo "Points: " . $resource['points'] . "<br/><br/>";
-                        //echo "Views: " . $resource['views'] . "<br/><br/>";
+                        echo "Github ID: " . $resource['github_resource_id'] . "<br/><br/>";
+                        echo "Github Starred: " . $resource['github_stargazers'] . "<br/><br/>";
+                        echo "Github Forks: " . $resource['github_forks'] . "<br/><br/>";
                         echo "Updated: " . $resource['updated'] . "<br/><br/>";
                         ?>
                     </td>
