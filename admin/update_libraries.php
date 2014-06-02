@@ -4,8 +4,9 @@ CheckPermissions("backup", 'super');
 
 
 if ($_POST['update_libraries']) {
-    if (Resource::UpdateAllGithubLibraries() > 0) {
-        SetConfirmationMessage("$i Libraries updated!");
+    $count = Resource::UpdateAllGithubLibraries();
+    if ($count > 0) {
+        SetConfirmationMessage("$count Libraries updated!");
     }
 } else {
     $show_form = 1;

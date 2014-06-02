@@ -52,8 +52,8 @@ function RenderPage($MAIN_CONTENT) {
 function GetLeftMenu() {
     $categories_tree = Category::GetCategoryFullTree();
     $tpl = new SmartyCustom;
-    if (isset($_GET['tag']) && $_GET['tag'] != '') {
-        $category_id = $_GET['tag'];
+    if (isset($_GET['category']) && $_GET['category'] != '') {
+        $category_id = $_GET['category'];
         $selected = 0;
         for ($i = 0; $i < count($categories_tree); $i++) {
             if ($categories_tree[$i]['cat_id'] == $category_id) {
@@ -83,14 +83,18 @@ function ResourcesPage() {
     $tpl = new SmartyCustom;
     $resources_ins = new Resource;
     $resource_search = '';
+
+    /*
+     * If there is need for lightbox or any other different UI for resource
     if (isset($_GET['res_id']) && $_GET['res_id'] != '') {
         $res_id = TextToDB($_GET['res_id']);
         //$GLOBALS['page_title'] = "$resource_search - Search in ";
         $resources[0] = $resources_ins->GetResourceInfo($res_id);
         $tpl->assign('resources', $resources);
-        $html = $tpl->fetch('resource_box.tpl');
+        $html = $tpl->fetch('resource_box1.tpl');
         return $html;
     }
+     */
 
     if (isset($_GET['limit_search_to_cats']) && $_GET['limit_search_to_cats'] != '') {
         $limit_search_to_cats = TextToDB($_GET['limit_search_to_cats']);
@@ -104,8 +108,12 @@ function ResourcesPage() {
         $GLOBALS['page_title'] = "$resource_id - Search in ";
     }
     $category_search_id = '';
-    if (isset($_GET['tag']) && $_GET['tag'] != '') {
-        $category_search_id = TextToDB($_GET['tag']);
+    if (isset($_GET['category']) && $_GET['category'] != '') {
+        $category_search_id = TextToDB($_GET['category']);
+    }
+    $author_id = '';
+    if (isset($_GET['author']) && $_GET['author'] != '') {
+        $author_id = TextToDB($_GET['author']);
     }
 
     $GLOBALS['page_title'] .= SITE_NAME;
@@ -136,7 +144,7 @@ function SubmitLibrary() {
     if ($fields['stuff'] != '') {
         $error = 'Argh! You are a robot!';
     } else if (isset($_POST['f']) && count($_POST['f']) > 0) {
-        $res = $res_ins->SubmitNewResource($fields);
+        $res = $res_ins->InsertResource($fields);
         if ($res > 0) {
             $submitted = 1;
         } else {

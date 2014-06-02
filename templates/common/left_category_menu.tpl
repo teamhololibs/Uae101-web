@@ -9,14 +9,14 @@
                     <img src="{$PIC_PATH}/arrow_down.png" alt=""/>
                 </span>
             {/if}
-            <a class="{$cat.selected}" alt='{$cat.cat_id}' href="/tag/{$cat.cat_id}/{$cat.hyphenated_name}">
+            <a class="{$cat.selected}" alt='{$cat.cat_id}' href="/category/{$cat.cat_id}/{$cat.hyphenated_name}">
                 {$cat.name}
             </a>
             {if count($cat.children) > 0}
                 <ul class="children children_{$cat.cat_id}">
                     {foreach from=$cat.children item=child}
                         <li>
-                            <a class="{$child.selected}" href="/tag/{$child.cat_id}/{$child.hyphenated_name}">
+                            <a class="{$child.selected}" href="/category/{$child.cat_id}/{$child.hyphenated_name}">
                                 {$child.name} 
                             </a>
                         </li>

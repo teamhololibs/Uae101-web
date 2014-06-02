@@ -1,7 +1,37 @@
 $(document).ready(function() {
     var current_href = window.location.href.split('.com').pop();
+    var QueryString = updateQueryString();
+    var ajax_url = updateAjaxUrl();
     var category_id = QueryString[2];
     var category_name = QueryString[3];
+
+    function updateAjaxUrl() {
+        var ajax;
+        switch (QueryString[1]) {
+            case 'category':
+                ajax = '/?category=' + QueryString[2];
+                break;
+            case 'author':
+                ajax = '/?author=' + QueryString[2];
+                break;
+            case 'library':
+                ajax = '/?library=' + QueryString[2];
+                break;
+            default:
+                ajax = '/?';
+        }
+        ajax += '&';
+        return ajax;
+    }
+    function updateLimitSearch() {
+        if (QueryString[1].indexOf("category") > -1) {
+            $('#limit_search_checkbox').prop('checked', true);
+        } else {
+            $('#limit_search_checkbox').prop('checked', false);
+        }
+    }
+    updateLimitSearch();
+
     windowResize();
     $(window).resize(function() {
         windowResize();
@@ -9,16 +39,9 @@ $(document).ready(function() {
     $(document).on('keyup', ".submit_library textarea[maxlength]", function() {
         textAreaLength($(this));
     });
-    $('.left_category_menu a').click(function() {
-//console.log('a');
-//return false;
-    });
-    //$('.textbox_android').parent().css("position", 'absolute');
     $('.textbox_android').before("<div class='textbox_android_after'></div>").after("<div class='textbox_android_after'></div>");
-
     $('.dropdown').click(function() {
         var parent_id = $(this).attr('alt');
-        //console.log('parent' + $(this).attr('alt'));
         $('.children_' + parent_id).toggle('fast');
         $('.expand_parent_' + parent_id).toggle();
         $('.minimize_parent_' + parent_id).toggle();
@@ -69,15 +92,15 @@ $(document).ready(function() {
         $(".nano").nanoScroller();
     });
     var inResource = 0;
-    $(document).on('change', '#in_all_tags_checkbox', function() {
+    $(document).on('change', '#limit_search_checkbox', function() {
         if ($('.input_resource_search').val().length > 0)
             resourceSearch($('.input_resource_search').val());
     });
-    if (QueryString[1].indexOf("tag") > -1 && $('.input_resource_search').val().length > 0) {
+    if (QueryString[1].indexOf("category") > -1 && $('.input_resource_search').val().length > 0) {
         $('#in_all_tags').show();
     }
     $('.input_resource_search').focus(function() {
-        if (QueryString[1].indexOf("tag") > -1) {
+        if (QueryString[1].indexOf("category") > -1) {
             $('#in_all_tags').show('fast');
         }
     });
@@ -85,7 +108,7 @@ $(document).ready(function() {
         resourceSearch($('.input_resource_search').val());
     });
     function resourceSearch(resource_search) {
-        var limit_search_to_cats = $('#in_all_tags_checkbox').prop('checked');
+        var limit_search_to_cats = $('#limit_search_checkbox').prop('checked');
         var historystate, historyurl;
         if (resource_search.length == 0) {
             resource_search = '';
@@ -95,31 +118,26 @@ $(document).ready(function() {
             //return;
         } else {
             historystate = {search: resource_search};
-            //if searching when a resource is selected
-            if (QueryString[1].indexOf("library") > -1) {
-                historyurl = '/?search=' + resource_search;
+            //if search is limited, only put search parameter in url
+            if (limit_search_to_cats == true) {
+                historyurl = '/category/' + category_id + '/' + category_name + '?search=' + resource_search;
             } else {
-                //if search is limited, only put search parameter in url
-                if (limit_search_to_cats == true) {
-                    historyurl = '/tag/' + category_id + '/' + category_name + '?search=' + resource_search;
-                } else {
-                    //else, put whole tag and id
-                    historyurl = '/?search=' + resource_search;
-                }
+                //else, put whole tag and id
+                historyurl = '/?search=' + resource_search;
             }
         }
-        console.log(resource_search);
-        console.log(historystate);
-        console.log(historyurl);
+        //console.log(resource_search);
+        //console.log(historystate);
+        //console.log(historyurl);
         resourceSearchAjax(resource_search);
         window.history.pushState(historystate, "", historyurl);
     }
     function resourceSearchAjax(resource_search) {
         //console.log(resource_search);
         $('.loading_animation').show();
-        var limit_search_to_cats = $('#in_all_tags_checkbox').prop('checked');
+        var limit_search_to_cats = $('#limit_search_checkbox').prop('checked');
         $.ajax({
-            //url: "",
+            url: ajax_url,
             type: 'get',
             data: {
                 search: resource_search,
@@ -133,35 +151,68 @@ $(document).ready(function() {
             }
         });
     }
-});
-window.onpopstate = function(event) {
-    console.log("location: " + document.location + ", state: " + JSON.stringify(event.state));
-    //console.log(event);
-    var search;
-    if (event.state == null) {
-        //console.log('fds');
-        search = '';
-    } else {
-        search = event.state.search;
+    window.onpopstate = function(event) {
+        QueryString = updateQueryString()
+        ajax_url = updateAjaxUrl();
+        updateLimitSearch();
+        console.log("location: " + document.location + ", state: " + JSON.stringify(event.state));
+        //console.log(event);
+        var search;
+        if (event.state == null) {
+            //console.log('fds');
+            search = '';
+        } else {
+            search = event.state.search;
+        }
+        resourceSearchAjax(search);
+        $('.input_resource_search').val(search);
+    };
+    function updateQueryString() {
+        // This function is anonymous, is executed immediately and 
+        // the return value is assigned to QueryString!
+        var query_string = {};
+        var query = window.location.search.substring(1);
+        var vars = query.split("&");
+        for (var i = 0; i < vars.length; i++) {
+            var pair = vars[i].split("=");
+            // If first entry with this name
+            if (typeof query_string[pair[0]] === "undefined") {
+                query_string[pair[0]] = pair[1];
+                // If second entry with this name
+                /*
+                 } else if (typeof query_string[pair[0]] === "string") {
+                 var arr = [query_string[pair[0]], pair[1]];
+                 query_string[pair[0]] = arr;
+                 // If third or later entry with this name
+                 } else {
+                 query_string[pair[0]].push(pair[1]);
+                 */
+            }
+        }
+
+        // Now the parameters before ?
+        var urlpathname = window.location.pathname;
+        vars = urlpathname.split("/");
+        var i = 0;
+        for (var i = 0; i < vars.length; i++) {
+            //console.log(vars[i]);
+            query_string[i] = vars[i];
+        }
+        return query_string;
     }
-    resourceSearchAjax(search);
-    $('.input_resource_search').val(search);
-};
+});
 
 function windowResize() {
     var content_holder_width = $(document).width() - $('.left_menu').width();
     $('.content_holder').width(content_holder_width);
-//    console.log($(document).height());
-//    console.log(window.innerHeight);
-//
-//    var content_holder_height = $('.content_holder').height();
-//    if ($(document).height() == window.innerHeight) {
-//        content_holder_height = window.innerHeight - $('.header').height() - 15;
-//        $('.content_holder').height(content_holder_height);
-//    }
+    if ($(document).height() == window.innerHeight) {
+        $('.footer').addClass('footer_absolute');
+    } else {
+        $('.footer').removeClass('footer_absolute');
+    }
 }
 function textAreaLength(element) {
-    // Store the maxlength and value of the field.
+// Store the maxlength and value of the field.
     var maxlength = $(element).attr('maxlength');
     console.log(maxlength);
     var val = $(element).val();
@@ -173,40 +224,6 @@ function textAreaLength(element) {
         $(element).val(val.slice(0, maxlength));
     }
 }
-var QueryString = function() {
-    // This function is anonymous, is executed immediately and 
-    // the return value is assigned to QueryString!
-    var query_string = {};
-    var query = window.location.search.substring(1);
-    var vars = query.split("&");
-    for (var i = 0; i < vars.length; i++) {
-        var pair = vars[i].split("=");
-        // If first entry with this name
-        if (typeof query_string[pair[0]] === "undefined") {
-            query_string[pair[0]] = pair[1];
-            // If second entry with this name
-            /*
-             } else if (typeof query_string[pair[0]] === "string") {
-             var arr = [query_string[pair[0]], pair[1]];
-             query_string[pair[0]] = arr;
-             // If third or later entry with this name
-             } else {
-             query_string[pair[0]].push(pair[1]);
-             */
-        }
-    }
-
-    // Now the parameters before ?
-    var urlpathname = window.location.pathname;
-    vars = urlpathname.split("/");
-    var i = 0;
-    for (var i = 0; i < vars.length; i++) {
-        //console.log(vars[i]);
-        query_string[i] = vars[i];
-    }
-    return query_string;
-}();
-//console.log(QueryString);
 function get_current_page_name() {
 // Get current page name
     var current_path = window.location.pathname;

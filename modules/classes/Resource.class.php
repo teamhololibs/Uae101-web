@@ -19,15 +19,29 @@ class Resource {
         $ins = new static();
         $cfg = new Config;
         $github_api_limit = $cfg->GetConfig('GITHUB_API_CALL_LIMIT');
-        $rs = GetRows("resources", "is_github=1 AND active=1 AND resource_id=46 ORDER BY github_updated ASC LIMIT $github_api_limit");
-        $i = 1;
+        $rs = GetRows("resources", "active=1 ORDER BY github_api_last_checked ASC");
+        $i = 0;
         foreach ($rs as $r) {
+            if (!$ins->IsGithubUrl($r['url'])) {
+                continue;
+            }
             $result = $ins->UpdateGithubLibraries($r);
-            if ($result !== FALSE){
+            if ($result !== FALSE) {
                 $i++;
+            }
+            if($i >= $github_api_limit){
+                break;
             }
         }
         return $i;
+    }
+
+    public function IsGithubUrl($url) {
+        if (strpos($url, "github.com") !== false) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public function GetGithubApiUrl($res_url) {
@@ -37,36 +51,62 @@ class Resource {
         $res_url = $github_url . $res_url;
         return $res_url;
     }
+
     /**
      * 
      * @param array $resources
      */
     public function UpdateGithubLibraries($res) {
+        $auth_ins = new Author;
         $res_url = $this->GetGithubApiUrl($res['url']);
 
         //Initiate curl
         $ch = curl_init();
         //Disable SSL verification
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        //curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         //Will return the response, if false it print the response
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_VERBOSE, 1);
+        curl_setopt($ch, CURLOPT_HEADER, 1);
         curl_setopt($ch, CURLOPT_USERAGENT, GIT_CURL_USERAGENT_HEADER);
         //Set the url
         curl_setopt($ch, CURLOPT_URL, $res_url);
         //Execute
         $result = curl_exec($ch);
 
-        $result = json_decode($result, true);
-        if (count($result) == 0 || $result == null) {
-            return false;
+        //list($header, $body) = explode("\r\n\r\n", $result, 2);
+        $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
+        $header = substr($result, 0, $header_size);
+        $result = substr($result, $header_size);
+        $header_arr = explode("\r\n", $header);
+        array_shift($header_arr);
+        foreach ($header_arr as $h) {
+            if (strpos($h, 'Status:') !== false) {
+                $msg = explode(": ", $h);
+                if ($msg[1] != '200 OK') {
+                    Log::Write('lib', $res['resource_id'] . " - FAILED $error - $res_url");
+                    return $msg[1];
+                }
+            }
         }
+        //Debug::dump($header);
+        //var_dump(preg_match("Status\:\ (.+)", $header));
+        //var_dump(preg_match("200 OK", $header));
 
+        $result = json_decode($result, true);
+
+        $res_git['is_github'] = 1;
+        $res_git['name'] = $result['name'];
+        $res_git['description'] = $result['description'];
         $res_git['github_resource_id'] = $result['id'];
         $res_git['github_stargazers'] = $result['stargazers_count'];
+        $res_git['github_updated_at'] = $result['updated_at'];
         $res_git['github_forks'] = $result['forks'];
-        $res_git['github_forks'] = $result['forks'];
+        $res_git_author['name'] = $result['owner']['login'];
         $res_git_author['github_author_id'] = $result['owner']['id'];
         $res_git_author['url'] = $result['owner']['html_url'];
+
+        $res_git['author_id'] = $auth_ins->InsertAuthor($res_git_author);
 
         $resq = '';
         foreach ($res_git as $k => $v) {
@@ -75,17 +115,9 @@ class Resource {
         }
         $resq = (trim($resq, ' ,'));
 
-        $authorq = '';
-        foreach ($res_git_author as $k => $v) {
-            $v = TextToDB(trim($v));
-            $authorq .= " $k = '$v', ";
-        }
-        $authorq = (trim($authorq, ' ,'));
-
-        $qs_r = "UPDATE resources SET $resq, github_updated=NOW() WHERE resource_id = {$res['resource_id']} ";
-        $qs_a = "UPDATE authors SET $authorq WHERE author_id = {$res['author_id']} ";
+        $qs_r = "UPDATE resources SET $resq, github_api_last_checked=NOW() WHERE resource_id = {$res['resource_id']} ";
         ExecuteQuery($qs_r);
-        ExecuteQuery($qs_a);
+        Log::Write('lib', $res['resource_id'] . " - updated");
     }
 
     public function SetResourceId($res_id) {
@@ -111,6 +143,11 @@ class Resource {
         }
         if ($res_id != '' && $res_text == '') {
             $query[] = " r.resource_id = $res_id ";
+        }
+        //If author then reset search query coz will only need author.
+        if ($author_id != '' && $res_text == '') {
+            $query = array();
+            $query[] = " r.author_id= $author_id ";
         }
 
         $query[] = " r.active = 1 ";
@@ -159,9 +196,9 @@ class Resource {
      * @return boolean|string
      */
     public function InsertResource($fields) {
-        if ($fields['name'] == '' || !isset($fields['name'])) {
-            return 'Name is missing';
-        }
+        //if ($fields['name'] == '' || !isset($fields['name'])) {
+        //return 'Name is missing';
+        //}
         if ($fields['url'] == '' || !isset($fields['url'])) {
             return 'URL is missing';
         }
@@ -176,12 +213,12 @@ class Resource {
         if (GetCount("resources", "url LIKE '%{$fields['url']}%'") > 0) {
             return 'Library with this URL already exists';
         }
-        if (GetCount("resources", "name = '{$fields['name']}'") > 0) {
-            return 'Library with this name already exists';
-        }
+        //if (GetCount("resources", "name = '{$fields['name']}'") > 0) {
+        //return 'Library with this name already exists';
+        //}
 
         $fields['is_github'] = 0;
-        if (strpos($fields['url'], "github.com") !== false) {
+        if ($this->IsGithubUrl($fields['url']) == true) {
             $fields['url'] = "https://" . $fields['url'];
             $fields['is_github'] = 1;
         } else {

@@ -18,6 +18,8 @@ if ($_POST['upload']) {
             ExecuteQuery("DELETE FROM resources");
             ExecuteQuery("DELETE FROM res_cat");
             ExecuteQuery("DELETE FROM categories");
+            //ExecuteQuery("DELETE FROM authors");
+            //ExecuteQuery("ALTER TABLE authors AUTO_INCREMENT = 10");
             ExecuteQuery("ALTER TABLE resources AUTO_INCREMENT = 10");
             ExecuteQuery("ALTER TABLE res_cat AUTO_INCREMENT = 10");
             ExecuteQuery("ALTER TABLE categories AUTO_INCREMENT = 10");
@@ -26,29 +28,33 @@ if ($_POST['upload']) {
                 if ($csv_line[0] == '' || $csv_line[0] == 'Name') {
                     continue;
                 }
+                $fields = array();
                 $i++;
                 $name = TextToDB(trim($csv_line[0]));
-                $desc = TextToDB(trim($csv_line[1]));
-                $desc = substr($desc, 0, $cfg->GetConfig("RESOURCE_DESCRIPTION_MAXLENGTH"));
+                $desc = '';
                 $author = TextToDB(trim($csv_line[2]));
                 $url = TextToDB(trim($csv_line[3]));
                 $url = trim($url, " /");
-                $rating = TextToDB(trim($csv_line[4]));
-                $cat = TextToDB(trim($csv_line[5]));
-                $parent = TextToDB(trim($csv_line[6]));
+                //$rating = TextToDB(trim($csv_line[4]));
+                $cat = TextToDB(trim($csv_line[4]));
+                //$parent = TextToDB(trim($csv_line[6]));
 
                 $cat = explode("/", $cat);
                 $cat = $cat[0];
 
-                $author_id = $auth_ins->InsertAuthor($author);
+                if (!$res_ins->IsGithubUrl($url)) {
+                    $author_id = $auth_ins->InsertAuthor(array('name' => $author));
+                    $fields['author_id'] = $author_id;
+                    $desc = TextToDB(trim($csv_line[1]));
+                    $desc = substr($desc, 0, $cfg->GetConfig("RESOURCE_DESCRIPTION_MAXLENGTH"));
+                }
                 $cat_id = $cat_ins->InsertCategory($cat, $parent);
 
                 $fields['name'] = $name;
                 $fields['url'] = $url;
                 $fields['description'] = $desc;
                 $fields['is_approved'] = 1;
-                $fields['author_id'] = $author_id;
-                $fields['rating'] = $author_id;
+                //$fields['rating'] = $author_id;
                 $r_id = $res_ins->InsertResource($fields);
 
                 $qs_rc = "INSERT INTO res_cat SET res_id='$r_id', cat_id='$cat_id' ";

@@ -1,7 +1,0 @@
-17:39:27 - DELETE FROM res_cat WHERE res_id = 1 
-17:48:13 - DELETE FROM res_cat WHERE res_id = 1 
-17:50:41 - DELETE FROM res_cat WHERE res_id = 1 
-17:52:01 - DELETE FROM res_cat WHERE res_id = 1 
-17:55:11 - DELETE FROM res_cat WHERE res_id = 1 
-17:57:45 - DELETE FROM res_cat WHERE res_id = 1 
-18:02:30 - DELETE FROM res_cat WHERE res_id = 1 

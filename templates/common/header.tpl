@@ -5,8 +5,8 @@
         </li>
         <li style='margin-left: 253px;'>
             <input type='text' class='input_resource_search' placeholder="SEARCH HERE" value="{$search_text}"/>
-            <span id='in_all_tags' style='margin-left: 15px; display: none'><input id='in_all_tags_checkbox' type='checkbox' checked value="1"/> 
-                <label for='in_all_tags_checkbox'>Limit search to this category?</label></span>
+            <span id='in_all_tags' style='margin-left: 15px; display: none'><input id='limit_search_checkbox' type='checkbox' checked value="1"/> 
+                <label for='limit_search_checkbox'>Limit search to this category?</label></span>
         </li>
         <li>
             <a id='submit_library' href="/submit">SUBMIT A LIBRARY</a>

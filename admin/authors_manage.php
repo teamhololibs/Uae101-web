@@ -80,6 +80,7 @@ PreparePage(array(
             <tr>
                 <th><a href="<?= $order_prefix ?>&x[order]=author_id">#</a></th>
                 <th><a href="<?= $order_prefix ?>&x[order]=name">Name</a></th>
+                <th>Github ID</th>
                 <th># of Resources</th>
                 <th>URL</th>
                 <? if (ACTION) { ?>
@@ -95,6 +96,7 @@ PreparePage(array(
                 <tr <?= ($i++ % 2 != 0) ? "class='odd'" : '' ?> >
                     <td><?= $author['author_id'] ?></td>
                     <td><?= TextFromDB($author['name']) ?></td>
+                    <td><?= TextFromDB($author['github_author_id']) ?></td>
                     <td><a href='resources_manage.php?x[author_id]=<?= $author['author_id'] ?>'><?= GetCount('resources', "active = 1 AND author_id = {$author['author_id']}") ?></td>
                     <td><a target='_blank' href="<?= TextFromDB($author['url']) ?>"><?= TextFromDB($author['url']) ?></a></td>
                     <? if (ACTION) { ?>

@@ -31,6 +31,9 @@ if (isset($_GET['x'])) {
         case 'resource_id':
             $order = 'resource_id DESC';
             break;
+        case 'github_api_last_checked':
+            $order = 'github_api_last_checked ASC';
+            break;
         case 'name':
         default:
             $order = 'name';
@@ -154,8 +157,9 @@ PreparePage(array(
             <tr>
                 <th style="width: 3%;"><a href="<?= $order_prefix ?>&x[order]=resource_id">#</a></th>
                 <th><a href="<?= $order_prefix ?>&x[order]=name">Name</a></th>
-                <th style="width: 45%;">Description</th>
+                <th style="width: 20%;">Description</th>
                 <th style="width: 14%;">Category</th>
+                <th style="width: 10%;"><a href="<?= $order_prefix ?>&x[order]=github_api_last_checked">API Checked</a></th>
                 <th style="width: 17%;">Information</th>
                 <? if (ACTION) { ?>
                     <th style="width: 6%;">
@@ -171,7 +175,9 @@ PreparePage(array(
                     <td><?= $resource['resource_id'] ?></td>
                     <td>
                         <a target='_blank' href='<?= $resource['url'] ?>'><?= TextFromDB($resource['name']) ?></a><br/><br/>
-                        <a target='_blank' href='<?= $res->GetGithubApiUrl($resource['url']) ?>'><?= $res->GetGithubApiUrl($resource['url']) ?></a>
+                        <? if ($res->IsGithubUrl($resource['url'])) { ?>
+                            <a target='_blank' href='<?= $res->GetGithubApiUrl($resource['url']) ?>'>GITHUB API</a>
+                        <? } ?>
                     </td>
                     <td class="content_desc"><?= (TextFromDB($resource['description'])) ?></td>
                     <td>
@@ -183,10 +189,11 @@ PreparePage(array(
                         }
                         ?>
                     </td>
+                    <td><?= $resource['github_api_last_checked'] ?></td>
                     <td>
                         <?
                         echo "Author: <a href='resources_manage.php?x[author_id]={$resource['author_id']}'>" . GetInfoById("authors", "author_id", $resource['author_id'], "name") . "</a><br/><br/>";
-                        echo "Rating: " . $resource['rating'] . "<br/><br/>";
+                        //echo "Rating: " . $resource['rating'] . "<br/><br/>";
                         //echo "User: user<br/><br/>";
                         echo "Github ID: " . $resource['github_resource_id'] . "<br/><br/>";
                         echo "Github Starred: " . $resource['github_stargazers'] . "<br/><br/>";

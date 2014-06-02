@@ -46,24 +46,41 @@ class Author {
     }
 
     /**
+     * 
+     * @param array $fields to add
+     * @return type
      */
-    public function InsertAuthor($name = '', $url = '', $github_author_id = '', $is_github = '') {
-        if ($name == '' && $github_author_id == '') {
+    public function InsertAuthor($fields = array()) {
+
+        if ($fields['name'] == '' && $fields['url'] == '' && $fields['github_author_id'] == '') {
             return;
         }
 
-        $name = TextToDB($name);
-        $url = TextToDB($url);
-        $github_author_id = TextToDB($github_author_id);
-        $is_github = TextToDB($is_github);
+        $authorq = '';
+        foreach ($fields as $k => $v) {
+            $v = TextToDB(trim($v));
+            $authorq .= " $k = '$v', ";
+            $fields[$k] = $v;
+        }
+        $authorq = (trim($authorq, ' ,'));
 
-        $author_id = GetInfoById("authors", "name", "$name", "author_id");
-        $git_id = GetInfoById("authors", "github_author_id", "$github_author_id", "author_id", "github_author_id != ''");
+        $author_id = GetInfoById("authors", "name", $fields['name'], "author_id");
+        $git_id = GetInfoById("authors", "github_author_id", $fields['github_author_id'], "author_id", "github_author_id != ''");
+
         if ($author_id == null && $git_id == null) {
-            $qs = "INSERT INTO authors SET name='$name', url='$url', github_author_id='$github_author_id', is_github='$is_github' ";
+            $qs = "INSERT INTO authors SET $authorq ";
             ExecuteQuery($qs);
             $author_id = GetLastInsertId();
+        } else {
+            $qs = "UPDATE authors SET $authorq WHERE author_id =$author_id";
+            ExecuteQuery($qs);
         }
+        /*
+         * case where authors with same names and different git id. no need for now
+          elseif ($author_id != $git_id) {
+          $author_id = $git_id;
+          }
+         */
         return $author_id;
     }
 

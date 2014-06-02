@@ -32,6 +32,9 @@ class Log {
             case 'user':
                 $this->folder_path = SERVER_PATH . "/logs/users/";
                 break;
+            case 'lib':
+                $this->folder_path = SERVER_PATH . "/logs/libraries/";
+                break;
             default:
                 die("Unkown Log Type $type");
         }
