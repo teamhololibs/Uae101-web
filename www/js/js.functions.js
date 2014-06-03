@@ -68,6 +68,7 @@ $(document).ready(function() {
         resourceSearch($('.input_resource_search').val());
     });
     function resourceSearch(resource_search) {
+        $('.left_category_menu li a').removeClass('selected');
         var historystate, historyurl;
         if (resource_search.length == 0) {
             resource_search = '';

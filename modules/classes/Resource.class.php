@@ -250,26 +250,53 @@ class Resource {
     }
 
     public function GetResourceJson() {
-        $resources = GetRows("resources", $this->resource_id, "resource_id, name, description, url, github_stargazers, author_id, user_id");
+        if (isset($_GET['updated']) && $_GET['updated'] != '') {
+            $updated = $_GET['updated'];
+        }
+        $resources = GetRows("resources", '', "resource_id, name, description, url, github_stargazers, author_id, user_id");
         $this->resource_info = array();
+        $json = array();
         $cat = new Category();
         for ($i = 0; $i < count($resources); $i++) {
-            $resources[$i]['author_name'] = GetInfoById("authors", "author_id", $resources[$i]['author_id'], 'name');
+            $res_data = array();
+            $res_data['resourceId'] = $resources[$i]['resource_id'];
+            $res_data['name'] = $resources[$i]['name'];
+            $res_data['description'] = $resources[$i]['description'];
+            $res_data['url'] = $resources[$i]['url'];
+            $res_data['githubStargazers'] = $resources[$i]['github_stargazers'];
+            $res_data['authorId'] = $resources[$i]['author_id'];
+            $res_data['userId'] = $resources[$i]['user_id'];
+            $res_data['authorName'] = GetInfoById("authors", "author_id", $resources[$i]['author_id'], 'name');
             $res_cat = $this->GetResourceCategories($resources[$i]['resource_id']);
-            $rc_count = 0;
-            $res = array();
-            foreach ($res_cat as $rs) {
-                $cat_info = $cat->GetCategoryFullInfo($rs);
-                $res['res_cat'][$rc_count]['category_id'] = $cat_info['cat_id'];
-                $res['res_cat'][$rc_count]['name'] = $cat_info['name'];
-                $rc_count++;
-            }
-            $resources[$i]['categories'] = $res['res_cat'];
+            $cat_info = $cat->GetCategoryFullInfo($res_cat[0]);
+            $res_data['categoryName'] = $cat_info['name'];
+            $res_data['categoryId'] = $cat_info['cat_id'];
+
+            /*
+             * If in future we need to have multiple categories per library
+
+              $rc_count = 0;
+              $res = array();
+              foreach ($res_cat as $rs) {
+              $cat_info = $cat->GetCategoryFullInfo($rs);
+              $res[$rc_count]['categoryId'] = $cat_info['cat_id'];
+              $res[$rc_count]['categoryName'] = $cat_info['name'];
+              $rc_count++;
+              }
+              $res_data['categories'] = $res;
+             */
+
+            $json[] = $res_data;
         }
         $this->resource_info['last_updated'] = "2014-05-31 14:04:01";
-        $this->resource_info['data'] = $resources;
-        //array_push($this->resource_info, $this->res_cat);
+        usort($json, array("Resource", "CompareCategories"));
+        $this->resource_info['data'] = $json;
+
         return $this->resource_info;
+    }
+
+    static function CompareCategories($a, $b) {
+        return strcmp($a["categoryName"], $b["categoryName"]);
     }
 
 }
