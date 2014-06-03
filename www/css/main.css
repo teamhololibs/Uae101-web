@@ -364,6 +364,7 @@ a#submit_library:hover{
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
     border-radius: 2px;
+    overflow: hidden;
 }
 .resource_box p{
     margin: 5px 0;

@@ -118,8 +118,8 @@ function ResourcesPage() {
 
     $GLOBALS['page_title'] .= SITE_NAME;
     $resources = $resources_ins->GetResources($resource_search, $category_search_id, $resource_id, $author_id);
-
     if (count($resources) > 0) {
+        //Debug::dump($resources[0]['name']);
         $tpl->assign('resources', $resources);
         $html = $tpl->fetch('resource_box.tpl');
     } else {

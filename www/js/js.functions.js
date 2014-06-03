@@ -1,36 +1,8 @@
 $(document).ready(function() {
     var current_href = window.location.href.split('.com').pop();
     var QueryString = updateQueryString();
-    var ajax_url = updateAjaxUrl();
     var category_id = QueryString[2];
     var category_name = QueryString[3];
-
-    function updateAjaxUrl() {
-        var ajax;
-        switch (QueryString[1]) {
-            case 'category':
-                ajax = '/?category=' + QueryString[2];
-                break;
-            case 'author':
-                ajax = '/?author=' + QueryString[2];
-                break;
-            case 'library':
-                ajax = '/?library=' + QueryString[2];
-                break;
-            default:
-                ajax = '/?';
-        }
-        ajax += '&';
-        return ajax;
-    }
-    function updateLimitSearch() {
-        if (QueryString[1].indexOf("category") > -1) {
-            $('#limit_search_checkbox').prop('checked', true);
-        } else {
-            $('#limit_search_checkbox').prop('checked', false);
-        }
-    }
-    updateLimitSearch();
 
     windowResize();
     $(window).resize(function() {
@@ -64,13 +36,13 @@ $(document).ready(function() {
 //        window.history.pushState({res_id: res_id}, "", res_url);
 //        return false;
 //    });
-    $('.resource_name').ellipsis({
-        row: 2,
-        char: '...', //$('a.readmore'),
-        callback: function() {
-            //console.log('el');
-        }
-    });
+//    $('.resource_name').ellipsis({
+//        row: 2,
+//        char: '...', //$('a.readmore'),
+//        callback: function() {
+//            //console.log('el');
+//        }
+//    });
 //    $('.resource_desc').dotdotdot({
 //        ellipsis: ' ',
 //        height: 170,
@@ -92,23 +64,10 @@ $(document).ready(function() {
         $(".nano").nanoScroller();
     });
     var inResource = 0;
-    $(document).on('change', '#limit_search_checkbox', function() {
-        if ($('.input_resource_search').val().length > 0)
-            resourceSearch($('.input_resource_search').val());
-    });
-    if (QueryString[1].indexOf("category") > -1 && $('.input_resource_search').val().length > 0) {
-        $('#in_all_tags').show();
-    }
-    $('.input_resource_search').focus(function() {
-        if (QueryString[1].indexOf("category") > -1) {
-            $('#in_all_tags').show('fast');
-        }
-    });
     $('.input_resource_search').keyup(function() {
         resourceSearch($('.input_resource_search').val());
     });
     function resourceSearch(resource_search) {
-        var limit_search_to_cats = $('#limit_search_checkbox').prop('checked');
         var historystate, historyurl;
         if (resource_search.length == 0) {
             resource_search = '';
@@ -118,15 +77,9 @@ $(document).ready(function() {
             //return;
         } else {
             historystate = {search: resource_search};
-            //if search is limited, only put search parameter in url
-            if (limit_search_to_cats == true) {
-                historyurl = '/category/' + category_id + '/' + category_name + '?search=' + resource_search;
-            } else {
-                //else, put whole tag and id
-                historyurl = '/?search=' + resource_search;
-            }
+            historyurl = '/?search=' + resource_search;
         }
-        //console.log(resource_search);
+        console.log(resource_search);
         //console.log(historystate);
         //console.log(historyurl);
         resourceSearchAjax(resource_search);
@@ -135,14 +88,12 @@ $(document).ready(function() {
     function resourceSearchAjax(resource_search) {
         //console.log(resource_search);
         $('.loading_animation').show();
-        var limit_search_to_cats = $('#limit_search_checkbox').prop('checked');
         $.ajax({
-            url: ajax_url,
+            //url: '',
             type: 'get',
             data: {
                 search: resource_search,
                 ajax: 1,
-                limit_search_to_cats: limit_search_to_cats
             },
             success: function(data) {
                 $('.content_holder').html(data);

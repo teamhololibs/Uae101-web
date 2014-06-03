@@ -139,12 +139,6 @@ class Resource {
         $query_or_s = '';
         // If searching 
         if ($this->resource_search_text != '') {
-            //$auth_ins = new Author;
-            //$auth = $auth_ins->GetAuthorSearch($this->resource_search_text);
-            //$cat_ins = new Category;
-            //$cats = $cat_ins->GetCategorySearch($this->resource_search_text);
-            //$cats = implode(", ", $cats);
-            //$query[] = " r.resource_id IN (SELECT rc.res_id FROM res_cat rc WHERE rc.cat_id IN ($cats) ) ";
             $query_or[] = " r.resource_id IN "
                     . "(SELECT rc.res_id FROM res_cat rc WHERE rc.cat_id IN "
                     . "(SELECT c.cat_id FROM categories c WHERE c.active = 1 AND c.name like '%{$this->resource_search_text}%') "
@@ -176,7 +170,6 @@ class Resource {
             $this->resource_info[$i]['author_info']['hyphenated_name'] = ConvertSpacesToHyphens($this->resource_info[$i]['author_info']['name']);
             $this->resource_info[$i]['author_info']['name'] = InsertSearchHighlight($this->resource_info[$i]['author_info']['name'], $this->resource_search_text);
             $this->resource_info[$i]['name'] = InsertSearchHighlight($this->resource_info[$i]['name'], $this->resource_search_text);
-            //Debug::dump($this->resource_info[$i]['name']);
             foreach ($res_cat as $rs) {
                 $cat = new Category();
                 $cat_info = $cat->GetCategoryFullInfo($rs);
@@ -273,7 +266,8 @@ class Resource {
             }
             $resources[$i]['categories'] = $res['res_cat'];
         }
-        $this->resource_info = $resources;
+        $this->resource_info['last_updated'] = "2014-05-31 14:04:01";
+        $this->resource_info['data'] = $resources;
         //array_push($this->resource_info, $this->res_cat);
         return $this->resource_info;
     }

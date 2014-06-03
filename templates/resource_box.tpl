@@ -1,6 +1,7 @@
 {foreach from=$resources item=res}
     <div class='resource_box'>
         <p>
+{*            {$res.name|var_dump}*}
             <a class='expand_resource resource_name' alt="{$res.resource_id}" href="/library/{$res.resource_id}/{$res.hyphenated_name}" >{$res.name}</a>
         </p>
         <p>
@@ -21,11 +22,11 @@
                         <a class='' target='_blank' href="{$res.url}">VIEW SOURCE</a>
                     </td>
                     {*<td align="right">
-                        <span class=''>{$res.points}</span>
-                        <img class='resource_point' src='{$PIC_PATH}/like.png'/>
+                    <span class=''>{$res.points}</span>
+                    <img class='resource_point' src='{$PIC_PATH}/like.png'/>
                     </td>
                     <td align="right">
-                        <img class='resource_star' src='{$PIC_PATH}/favourites.png'/>
+                    <img class='resource_star' src='{$PIC_PATH}/favourites.png'/>
                     </td>*}
                 </tr>
             </table>
