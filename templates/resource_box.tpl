@@ -4,7 +4,7 @@
             <a class='expand_resource resource_name' alt="{$res.resource_id}" href="/library/{$res.resource_id}/{$res.hyphenated_name}" >{$res.name}</a>
         </p>
         <p>
-            <a class='author_name' alt="{$res.author_id}" href="/author/{$res.author_id}/{$res.author_info.hyphenated_name}" >{$res.author_info.hyphenated_name}</a>
+            <a class='author_name' alt="{$res.author_id}" href="/author/{$res.author_id}/{$res.author_info.hyphenated_name}" >{$res.author_info.name}</a>
         </p>
         <p class='resource_tags_p'>
             {foreach from=$res.res_cat item=res_cat}

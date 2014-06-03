@@ -2,11 +2,11 @@
 
 require_once '../common.prepend.php';
 
-$html = '';
+$json = '';
 if (!isset($_GET['ajax']) || $_GET['ajax'] != '1') {
-    $html = RenderPage(SubmitLibrary());
+    $json = RenderPage(SubmitLibrary());
 } else {
-    $html = SubmitLibrary();
+    $json = SubmitLibrary();
 }
 
-echo $html;
+echo $json;

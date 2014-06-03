@@ -88,6 +88,9 @@ class Category {
     public function GetCategorySearch($category_str = '') {
         if ($category_str != '')
             $this->SetCategoryString($category_str);
+
+        $categories = GetColumnInfo("categories", "cat_id","active = 1 AND name like '%{$this->category_search_str}%' ");
+        return $categories;
     }
 
     //used to allocate categories to resources

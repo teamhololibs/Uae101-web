@@ -232,4 +232,9 @@ function ConvertHyphensToSpaces($string) {
     return str_replace("-", " ", $string);
 }
 
+function InsertSearchHighlight($parent, $search){
+    $combined_string = "<span class='search_highlight'>$search</span>";
+    $return = str_ireplace($search, $combined_string, $parent);
+    return $return;
+}
 ?>

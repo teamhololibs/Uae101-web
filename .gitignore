@@ -2,7 +2,10 @@
 
 *sublime*
 config.*libra*.php
+config.*holo*.php
 nbproject/
 .htpasswd
 #test_debug_class.php
 templates_c/*
+logs/databases/*
+logs/libraries/*

@@ -86,26 +86,26 @@ function ResourcesPage() {
 
     /*
      * If there is need for lightbox or any other different UI for resource
-    if (isset($_GET['res_id']) && $_GET['res_id'] != '') {
-        $res_id = TextToDB($_GET['res_id']);
-        //$GLOBALS['page_title'] = "$resource_search - Search in ";
-        $resources[0] = $resources_ins->GetResourceInfo($res_id);
-        $tpl->assign('resources', $resources);
-        $html = $tpl->fetch('resource_box1.tpl');
-        return $html;
-    }
-     */
+      if (isset($_GET['res_id']) && $_GET['res_id'] != '') {
+      $res_id = TextToDB($_GET['res_id']);
+      //$GLOBALS['page_title'] = "$resource_search - Search in ";
+      $resources[0] = $resources_ins->GetResourceInfo($res_id);
+      $tpl->assign('resources', $resources);
+      $html = $tpl->fetch('resource_box1.tpl');
+      return $html;
+      }
 
-    if (isset($_GET['limit_search_to_cats']) && $_GET['limit_search_to_cats'] != '') {
-        $limit_search_to_cats = TextToDB($_GET['limit_search_to_cats']);
-    }
+      if (isset($_GET['limit_search_to_cats']) && $_GET['limit_search_to_cats'] != '') {
+      $limit_search_to_cats = TextToDB($_GET['limit_search_to_cats']);
+      }
+     */
     if (isset($_GET['search']) && $_GET['search'] != '') {
         $resource_search = TextToDB($_GET['search']);
         $GLOBALS['page_title'] = "$resource_search - Search in ";
     }
     if (isset($_GET['resource']) && $_GET['resource'] != '') {
         $resource_id = TextToDB($_GET['resource']);
-        $GLOBALS['page_title'] = "$resource_id - Search in ";
+        $GLOBALS['page_title'] = "$resource_id";
     }
     $category_search_id = '';
     if (isset($_GET['category']) && $_GET['category'] != '') {
@@ -117,7 +117,7 @@ function ResourcesPage() {
     }
 
     $GLOBALS['page_title'] .= SITE_NAME;
-    $resources = $resources_ins->GetResources($resource_search, $category_search_id, $resource_id, $author_id, $limit_search_to_cats);
+    $resources = $resources_ins->GetResources($resource_search, $category_search_id, $resource_id, $author_id);
 
     if (count($resources) > 0) {
         $tpl->assign('resources', $resources);

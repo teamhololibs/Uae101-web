@@ -29,6 +29,14 @@ class Author {
         return $this->author_info;
     }
 
+    public function GetAuthorSearch($author_str = '') {
+        if ($author_str != '')
+            $this->SetAuthorString($author_str);
+        
+        $authors = GetColumnInfo("authors", "author_id", " name like '%{$this->author_search_str}%' ");
+        return $authors;
+    }
+
     public function GetAuthorSearchFullInfo($author_str = '') {
         if ($author_str != '')
             $this->SetAuthorString($author_str);

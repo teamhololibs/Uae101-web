@@ -29,7 +29,7 @@ class Resource {
             if ($result !== FALSE) {
                 $i++;
             }
-            if($i >= $github_api_limit){
+            if ($i >= $github_api_limit) {
                 break;
             }
         }
@@ -130,37 +130,57 @@ class Resource {
             $this->resource_search_text = TextToDB($res_text);
     }
 
-    public function GetResources($res_text = '', $cat_id = '', $res_id = '', $author_id = '', $limit_search_to_cats = 'true') {
+    public function GetResources($res_text = '', $cat_id = '', $res_id = '', $author_id = '') {
         if ($res_text != '')
             $this->SetResourceText($res_text);
 
         $query = array();
+        $query_or = array();
+        $query_or_s = '';
+        // If searching 
         if ($this->resource_search_text != '') {
-            $query[] = " name LIKE '%{$this->resource_search_text}%' ";
+            //$auth_ins = new Author;
+            //$auth = $auth_ins->GetAuthorSearch($this->resource_search_text);
+            //$cat_ins = new Category;
+            //$cats = $cat_ins->GetCategorySearch($this->resource_search_text);
+            //$cats = implode(", ", $cats);
+            //$query[] = " r.resource_id IN (SELECT rc.res_id FROM res_cat rc WHERE rc.cat_id IN ($cats) ) ";
+            $query_or[] = " r.resource_id IN "
+                    . "(SELECT rc.res_id FROM res_cat rc WHERE rc.cat_id IN "
+                    . "(SELECT c.cat_id FROM categories c WHERE c.active = 1 AND c.name like '%{$this->resource_search_text}%') "
+                    . ") ";
+            $query_or[] = " r.author_id IN (SELECT a.author_id FROM authors a WHERE a.name like '%{$this->resource_search_text}%' ) ";
+            $query_or[] = " name LIKE '%{$this->resource_search_text}%' ";
+            $query_or = trim(implode(" OR ", $query_or), "OR");
+            $query_or_s = "($query_or) AND ";
+        } else {
+            // if listing category, author, or resource
+            if ($cat_id != '') {
+                $query[] = " r.resource_id IN (SELECT rc.res_id FROM res_cat rc WHERE rc.cat_id = $cat_id) ";
+            } elseif ($res_id != '') {
+                $query[] = " r.resource_id = $res_id ";
+            } elseif ($author_id != '') {
+                //$query = array();
+                $query[] = " r.author_id= $author_id ";
+            }
         }
-        if ($cat_id != '' && $limit_search_to_cats != 'false') {
-            $query[] = " r.resource_id IN (SELECT rc.res_id FROM res_cat rc WHERE rc.cat_id = $cat_id) ";
-        }
-        if ($res_id != '' && $res_text == '') {
-            $query[] = " r.resource_id = $res_id ";
-        }
-        //If author then reset search query coz will only need author.
-        if ($author_id != '' && $res_text == '') {
-            $query = array();
-            $query[] = " r.author_id= $author_id ";
-        }
+
 
         $query[] = " r.active = 1 ";
         $query[] = " r.is_approved = 1 ";
         $query_where = trim(implode(" AND ", $query), "AND");
-        $this->resource_info = GetRows("resources r", $query_where, "resource_id, name, description, url, github_stargazers, author_id, user_id, REPLACE(name,' ','-') AS hyphenated_name ");
+        $this->resource_info = GetRows("resources r", "$query_or_s . $query_where", "resource_id, name, description, url, github_stargazers, author_id, user_id, REPLACE(name,' ','-') AS hyphenated_name ");
         for ($i = 0; $i < count($this->resource_info); $i++) {
             $res_cat = $this->GetResourceCategories($this->resource_info[$i]['resource_id']);
-            $this->resource_info[$i]['author_info'] = GetRowById("authors", "author_id", $this->resource_info[$i]['author_id'], "name, REPLACE(name,' ','-') ");
+            $this->resource_info[$i]['author_info'] = GetRowById("authors", "author_id", $this->resource_info[$i]['author_id'], "name");
             $this->resource_info[$i]['author_info']['hyphenated_name'] = ConvertSpacesToHyphens($this->resource_info[$i]['author_info']['name']);
+            $this->resource_info[$i]['author_info']['name'] = InsertSearchHighlight($this->resource_info[$i]['author_info']['name'], $this->resource_search_text);
+            $this->resource_info[$i]['name'] = InsertSearchHighlight($this->resource_info[$i]['name'], $this->resource_search_text);
+            //Debug::dump($this->resource_info[$i]['name']);
             foreach ($res_cat as $rs) {
                 $cat = new Category();
                 $cat_info = $cat->GetCategoryFullInfo($rs);
+                $cat_info['full_name'] = InsertSearchHighlight($cat_info['full_name'], $this->resource_search_text);
                 $this->resource_info[$i]['res_cat'][] = $cat_info;
             }
         }
@@ -234,6 +254,28 @@ class Resource {
         ExecuteQuery($qs);
         return GetLastInsertId();
         //return true;
+    }
+
+    public function GetResourceJson() {
+        $resources = GetRows("resources", $this->resource_id, "resource_id, name, description, url, github_stargazers, author_id, user_id");
+        $this->resource_info = array();
+        $cat = new Category();
+        for ($i = 0; $i < count($resources); $i++) {
+            $resources[$i]['author_name'] = GetInfoById("authors", "author_id", $resources[$i]['author_id'], 'name');
+            $res_cat = $this->GetResourceCategories($resources[$i]['resource_id']);
+            $rc_count = 0;
+            $res = array();
+            foreach ($res_cat as $rs) {
+                $cat_info = $cat->GetCategoryFullInfo($rs);
+                $res['res_cat'][$rc_count]['category_id'] = $cat_info['cat_id'];
+                $res['res_cat'][$rc_count]['name'] = $cat_info['name'];
+                $rc_count++;
+            }
+            $resources[$i]['categories'] = $res['res_cat'];
+        }
+        $this->resource_info = $resources;
+        //array_push($this->resource_info, $this->res_cat);
+        return $this->resource_info;
     }
 
 }
