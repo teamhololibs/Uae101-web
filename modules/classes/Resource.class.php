@@ -171,6 +171,10 @@ class Resource {
             $this->resource_info[$i]['author_info']['hyphenated_name'] = ConvertSpacesToHyphens($this->resource_info[$i]['author_info']['name']);
             $this->resource_info[$i]['author_info']['name'] = InsertSearchHighlight($this->resource_info[$i]['author_info']['name'], $this->resource_search_text);
             $this->resource_info[$i]['name'] = InsertSearchHighlight($this->resource_info[$i]['name'], $this->resource_search_text);
+            $apk = "/apk/{$this->resource_info[$i]['resource_id']}/{$this->resource_info[$i]['resource_id']}.apk";
+            if (file_exists(SERVER_PATH . "www/$apk")) {
+                $this->resource_info[$i]['apk'] = $apk;
+            }
             foreach ($res_cat as $rs) {
                 $cat = new Category();
                 $cat_info = $cat->GetCategoryFullInfo($rs);

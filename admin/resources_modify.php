@@ -22,6 +22,17 @@ if ($action == 'edit' && $id) {
     $resource = GetRowById($table_name, 'resource_id', $id);
 }
 
+$apk_name = "$id.apk";
+$cfg_apk = "www/apk/";
+$apk_path = SERVER_PATH . $cfg_apk . "/$id";
+$apk_full_path = SERVER_PATH . $cfg_apk . "/$id/$apk_name";
+$apk_wed_path = MAIN_SITE . "apk/$id/$apk_name";
+$oldmask = umask(0);
+if (!file_exists($apk_path)) {
+    mkdir($apk_path, 0777, true);
+}
+umask($oldmask);
+
 foreach ($resource as $key => $value) {
     $resource[$key] = TextFromDB($value);
 }
@@ -75,6 +86,11 @@ if (isset($_POST['submit']) && ($_POST['submit'] != '')) {
     $fields = $_POST['q'];
     $set_str = 'SET ';
     $message = '';
+    if ($_FILES["file"]["error"] > 0) {
+        $message = "Error: " . $_FILES["file"]["error"];
+    } else {
+        move_uploaded_file($_FILES["file"]["tmp_name"], $apk_full_path);
+    }
     $fields['description'] = substr($fields['description'], 0, $desc_maxlength);
     foreach ($fields as $k => $v) {
         $v = TextToDB(trim($v));
@@ -140,8 +156,15 @@ $cat_ins = new Category();
 <script type="text/javascript" src="js/resource.js"></script>
 <div class="data_container">
     <div class="form_fields">
-        <form method="post" action="<?= $table_name ?>_modify.php?<?= $_SERVER['QUERY_STRING'] ?>">
+        <form method="post" action="<?= $table_name ?>_modify.php?<?= $_SERVER['QUERY_STRING'] ?>" enctype="multipart/form-data">
             <ul>
+                <li class="wide">
+                    <label for="file">Filename:</label>
+                    <? if (file_exists($apk_full_path)) { ?>
+                        <a target='_blank' href='<?= $apk_wed_path ?>'>Download APK</a>
+                    <? } ?>
+                    <input type="file" name="file" required id="file">
+                </li>
                 <li class="wide">
                     <label for="name">Resource Name:</label>
                     <input id="name" type='text' required name="q[name]" value="<?= $resource['name'] ?>" title="Name of the resource"/>

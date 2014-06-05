@@ -78,7 +78,7 @@ CREATE TABLE `admin_user_activities` (
   `activity` varchar(200) NOT NULL COMMENT 'updated info, anything that is relevant and needs to be tracked',
   `additional_remark` text NOT NULL COMMENT 'any sql command he/she might have executed',
   PRIMARY KEY (`activity_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=225 DEFAULT CHARSET=latin1 COMMENT='Tracking every activity of the admin';
+) ENGINE=InnoDB AUTO_INCREMENT=228 DEFAULT CHARSET=latin1 COMMENT='Tracking every activity of the admin';
 
 INSERT INTO admin_user_activities VALUES("135","2014-01-02 17:57:01","1","login","2014-01-02 17:57:01");
 INSERT INTO admin_user_activities VALUES("136","2014-01-02 17:59:58","1","login","2014-01-02 17:59:58");
@@ -170,6 +170,9 @@ INSERT INTO admin_user_activities VALUES("221","2014-05-31 13:13:18","1","login"
 INSERT INTO admin_user_activities VALUES("222","2014-05-31 17:38:43","1","login","2014-05-31 17:38:43");
 INSERT INTO admin_user_activities VALUES("223","2014-06-03 01:31:42","1","login","2014-06-03 01:31:42");
 INSERT INTO admin_user_activities VALUES("224","2014-06-03 09:41:15","1","login","2014-06-03 09:41:15");
+INSERT INTO admin_user_activities VALUES("225","2014-06-03 10:34:57","1","login","2014-06-03 10:34:57");
+INSERT INTO admin_user_activities VALUES("226","2014-06-05 12:49:56","1","login","2014-06-05 12:49:56");
+INSERT INTO admin_user_activities VALUES("227","2014-06-06 00:43:28","1","login","2014-06-06 00:43:28");
 
 
 
@@ -202,7 +205,7 @@ CREATE TABLE `authors` (
   `name` varchar(150) NOT NULL,
   `url` varchar(200) DEFAULT NULL,
   `github_author_id` int(11) NOT NULL DEFAULT '0',
-  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`author_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=74 DEFAULT CHARSET=latin1;
 
@@ -216,7 +219,7 @@ INSERT INTO authors VALUES("16","Jimu Labs","","0","2014-05-31 14:02:36");
 INSERT INTO authors VALUES("17","square","https://github.com/square","82592","2014-05-31 14:02:37");
 INSERT INTO authors VALUES("18","Simple","","0","2014-05-31 14:02:39");
 INSERT INTO authors VALUES("19","inAppSquared","","0","2014-05-31 14:02:39");
-INSERT INTO authors VALUES("20","Szczepan Faber and friends","","0","2014-05-31 14:02:39");
+INSERT INTO authors VALUES("20","Szczepan Faber and Friends","","0","2014-06-05 13:10:12");
 INSERT INTO authors VALUES("21","chrisbanes","https://github.com/chrisbanes","227486","2014-05-31 14:05:25");
 INSERT INTO authors VALUES("22","loopj","https://github.com/loopj","104009","2014-05-31 14:05:26");
 INSERT INTO authors VALUES("23","JoanZapata","https://github.com/JoanZapata","675408","2014-05-31 14:05:27");
@@ -292,7 +295,7 @@ INSERT INTO categories VALUES("13","2014-05-31 14:04:01","1","Icons","0");
 INSERT INTO categories VALUES("14","2014-05-31 14:04:01","1","Navigation Drawer","0");
 INSERT INTO categories VALUES("15","2014-05-31 14:04:01","1","Databases","0");
 INSERT INTO categories VALUES("16","2014-05-31 14:04:01","1","ImageView","0");
-INSERT INTO categories VALUES("17","2014-05-31 14:04:01","1","dialogs","0");
+INSERT INTO categories VALUES("17","2014-06-05 13:01:38","1","Dialogs","0");
 INSERT INTO categories VALUES("18","2014-05-31 14:04:01","1","Listview","0");
 INSERT INTO categories VALUES("19","2014-05-31 14:04:02","1","Image Loading","0");
 INSERT INTO categories VALUES("20","2014-05-31 14:04:02","1","ViewPager","0");
@@ -302,7 +305,7 @@ INSERT INTO categories VALUES("23","2014-05-31 14:04:03","1","Bug Tracking","0")
 INSERT INTO categories VALUES("24","2014-05-31 14:04:03","1","Dependancy Injection","0");
 INSERT INTO categories VALUES("25","2014-05-31 14:04:03","1","Calender","0");
 INSERT INTO categories VALUES("26","2014-05-31 14:04:03","1","Fonts","0");
-INSERT INTO categories VALUES("27","2014-05-31 14:04:03","1","CardsUI","0");
+INSERT INTO categories VALUES("27","2014-06-05 14:05:13","1","Cards UI","0");
 INSERT INTO categories VALUES("28","2014-05-31 14:04:03","1","toasts","0");
 INSERT INTO categories VALUES("29","2014-05-31 14:04:04","1","Debugging","0");
 INSERT INTO categories VALUES("30","2014-05-31 14:04:04","1","Feedback","0");
@@ -311,7 +314,7 @@ INSERT INTO categories VALUES("32","2014-05-31 14:04:04","1","ActionBar","0");
 INSERT INTO categories VALUES("33","2014-05-31 14:04:04","1","FlipView","0");
 INSERT INTO categories VALUES("34","2014-05-31 14:04:04","1","Architecture","0");
 INSERT INTO categories VALUES("35","2014-05-31 14:04:05","1","JSON","0");
-INSERT INTO categories VALUES("36","2014-05-31 14:04:06","1","AnimatedViews","0");
+INSERT INTO categories VALUES("36","2014-06-05 13:20:23","1","Animated Views","0");
 INSERT INTO categories VALUES("37","2014-05-31 14:04:06","1","Http Clients","0");
 INSERT INTO categories VALUES("38","2014-05-31 14:04:06","1","RadioButton","0");
 INSERT INTO categories VALUES("39","2014-05-31 14:04:06","1","Sensors","0");
@@ -349,12 +352,14 @@ CREATE TABLE `configs` (
   `type` enum('integer','boolean','array','string','','') NOT NULL,
   `description` varchar(200) NOT NULL,
   PRIMARY KEY (`config_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
 INSERT INTO configs VALUES("1","2013-05-06 17:43:04","2013-11-23 19:36:32","con1","1","integer","1");
 INSERT INTO configs VALUES("2","0000-00-00 00:00:00","2014-05-28 14:52:13","RESOURCE_DESCRIPTION_MAXLENGTH","200","","RESOURCE_DESCRIPTION_MAXLENGTH");
 INSERT INTO configs VALUES("3","0000-00-00 00:00:00","2014-05-30 02:34:24","GITHUB_API_URL","https://api.github.com/repos/","","GITHUB_API_URL");
 INSERT INTO configs VALUES("4","0000-00-00 00:00:00","2014-05-31 14:50:18","GITHUB_API_CALL_LIMIT","20","","GITHUB_API_CALL_LIMIT");
+INSERT INTO configs VALUES("5","0000-00-00 00:00:00","2014-06-05 13:53:24","CATEGORY_TREE_SESSION_FLAG","false","","CATEGORY_TREE_SESSION_FLAG");
+INSERT INTO configs VALUES("6","0000-00-00 00:00:00","2014-06-06 00:52:43","APK_PATH","/www/apk/","","APK_PATH");
 
 
 
@@ -366,7 +371,7 @@ CREATE TABLE `res_cat` (
   `cat_id` int(11) NOT NULL,
   `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`res_cat_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=94 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=98 DEFAULT CHARSET=latin1;
 
 INSERT INTO res_cat VALUES("10","10","10","2014-05-31 14:04:01");
 INSERT INTO res_cat VALUES("11","11","11","2014-05-31 14:04:01");
@@ -410,7 +415,6 @@ INSERT INTO res_cat VALUES("48","48","34","2014-05-31 14:04:04");
 INSERT INTO res_cat VALUES("49","49","11","2014-05-31 14:04:05");
 INSERT INTO res_cat VALUES("50","50","19","2014-05-31 14:04:05");
 INSERT INTO res_cat VALUES("51","51","15","2014-05-31 14:04:05");
-INSERT INTO res_cat VALUES("52","52","35","2014-05-31 14:04:05");
 INSERT INTO res_cat VALUES("53","53","20","2014-05-31 14:04:05");
 INSERT INTO res_cat VALUES("54","54","12","2014-05-31 14:04:05");
 INSERT INTO res_cat VALUES("55","55","25","2014-05-31 14:04:05");
@@ -436,7 +440,6 @@ INSERT INTO res_cat VALUES("74","74","40","2014-05-31 14:04:07");
 INSERT INTO res_cat VALUES("75","75","15","2014-05-31 14:04:07");
 INSERT INTO res_cat VALUES("76","76","18","2014-05-31 14:04:07");
 INSERT INTO res_cat VALUES("77","77","15","2014-05-31 14:04:07");
-INSERT INTO res_cat VALUES("78","78","28","2014-05-31 14:04:07");
 INSERT INTO res_cat VALUES("79","79","25","2014-05-31 14:04:07");
 INSERT INTO res_cat VALUES("80","80","20","2014-05-31 14:04:07");
 INSERT INTO res_cat VALUES("81","81","37","2014-05-31 14:04:07");
@@ -452,6 +455,8 @@ INSERT INTO res_cat VALUES("90","90","46","2014-05-31 14:04:08");
 INSERT INTO res_cat VALUES("91","91","47","2014-05-31 14:04:08");
 INSERT INTO res_cat VALUES("92","92","47","2014-05-31 14:04:08");
 INSERT INTO res_cat VALUES("93","93","48","2014-05-31 14:04:09");
+INSERT INTO res_cat VALUES("95","52","35","2014-06-05 13:15:07");
+INSERT INTO res_cat VALUES("97","78","28","2014-06-06 01:59:28");
 
 
 
@@ -520,7 +525,7 @@ INSERT INTO resources VALUES("48","2014-05-31 17:39:06","1","FreeFlow","A layout
 INSERT INTO resources VALUES("49","2014-05-31 14:04:05","1","Genymotion","Genymotion is the next generation of the AndroVM open source project, already trusted by 900,000 developers.\\n\\nIt’s even easier to use and has lots more functionalitie","http://www.genymotion.com","","0","0","0","0","0000-00-00 00:00:00","0000-00-00 00:00:00","14","0","1");
 INSERT INTO resources VALUES("50","2014-05-31 17:39:08","1","glide","An image loading and caching library for Android focused on smooth scrolling","https://github.com/bumptech/glide","","1","11267509","350","53","2014-05-30 21:03:33","2014-05-31 17:39:08","51","0","1");
 INSERT INTO resources VALUES("51","2014-05-31 17:39:09","1","greenDAO","greenDAO is a light & fast ORM solution for Android that maps objects to SQLite databases.","https://github.com/greenrobot/greenDAO","","1","2626751","1161","457","2014-05-31 10:09:52","2014-05-31 17:39:09","48","0","1");
-INSERT INTO resources VALUES("52","2014-05-31 14:04:05","1","gson","Gson is a Java library that can be used to convert Java Objects into their JSON representation. It can also be used to convert a JSON string to an equivalent Java object. G","http://code.google.com/p/google-gson","","0","0","0","0","0000-00-00 00:00:00","0000-00-00 00:00:00","15","0","1");
+INSERT INTO resources VALUES("52","2014-06-05 13:15:07","1","Gson","Gson is a Java library that can be used to convert Java Objects into their JSON representation. It can also be used to convert a JSON string to an equivalent Java object. G","http://code.google.com/p/google-gson","0","0","0","0","0","0000-00-00 00:00:00","0000-00-00 00:00:00","15","0","1");
 INSERT INTO resources VALUES("53","2014-05-31 17:39:10","1","InfiniteViewPager","Augment Android\'s ViewPager with wrap-around functionality.","https://github.com/antonyt/InfiniteViewPager","","1","3688003","109","51","2014-05-30 10:53:19","2014-05-31 17:39:10","52","0","1");
 INSERT INTO resources VALUES("54","2014-05-31 17:39:11","1","ion","Android Asynchronous Networking and Image Loading","https://github.com/koush/ion","","1","10214538","1656","251","2014-05-31 05:06:46","2014-05-31 17:39:11","53","0","1");
 INSERT INTO resources VALUES("55","2014-05-31 17:39:12","1","joda-time","Joda-Time is the widely used replacement for the Java date and time classes.","https://github.com/JodaOrg/joda-time","","1","1756350","778","134","2014-05-29 22:04:05","2014-05-31 17:39:12","54","0","1");
@@ -546,7 +551,7 @@ INSERT INTO resources VALUES("74","2014-05-31 15:26:44","1","SmoothProgressBar",
 INSERT INTO resources VALUES("75","2014-05-31 15:26:45","1","sprinkles","Sprinkles is a boiler-plate-reduction-library for dealing with databases in android applications","https://github.com/emilsjolander/sprinkles","","1","13521187","478","43","2014-05-29 23:53:33","2014-05-31 15:26:45","49","0","1");
 INSERT INTO resources VALUES("76","2014-05-31 15:26:47","1","StickyListHeaders","An android library for section headers that stick to the top","https://github.com/emilsjolander/StickyListHeaders","","1","3688678","1514","502","2014-05-30 16:12:43","2014-05-31 15:26:47","49","0","1");
 INSERT INTO resources VALUES("77","2014-05-31 15:26:48","1","sugar","Insanely easy way to work with Android Database.","https://github.com/satyan/sugar","","1","2197202","311","65","2014-05-29 06:16:58","2014-05-31 15:26:48","66","0","1");
-INSERT INTO resources VALUES("78","2014-05-31 15:26:49","1","SuperToasts","A library that extends the Android toast framework.","https://github.com/JohnPersano/SuperToasts","","1","10444562","613","123","2014-05-30 18:16:56","2014-05-31 15:26:49","67","0","1");
+INSERT INTO resources VALUES("78","2014-06-06 01:39:48","1","SuperToasts","A library that extends the Android toast framework.","https://github.com/JohnPersano/SuperToasts","0","1","10444562","613","123","2014-05-30 18:16:56","2014-05-31 15:26:49","67","0","1");
 INSERT INTO resources VALUES("79","2014-05-31 15:26:50","1","android-times-square","Standalone Android widget for picking a single date from a calendar view.","https://github.com/square/android-times-square","","1","7923123","1070","374","2014-05-31 05:20:42","2014-05-31 15:26:50","17","0","1");
 INSERT INTO resources VALUES("80","2014-05-31 15:26:52","1","JazzyViewPager","An easy to use ViewPager that adds an awesome set of custom swiping animations. Just change your ViewPagers to JazzyViewPagers, two more steps, and you\'re good to go!","https://github.com/jfeinstein10/JazzyViewPager","","1","7952078","792","350","2014-05-29 16:00:04","2014-05-31 15:26:52","64","0","1");
 INSERT INTO resources VALUES("81","2014-05-31 14:04:07","1","Volley","Volley is a library that makes networking for Android apps easier and most importantly, faster. \\nhttps://developers.google.com/events/io/sessions/325304728","http://android.googlesource.com/platform/frameworks/volley","","0","0","0","0","0000-00-00 00:00:00","0000-00-00 00:00:00","15","0","1");

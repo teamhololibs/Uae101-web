@@ -13,6 +13,9 @@ require_once "$file_path/config." . $_SERVER['HTTP_HOST'] . ".php";
 if (!defined('TEST_SITE'))
     define('TEST_SITE', $TEST_SITE);
 
+if (!defined('MAIN_SITE'))
+    define('MAIN_SITE', $MAIN_SITE);
+
 if (!defined('WEB_DIRECTORY'))
     define('WEB_DIRECTORY', $WEB_DIRECTORY);
 

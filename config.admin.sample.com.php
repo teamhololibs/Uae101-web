@@ -3,6 +3,7 @@
 $SERVER_PATH = ""; // File Path to the root directory
 $PIC_PATH = $SERVER_PATH . "/admin/images/"; // File path for images. Mostly will be $SERVER_PATH/www/images/
 $WEB_DIRECTORY = "/admin/";
+$MAIN_SITE = "http://libra.com/";
 
 $SITE_NAME = "Site Name ";
 
