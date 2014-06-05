@@ -96,7 +96,8 @@ class Resource {
         $result = json_decode($result, true);
 
         $res_git['is_github'] = 1;
-        $res_git['name'] = $result['name'];
+        if ($res['name'] == '')
+            $res_git['name'] = $result['name'];
         $res_git['description'] = $result['description'];
         $res_git['github_resource_id'] = $result['id'];
         $res_git['github_stargazers'] = $result['stargazers_count'];
@@ -250,10 +251,33 @@ class Resource {
     }
 
     public function GetResourceJson() {
+        $res_updated_q = '';
         if (isset($_GET['updated']) && $_GET['updated'] != '') {
-            $updated = $_GET['updated'];
+            $updated = trim(TextToDB($_GET['updated']));
+
+            $cats_updated = GetColumnInfo("categories", "cat_id", "updated >= '$updated'");
+            if (count($cats_updated) > 0) {
+                $cats_updated_q = implode(", ", $cats_updated);
+                $cats_updated_q = "OR cat_id IN ($cats_updated_q) ";
+            }
+
+            $auths_updated = GetColumnInfo("authors", "author_id", "updated >= '$updated'");
+            if (count($auths_updated) > 0) {
+                $auths_updated_q = implode(", ", $auths_updated);
+                $auths_updated_q = "OR author_id IN ($auths_updated_q) ";
+            }
+
+            $res_cat_updated = GetColumnInfo("res_cat", "res_id", "updated >= '$updated' $cats_updated_q ");
+            if (count($res_cat_updated) > 0) {
+                $res_cat_updated_q = implode(", ", $res_cat_updated);
+                $res_cat_updated_q = "OR resource_id IN ($res_cat_updated_q) ";
+            }
+
+            $res_updated = GetColumnInfo("resources", "resource_id", "updated >= '$updated' $auths_updated_q $res_cat_updated_q ");
+            $res_updated_q = implode(", ", $res_updated);
+            $res_updated_q = " resource_id IN ($res_updated_q) ";
         }
-        $resources = GetRows("resources", '', "resource_id, name, description, url, github_stargazers, author_id, user_id");
+        $resources = GetRows("resources", $res_updated_q);
         $this->resource_info = array();
         $json = array();
         $cat = new Category();
@@ -262,15 +286,16 @@ class Resource {
             $res_data['resourceId'] = $resources[$i]['resource_id'];
             $res_data['name'] = $resources[$i]['name'];
             $res_data['description'] = $resources[$i]['description'];
+            $res_data['active'] = $resources[$i]['active'];
             $res_data['url'] = $resources[$i]['url'];
             $res_data['githubStargazers'] = $resources[$i]['github_stargazers'];
-            $res_data['authorId'] = $resources[$i]['author_id'];
             $res_data['userId'] = $resources[$i]['user_id'];
+            $res_data['authorId'] = $resources[$i]['author_id'];
             $res_data['authorName'] = GetInfoById("authors", "author_id", $resources[$i]['author_id'], 'name');
             $res_cat = $this->GetResourceCategories($resources[$i]['resource_id']);
             $cat_info = $cat->GetCategoryFullInfo($res_cat[0]);
-            $res_data['categoryName'] = $cat_info['name'];
             $res_data['categoryId'] = $cat_info['cat_id'];
+            $res_data['categoryName'] = $cat_info['name'];
 
             /*
              * If in future we need to have multiple categories per library
@@ -288,7 +313,9 @@ class Resource {
 
             $json[] = $res_data;
         }
-        $this->resource_info['last_updated'] = "2014-05-31 14:04:01";
+        $this->resource_info['last_updated'] = "2014-05-31 14:04:07";
+        $this->resource_info['last_updated'] = $this->LastUpdated();
+        $this->resource_info['count'] = count($json);
         usort($json, array("Resource", "CompareCategories"));
         $this->resource_info['data'] = $json;
 
@@ -297,6 +324,16 @@ class Resource {
 
     static function CompareCategories($a, $b) {
         return strcmp($a["categoryName"], $b["categoryName"]);
+    }
+
+    public function LastUpdated() {
+        $updated[] = GetColumnInfo("categories", 'updated', "1 ORDER BY updated DESC LIMIT 1");
+        $updated[] = GetColumnInfo("authors", 'updated', "1 ORDER BY updated DESC LIMIT 1");
+        $updated[] = GetColumnInfo("res_cat", 'updated', "1 ORDER BY updated DESC LIMIT 1");
+        $updated[] = GetColumnInfo("resources", 'updated', "1 ORDER BY updated DESC LIMIT 1");
+        sort($updated);
+        return $updated[3][0];
+        //return $updated;
     }
 
 }

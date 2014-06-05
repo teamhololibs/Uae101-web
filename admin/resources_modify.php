@@ -152,20 +152,20 @@ $cat_ins = new Category();
                 </li>
                 <li class="wide">
                     <label for="description">Short Description:</label>
-                    <textarea id="description" name="q[description]" maxlength='<?= $desc_maxlength ?>' required cols="" rows="6" placeholder=""><?= htmlspecialchars(TextFromDB($resource['description'])) ?></textarea><br/>
+                    <textarea id="description" name="q[description]" maxlength='<?= $desc_maxlength ?>'  cols="" rows="6" placeholder=""><?= htmlspecialchars(TextFromDB($resource['description'])) ?></textarea><br/>
                     <span class='textarea_length_display'></span>
                 </li>
                 <li class="wide">
                     <label style="padding: 0;" for="">Is this resource approved?:</label>
                     <label class="form_radio" for="is_approved_yes">Yes</label>
-                    <input class="form_radio" required id="is_approved_yes" type='radio' class="required" name="q[is_approved]" value="1" <?= ($resource['is_approved'] == '1') ? "checked" : '' ?> />
+                    <input class="form_radio" required id="is_approved_yes" type='radio' name="q[is_approved]" value="1" <?= ($resource['is_approved'] == '1') ? "checked" : '' ?> />
                     <label class="form_radio" for="is_approved_no">No</label>
-                    <input class="form_radio" required id="is_approved_no" type='radio' class="required" name="q[is_approved]" value="0" <?= ($resource['is_approved'] == '0') ? "checked" : '' ?>/>
+                    <input class="form_radio" required id="is_approved_no" type='radio' name="q[is_approved]" value="0" <?= ($resource['is_approved'] == '0') ? "checked" : '' ?>/>
                 </li>
                 <li class="wide">
                     <br/><br/>
                     <label for="rating">Rating:</label>
-                    <input id="rating" style="width: 3%;" type='text' required name="q[rating]" value="<?= $resource['rating'] ?>" title="Rating of the resource"/>
+                    <input id="rating" style="width: 3%;" type='text'  name="q[rating]" value="<?= $resource['rating'] ?>" title="Rating of the resource"/>
                     <div id="slider" style="margin-left: 5%;width: 50%;display: inline-block;"></div>
                     <br/><br/>
                 </li>
