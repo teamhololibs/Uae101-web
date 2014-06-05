@@ -50,7 +50,10 @@ function RenderPage($MAIN_CONTENT) {
 }
 
 function GetLeftMenu() {
-    $categories_tree = Category::GetCategoryFullTree();
+    if (isset($_GET['category_name']) && $_GET['category_name'] != '') {
+        $cat_name = trim(TextToDB($_GET['category_name']));
+    }
+    $categories_tree = Category::GetCategoryFullTree($cat_name);
     $tpl = new SmartyCustom;
     if (isset($_GET['category']) && $_GET['category'] != '') {
         $category_id = $_GET['category'];

@@ -73,7 +73,7 @@ ErrorDocument 403 /404.php
 
 
 #RewriteRule    ^.php$    /__$1.php    [QSA,NC]    # Rule : Pages with php
-RewriteRule    ^([a-z]+)$    /__$1.php    [QSA,NC]    # Rule : Pages are sent to _xyz.php
+RewriteRule    ^([A-Za-z0-9\_]+)$    /__$1.php    [QSA,NC]    # Rule : Pages are sent to _xyz.php
 RewriteRule    ^category/([0-9]+)/*([A-Za-z0-9\_\-\.\,\ ]*)/*$    /index.php?category=$1    [QSA,NC,L]    # Rule : 
 RewriteRule    ^library/([0-9]+)/*([A-Za-z0-9\_\-\.\,\ ]*)/*$    /index.php?resource=$1    [QSA,NC,L]    # Rule : 
 RewriteRule    ^author/([0-9]+)/*([A-Za-z0-9\_\-\.\,\ ]*)/*$    /index.php?author=$1    [QSA,NC,L]    # Rule : 

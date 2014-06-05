@@ -9,13 +9,14 @@
         <link rel="shortcut icon" href="/favicon.ico" />
         <link rel="stylesheet" type="text/css" href="/css/main.css"/>
         <link rel="stylesheet" type="text/css" href="/css/nanoscroller.css"/>
-{*        <link rel="stylesheet" type="text/css" href="/css/jquery.fancybox.css"/>*}
+        {*        <link rel="stylesheet" type="text/css" href="/css/jquery.fancybox.css"/>*}
         <link rel='stylesheet' type='text/css' href='//fonts.googleapis.com/css?family=Quintessential|Arimo|Asap|Fauna+One' />
+        <link rel='stylesheet' type='text/css' href='http://fonts.googleapis.com/css?family=Raleway:100' />
         <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
         <script type="text/javascript" src="/js/jquery.ellipsis.min.js"></script>
         <script type="text/javascript" src="/js/jquery.dotdotdot.min.js"></script>
         <script type="text/javascript" src="/js/jquery.nanoscroller.min.js"></script>
-{*        <script type="text/javascript" src="/js/fancybox/source/jquery.fancybox.js"></script>*}
+        {*        <script type="text/javascript" src="/js/fancybox/source/jquery.fancybox.js"></script>*}
         <script type="text/javascript">
             if (typeof jQuery == 'undefined') {
                 document.write("<script type='text/javascript' src='js/jquery-1.9.1.js'><\/script>");
@@ -25,34 +26,48 @@
         </script>
         <script type="text/javascript" src="/js/js.functions.js"></script>
         {*<script type="text/javascript">
-            (function() {
-                var po = document.createElement('script');
-                po.type = 'text/javascript';
-                po.async = true;
-                po.src = 'https://plus.google.com/js/client:plusone.js?onload=start';
-                var s = document.getElementsByTagName('script')[0];
-                s.parentNode.insertBefore(po, s);
-            })();
+        (function() {
+        var po = document.createElement('script');
+        po.type = 'text/javascript';
+        po.async = true;
+        po.src = 'https://plus.google.com/js/client:plusone.js?onload=start';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(po, s);
+        })();
         </script>*}
         <title>{$META_TITLE}</title>
-        <link rel="stylesheet" type="text/css" href="/css/blockmoving.css"/>
+        <link rel="stylesheet" type="text/css" href="/css/jellybean_loader.css"/>
     </head>
     <body>
         <div id="wrapper" class="wrapper">
+            <div class="loading_animation" style="display: none;">
+                <div class="slider">
+                    <div class="line"></div>
+                    <div class="break dot1"></div>
+                    <div class="break dot2"></div>
+                    <div class="break dot3"></div>
+                </div>
+            </div>
             {include file="common/header.tpl" var_name=$HEADER_VARS}
             <div id="left_menu" class="left_menu nano">
                 <div id="" class="nano-content">
-                    {$LEFT_MENU}
+                    <div class="cat_search_div">
+                        <span class='textbox_android_cat_search_before cat_search'></span><input type="text" class='textbox_android_cat_search cat_search' id='cat_search' placeholder='Search Categories'/><span class='textbox_android_cat_search_after cat_search'></span>
+                        <img class='cat_search_img' src="{$PIC_PATH}/search_icon.png"/>
+                    </div>
+                    <ul class="left_category_menu">
+                        {$LEFT_MENU}
+                    </ul>
+                    <!--div style='clear: both'></div-->
                 </div>
             </div>
             <div class='content_holder'>
-                <div class="loading_animation">
-                    <div id="blok1" class="blokje"></div>
-                    <div id="blok2" class="blokje"></div>
-                    <div id="blok3" class="blokje"></div>
-                    <div id="blok4" class="blokje"></div>
-                    <div id="blok5" class="blokje"></div>
-                </div>
+                {*<div id="blok1" class="blokje"></div>
+                <div id="blok2" class="blokje"></div>
+                <div id="blok3" class="blokje"></div>
+                <div id="blok4" class="blokje"></div>
+                <div id="blok5" class="blokje"></div>*}
+                {$MAIN_CONTENT}
                 {*<div id="loadingProgressG">
                 <div id="loadingProgressG_1" class="loadingProgressG">
                 </div>
@@ -63,7 +78,6 @@
                 <div id="movingBallG_1" class="movingBallG">
                 </div>
                 </div>*}
-                {$MAIN_CONTENT}
             </div>
             {include file="common/footer.tpl"}
             <div style='clear: both'></div>

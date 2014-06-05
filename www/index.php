@@ -9,12 +9,12 @@ require_once '../common.prepend.php';
 //    ExecuteQuery($qs);
 //}
 
-$json = '';
+$html = '';
 if (!isset($_GET['ajax']) || $_GET['ajax'] != '1') {
-    $json = RenderPage(ResourcesPage());
+    $html = RenderPage(ResourcesPage());
 } else {
-    $json = ResourcesPage();
+    $html = ResourcesPage();
 }
 
-echo $json;
+echo $html;
 ?>

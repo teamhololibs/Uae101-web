@@ -11,7 +11,7 @@ $(document).ready(function() {
     $(document).on('keyup', ".submit_library textarea[maxlength]", function() {
         textAreaLength($(this));
     });
-    $('.textbox_android').before("<div class='textbox_android_after'></div>").after("<div class='textbox_android_after'></div>");
+    $('.textbox_android').before("<div class='textbox_android_before'></div>").after("<div class='textbox_android_after'></div>");
     $('.dropdown').click(function() {
         var parent_id = $(this).attr('alt');
         $('.children_' + parent_id).toggle('fast');
@@ -64,9 +64,29 @@ $(document).ready(function() {
         $(".nano").nanoScroller();
     });
     var inResource = 0;
+    $('.cat_search_img').hover(function() {
+        $('.cat_search').show('fast');
+        $('#cat_search').focus();
+    });
+    $('#cat_search').keyup(function() {
+        categorySearchAjax($('#cat_search').val());
+    });
     $('.input_resource_search').keyup(function() {
         resourceSearch($('.input_resource_search').val());
     });
+    function categorySearchAjax(category_search) {
+        $.ajax({
+            url: '/category_search',
+            type: 'get',
+            data: {
+                category_name: category_search,
+            },
+            success: function(data) {
+                $('.left_category_menu').html(data);
+                $(".nano").nanoScroller();
+            }
+        });
+    }
     function resourceSearch(resource_search) {
         $('.left_category_menu li a').removeClass('selected');
         var historystate, historyurl;
@@ -98,7 +118,7 @@ $(document).ready(function() {
             },
             success: function(data) {
                 $('.content_holder').html(data);
-                $('.loading_animation').hide();
+                setTimeout("jQuery('.loading_animation').hide();", 2000);
                 windowResize();
             }
         });
@@ -157,6 +177,8 @@ $(document).ready(function() {
 function windowResize() {
     var content_holder_width = $(document).width() - $('.left_menu').width();
     $('.content_holder').width(content_holder_width);
+//    $('#slider').width(content_holder_width);
+//    $('#line').width(content_holder_width);
     if ($(document).height() == window.innerHeight) {
         $('.footer').addClass('footer_absolute');
     } else {

@@ -1,0 +1,62 @@
+.slider{
+    position:fixed;
+    bottom: 0;
+    z-index: 1500;
+    height:5px;
+    width: 100%;
+    /*margin-top:15px*/
+}
+.line{
+    position:absolute;
+    background:#4a8df8;
+    height:5px;
+    width: 100%;
+}
+.break{
+    position:absolute;
+    background:#f9f9f9;
+    width:10px;
+    height:5px;  
+}
+
+.dot1{
+    -webkit-animation: loading 2s infinite;
+    -moz-animation: loading 2s infinite;
+    -ms-animation: loading 2s infinite;
+    -o-animation: loading 2s infinite;
+    animation: loading 2s infinite;
+}
+.dot2{
+    -webkit-animation: loading 2s 0.5s infinite;
+    -moz-animation: loading 2s 0.5s infinite;
+    -ms-animation: loading 2s 0.5s infinite;
+    -o-animation: loading 2s 0.5s infinite;
+    animation: loading 2s 0.5s infinite;
+}
+.dot3{
+    -webkit-animation: loading 2s 1s infinite;
+    -moz-animation: loading 2s 1s infinite;
+    -ms-animation: loading 2s 1s infinite;
+    -o-animation: loading 2s 1s infinite;
+    animation: loading 2s 1s infinite;
+}
+
+@keyframes "loading" {
+    from { left: 0; }
+    to { left: 99.3%; }
+}
+@-moz-keyframes loading {
+    from { left: 0; }
+    to { left: 99.3%; }
+}
+@-webkit-keyframes "loading" {
+    from { left: 0; }
+    to { left: 99.3%; }
+}
+@-ms-keyframes "loading" {
+    from { left: 0; }
+    to { left: 99.3%; }
+}
+@-o-keyframes "loading" {
+    from { left: 0; }
+    to { left: 99.3%; }

@@ -14,20 +14,25 @@ class Category {
     /**
      * @return array Full Category tree array
      */
-    static public function GetCategoryFullTree() {
-        if (CATEGORY_TREE_SESSION_FLAG === true) {
+    static public function GetCategoryFullTree($cat_name = '') {
+        $cat_name = trim(TextToDB($cat_name));
+        if (CATEGORY_TREE_SESSION_FLAG === true && $cat_name == '') {
             if (time() - $_SESSION['category_last_retrieved'] < CATEGORY_TREE_SESSION_TIMEOUT) {
                 self::$full_categories_tree = $_SESSION['FULL_CATEGORIES_TREE'];
                 return $_SESSION['FULL_CATEGORIES_TREE'];
             }
         }
-        $parents = GetRows("categories", "parent_id = 0 AND active = 1 ORDER BY name", "*, REPLACE(name,' ','-') AS hyphenated_name ");
+        $parents = GetRows("categories", "parent_id = 0 AND active = 1 AND name LIKE '%$cat_name%' ORDER BY name", "*, REPLACE(name,' ','-') AS hyphenated_name ");
         $i = 0;
-        foreach ($parents as $parent) {
-            self::$full_categories_tree[$i] = $parent;
-            self::$full_categories_tree[$i]['children'] = GetRows("categories", "parent_id = {$parent['cat_id']} AND active = 1 ORDER BY name", "cat_id, active, name, parent_id, REPLACE(name,' ','-') AS hyphenated_name ");
-            $i++;
-        }
+        self::$full_categories_tree = $parents;
+        /*
+         * If categories have parents and children
+          foreach ($parents as $parent) {
+          self::$full_categories_tree[$i] = $parent;
+          self::$full_categories_tree[$i]['children'] = GetRows("categories", "parent_id = {$parent['cat_id']} AND active = 1 ORDER BY name", "cat_id, active, name, parent_id, REPLACE(name,' ','-') AS hyphenated_name ");
+          $i++;
+          }
+         */
         $_SESSION['FULL_CATEGORIES_TREE'] = self::$full_categories_tree;
         return self::$full_categories_tree;
         //Debug::dump(self::$full_categories_tree);
@@ -89,7 +94,7 @@ class Category {
         if ($category_str != '')
             $this->SetCategoryString($category_str);
 
-        $categories = GetColumnInfo("categories", "cat_id","active = 1 AND name like '%{$this->category_search_str}%' ");
+        $categories = GetColumnInfo("categories", "cat_id", "active = 1 AND name like '%{$this->category_search_str}%' ");
         return $categories;
     }
 
