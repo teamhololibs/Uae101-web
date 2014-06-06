@@ -9,7 +9,7 @@
         </p>
         <p class='resource_tags_p'>
             {foreach from=$res.res_cat item=res_cat}
-                <a class='' href="/category/{$res_cat.cat_id}/{$res_cat.hyphenated_name}" alt="{$res_cat.cat_id}">{$res_cat.full_name} </a><br/>
+                <a class='cat_a' href="/category/{$res_cat.cat_id}/{$res_cat.hyphenated_name}" alt="{$res_cat.cat_id}">{$res_cat.full_name} </a><br/>
             {/foreach}
         </p>
         <div class='resource_desc'>

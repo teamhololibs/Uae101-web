@@ -432,6 +432,7 @@ a.author_name:hover{
 .resource_tags_p a:link, 
 .resource_tags_p a:visited, 
 .resource_tags_p a:hover{
+    text-transform: uppercase;
     color: #8CAA2E !important;
     font-weight: bold;
     font-size: 0.9em;
