@@ -89,17 +89,19 @@ if (isset($_POST['submit']) && ($_POST['submit'] != '')) {
         $set_str .= " $k = '$v', ";
     }
 
-    if ($_FILES["file"]["error"] > 0) {
-        $message = "Error: " . $_FILES["file"]["error"];
-    } else {
-        $files = glob("$apk_path/*"); // get all file names
-        foreach ($files as $file) { // iterate files
-            if (is_file($file))
-                unlink($file); // delete file
+    if ($_FILES["file"]['size'] > 0) {
+        if ($_FILES["file"]["error"] > 0) {
+            $message = "Error: " . $_FILES["file"]["error"];
+        } else {
+            $files = glob("$apk_path/*"); // get all file names
+            foreach ($files as $file) { // iterate files
+                if (is_file($file))
+                    unlink($file); // delete file
+            }
+            move_uploaded_file($_FILES["file"]["tmp_name"], "$apk_path/$id-" . $fields['name'] . ".apk");
         }
-        move_uploaded_file($_FILES["file"]["tmp_name"], "$apk_path/$id-" . $fields['name'] . ".apk");
     }
-    
+
     if ($fields['name'] == '' || $fields['description'] == '' || $fields['author_id'] == '') {
         $message = "Please enter required information";
     }
@@ -173,7 +175,7 @@ $cat_ins = new Category();
                         }
                     }
                     ?>
-                    <input type="file" name="file" required id="file">
+                    <input type="file" name="file" id="file">
                 </li>
                 <li class="wide">
                     <label for="name">Resource Name:</label>

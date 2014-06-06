@@ -63,7 +63,7 @@ ErrorDocument 404 /404.php
 
 RewriteRule    ^([a-z]+)$    /$1_manage.php    [QSA,NC]    # Rule : Pages are sent to _manage.php
 
-RewriteRule    ^(.*)(\.png$)|(\.jpg$)|(\.log$)|(\.csv$)|(\.doc$)|(\.xls$)|(\.pdf$)  404.php [L]    # Rule : All disallowed extensions are send to 404/403
+RewriteRule    ^(.*)(\.log$)|(\.doc$)|(\.xls$)|(\.pdf$)  404.php [L]    # Rule : All disallowed extensions are send to 404/403
 
 #RewriteCond     "%{REQUEST_URI}_manage.php" !-f
 #RewriteRule     ^([a-z]+)$ $1.php [NC]

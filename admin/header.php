@@ -46,6 +46,7 @@
         <title><?= $page_info['title'] ?></title>
     </head>
     <body>
+        <a href="top" style="display:none"></a>
         <div class="wrapper">
             <div class="heading_bar">
                 <div class="site_name">

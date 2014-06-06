@@ -1,4 +1,4 @@
-{foreach from=$resources item=res}
+{foreach from=$info item=res}
     <div class='resource_box'>
         <p>
             {*            {$res.name|var_dump}*}

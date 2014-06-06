@@ -10,6 +10,13 @@ require_once '../common.prepend.php';
 //}
 
 $html = '';
+
+if (count($_GET) == 0) {
+    GetDisplayStyle('cards');
+} elseif (isset($_GET['style']) && $_GET['style'] != '') {
+    GetDisplayStyle($_GET['style']);
+}
+
 if (!isset($_GET['ajax']) || $_GET['ajax'] != '1') {
     $data = ResourcesPage();
     $html = RenderPage($data['data']);
@@ -19,4 +26,3 @@ if (!isset($_GET['ajax']) || $_GET['ajax'] != '1') {
 }
 
 echo $html;
-?>

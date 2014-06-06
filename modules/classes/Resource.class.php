@@ -138,13 +138,18 @@ class Resource {
         $query = array();
         $query_or = array();
         $query_or_s = '';
+        $display = GetDisplayStyle();
+
         // If searching 
         if ($this->resource_search_text != '') {
             $query_or[] = " r.resource_id IN "
                     . "(SELECT rc.res_id FROM res_cat rc WHERE rc.cat_id IN "
                     . "(SELECT c.cat_id FROM categories c WHERE c.active = 1 AND c.name like '%{$this->resource_search_text}%') "
                     . ") ";
-            $query_or[] = " r.author_id IN (SELECT a.author_id FROM authors a WHERE a.name like '%{$this->resource_search_text}%' ) ";
+
+            if ($display != 'list') {
+                $query_or[] = " r.author_id IN (SELECT a.author_id FROM authors a WHERE a.name like '%{$this->resource_search_text}%' ) ";
+            }
             $query_or[] = " name LIKE '%{$this->resource_search_text}%' ";
             $query_or = trim(implode(" OR ", $query_or), "OR");
             $query_or_s = "($query_or) AND ";
@@ -164,24 +169,59 @@ class Resource {
         $query[] = " r.active = 1 ";
         $query[] = " r.is_approved = 1 ";
         $query_where = trim(implode(" AND ", $query), "AND");
-        $this->resource_info = GetRows("resources r", "$query_or_s . $query_where", "resource_id, name, description, url, github_stargazers, author_id, user_id, REPLACE(name,' ','-') AS hyphenated_name ");
-        for ($i = 0; $i < count($this->resource_info); $i++) {
-            $res_cat = $this->GetResourceCategories($this->resource_info[$i]['resource_id']);
-            $this->resource_info[$i]['author_info'] = GetRowById("authors", "author_id", $this->resource_info[$i]['author_id'], "name");
-            $this->resource_info[$i]['author_info']['hyphenated_name'] = ConvertSpacesToHyphens($this->resource_info[$i]['author_info']['name']);
-            $this->resource_info[$i]['author_info']['name'] = InsertSearchHighlight($this->resource_info[$i]['author_info']['name'], $this->resource_search_text);
-            $this->resource_info[$i]['name'] = InsertSearchHighlight($this->resource_info[$i]['name'], $this->resource_search_text);
 
-            $this->resource_info[$i]['apk'] = $this->GetApkPath($this->resource_info[$i]['resource_id']);
+        // Sort resources
+        // Get res_id
+        $res_ids = GetColumnInfo("resources r", "resource_id", $query_or_s . $query_where);
+        $res_ids_q = trim(implode(", ", $res_ids), ", ");
+        // sort res_id
+        $res_ids = GetColumnInfoByQuery("SELECT rc.res_id FROM res_cat rc "
+                . "LEFT JOIN categories c ON rc.cat_id = c.cat_id "
+                . "WHERE res_id IN ($res_ids_q) ORDER BY c.name ");
+        $res_ids_q = trim(implode(", ", $res_ids), ", ");
 
-            foreach ($res_cat as $rs) {
-                $cat = new Category();
-                $cat_info = $cat->GetCategoryFullInfo($rs);
-                $cat_info['full_name'] = InsertSearchHighlight($cat_info['full_name'], $this->resource_search_text);
-                $this->resource_info[$i]['res_cat'][] = $cat_info;
+        // End order
+
+        $res_used = array();
+        $resource_info = array();
+
+        if ($display == 'cards' || $res_id != '' || $cat_id != '' || $author_id != '') {
+            for ($i = 0; $i < count($res_ids); $i++) {
+
+                if (array_search($res_ids[$i], $res_used) !== false) {
+                    continue;
+                }
+
+                $res_used[] = $res_ids[$i];
+                $resource_info[$i] = $this->GetResourceInfoById($res_ids[$i]);
             }
+            return $resource_info;
         }
-        return $this->resource_info;
+
+        $cat_info = array();
+        if ($display == 'list') {
+            $cats = GetColumnInfoByQuery("SELECT DISTINCT(rc.cat_id) FROM res_cat rc "
+                    . "LEFT JOIN categories c ON rc.cat_id = c.cat_id "
+                    . "WHERE res_id IN ($res_ids_q) ORDER BY c.name ");
+            for ($i = 0; $i < count($cats); $i++) {
+                $c = GetRowById("categories", "cat_id", $cats[$i], "cat_id, name, REPLACE( name,  ' ',  '-' ) AS hyphenated_name");
+                $cat_info[$i]['cat_id'] = $c['cat_id'];
+                $cat_info[$i]['name'] = InsertSearchHighlight($c['name'], $this->resource_search_text);
+                $cat_info[$i]['hyphenated_name'] = $c['hyphenated_name'];
+                $rc = GetRowsAsAssocArray("SELECT r.resource_id, r.name, REPLACE( r.name,  ' ',  '-' ) AS hyphenated_name FROM resources r 
+                    WHERE r.resource_id IN (SELECT res_id FROM res_cat WHERE cat_id = {$cats[$i]} AND res_id IN ($res_ids_q)) 
+                    ORDER BY r.name");
+
+                foreach ($rc as $r) {
+                    $r_info = array();
+                    $r_info['resource_id'] = $r['resource_id'];
+                    $r_info['name'] = InsertSearchHighlight($r['name'], $this->resource_search_text);
+                    $r_info['hyphenated_name'] = $r['hyphenated_name'];
+                    $cat_info[$i]['res'][] = $r_info;
+                }
+            }
+            return $cat_info;
+        }
     }
 
     public function GetApkPath($res_id) {
@@ -205,19 +245,24 @@ class Resource {
         return $this->res_cat;
     }
 
-    public function GetResourceInfo($res_id = '') {
-        if ($res_id != '')
-            $this->SetResourceId($res_id);
+    public function GetResourceInfoById($res_id) {
+        $res_info = GetRowById("resources r", "resource_id", $res_id, "resource_id, name, description, url, github_stargazers, author_id, user_id, REPLACE(name,' ','-') AS hyphenated_name ");
+        $res_cat = $this->GetResourceCategories($res_info['resource_id']);
+        $res_info['author_info'] = GetRowById("authors", "author_id", $res_info['author_id'], "name");
+        $res_info['author_info']['hyphenated_name'] = ConvertSpacesToHyphens($res_info['author_info']['name']);
+        $res_info['author_info']['name'] = InsertSearchHighlight($res_info['author_info']['name'], $this->resource_search_text);
+        $res_info['name'] = InsertSearchHighlight($res_info['name'], $this->resource_search_text);
 
-        $this->resource_info = GetRowById("resources", "resource_id", $this->resource_id, "resource_id, name, description, url, github_stargazers, author_id, user_id, REPLACE(name,' ','-') AS hyphenated_name ");
-        $res_cat = $this->GetResourceCategories($this->resource_id);
+        $res_info['apk'] = $this->GetApkPath($res_info['resource_id']);
+
         foreach ($res_cat as $rs) {
             $cat = new Category();
             $cat_info = $cat->GetCategoryFullInfo($rs);
-            $this->resource_info['res_cat'][] = $cat_info;
+            $cat_info['full_name'] = InsertSearchHighlight($cat_info['full_name'], $this->resource_search_text);
+            $res_info['res_cat'][] = $cat_info;
         }
-        //array_push($this->resource_info, $this->res_cat);
-        return $this->resource_info;
+
+        return $res_info;
     }
 
     /**

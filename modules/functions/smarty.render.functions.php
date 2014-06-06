@@ -86,6 +86,8 @@ function ResourcesPage() {
     $tpl = new SmartyCustom;
     $resources_ins = new Resource;
     $resource_search = '';
+    $tpl_name = 'resource_box.tpl';
+    $display = GetDisplayStyle();
 
     /*
      * If there is need for lightbox or any other different UI for resource
@@ -102,6 +104,12 @@ function ResourcesPage() {
       $limit_search_to_cats = TextToDB($_GET['limit_search_to_cats']);
       }
      */
+    if ($display == 'cards') {
+        $tpl_name = 'resource_box.tpl';
+    } elseif ($display == 'list') {
+        $tpl_name = 'resource_list.tpl';
+    }
+
     if (isset($_GET['search']) && $_GET['search'] != '') {
         $resource_search = TextToDB($_GET['search']);
         $title = "Search $resource_search";
@@ -109,24 +117,30 @@ function ResourcesPage() {
     if (isset($_GET['resource']) && $_GET['resource'] != '') {
         $resource_id = TextToDB($_GET['resource']);
         $name = 1;
+        $tpl_name = 'resource_box.tpl';
     }
     $category_search_id = '';
     if (isset($_GET['category']) && $_GET['category'] != '') {
         $category_search_id = TextToDB($_GET['category']);
+        $tpl_name = 'resource_box.tpl';
     }
     $author_id = '';
     if (isset($_GET['author']) && $_GET['author'] != '') {
         $author_id = TextToDB($_GET['author']);
+        $tpl_name = 'resource_box.tpl';
     }
 
     $resources = $resources_ins->GetResources($resource_search, $category_search_id, $resource_id, $author_id);
-    if (count($resources) > 0) {
-        if ($name == 1)
-            $title = $resources[0]['name'];
 
-        $tpl->assign('resources', $resources);
-        $html = $tpl->fetch('resource_box.tpl');
+    if (count($resources) > 0) {
+
+        if ($name == 1) {
+            $title = $resources[0]['name'];
+        }
+        $tpl->assign('info', $resources);
+        $html = $tpl->fetch($tpl_name);
     } else {
+
         $html = $tpl->fetch('resource_box_notfound.tpl');
     }
 

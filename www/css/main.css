@@ -197,23 +197,26 @@ html[xmlns] .clearfix {
     background: -ms-linear-gradient(top,  #578900 0%,#487200 100%); 
     background: linear-gradient(to bottom,  #578900 0%,#487200 100%); 
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#578900', endColorstr='#487200',GradientType=0 ); 
+    */
     -webkit-box-shadow: 0px 3px 3px 0px rgba(50, 50, 50, 0.3);
     -moz-box-shadow:    0px 3px 3px 0px rgba(50, 50, 50, 0.3);
     box-shadow:         0px 3px 3px 0px rgba(50, 50, 50, 0.3);
-    */
 
 }
-.header_ul > li{
+.header_ul_left > li{
     font-size: 1em;
     line-height: 1em;
     font-weight: bold;
     color: white;
     float: left;
 }
-.header_ul > li:last-child{
+.header_ul_right > li{
     float: right;
     margin-right: 30px;
     margin-top: 7px;
+}
+.view_icon{
+    width: 20px;
 }
 .logo{
     width: 20px;
@@ -254,7 +257,7 @@ a#submit_library:link,
 a#submit_library:visited, 
 a#submit_library:hover{
     text-transform: uppercase;
-    color: #fff !important;
+    color: #fff;
     font-size: 1.1em;
     line-height: 1.1em;
     font-weight: bold;
@@ -362,7 +365,7 @@ a#submit_library:hover{
 }
 .content_holder{
     /*margin-bottom: -100px;*/
-    /*min-height: 100%;*/
+    min-height: 80%;
     float: right;
     padding-bottom: 35px;
 }
@@ -413,7 +416,7 @@ a.resource_name:link,
 a.resource_name:visited, 
 a.resource_name:hover{
     text-transform: uppercase;
-    color: #000 !important;
+    color: #000;
     /*font-size: 1.1em;*/
     font-weight: bold;
 }
@@ -422,18 +425,18 @@ a.author_name:active,
 a.author_name:link, 
 a.author_name:visited, 
 a.author_name:hover{
-    color: #707070 !important;
+    color: #707070;
     font-style: italic;
     font-size: 0.9em;
     line-height: 1.5em;
 }
-.resource_tags_p a,
-.resource_tags_p a:active, 
-.resource_tags_p a:link, 
-.resource_tags_p a:visited, 
-.resource_tags_p a:hover{
+a.cat_a,
+a.cat_a:active, 
+a.cat_a:link, 
+a.cat_a:visited, 
+a.cat_a:hover{
     text-transform: uppercase;
-    color: #8CAA2E !important;
+    color: #8CAA2E;
     font-weight: bold;
     font-size: 0.9em;
 }
@@ -442,16 +445,9 @@ a.author_name:hover{
 .upvote_container a:link, 
 .upvote_container a:visited, 
 .upvote_container a:hover{
-    color: #000 !important;
+    color: #000 ;
     font-weight: bold;
     /*font-size: 1.1em;*/
-}
-.resource_tags_p{
-    /*    height: 60px;
-        clear: both;*/
-}
-.resource_tags_p a, .resource_views_points{
-    /* white-space: nowrap; */
 }
 .resource_views_points{
     position: absolute;
@@ -494,6 +490,50 @@ a.author_name:hover{
     list-style: circle inside;
 }
 /* RESOURCE BOX CSS END */
+
+
+/* CATEGORY BOX CSS */
+
+.category_box{
+    position: relative;
+    /*    
+    width: 230px;
+    height: 300px;
+    */
+    width: 45%;
+    float: left;
+    background-color: #fff;
+    margin: 20px 0 0 25px;
+    padding: 12px;
+    border: 1px solid #D8D8D8;
+    -webkit-box-shadow: 0px 3px 3px 0px rgba(50, 50, 50, 0.3);
+    -moz-box-shadow:    0px 3px 3px 0px rgba(50, 50, 50, 0.3);
+    box-shadow:         0px 3px 3px 0px rgba(50, 50, 50, 0.3);
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    overflow: hidden;
+}
+.category_box:nth-child(2n+1){
+    clear: both;
+}
+.category_box h2,
+.category_box li
+{
+    margin-bottom: 10px;
+}
+.category_box a,
+.category_box a:active, 
+.category_box a:link, 
+.category_box a:visited, 
+.category_box a:hover{
+    text-transform: uppercase;
+    font-size: 1.1em;
+    /*    font-weight: bold;
+        color: #8CAA2E !important;
+    */
+}
+/* CATEGORY BOX CSS END */
 
 /* SUBMIT LIBRARY*/
 

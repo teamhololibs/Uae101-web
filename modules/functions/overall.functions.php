@@ -170,6 +170,36 @@ function SetConfirmationMessage($message, $type = '') {
     $_SESSION['confirmation_message']['type'] = $type;
 }
 
+// cards or list
+function GetDisplayStyle($style = '') {
+    if ($style != '' && $style != 'list' && $style != 'cards') {
+        $_SESSION['display_style'] = 'cards';
+        return 'cards';
+    }
+    
+    if ($style != '') {
+        $_SESSION['display_style'] = $style;
+        return $style;
+    }
+
+    if (!isset($_SESSION['display_style']) || $_SESSION['display_style'] == '') {
+        $_SESSION['display_style'] = 'cards';
+        return 'cards';
+    }
+
+    return $_SESSION['display_style'];
+}
+
+function SetCookieCustom($name, $value = '') {
+    if ($value == '') {
+        return htmlspecialchars($_COOKIE[$name]);
+    }
+
+    $expire = time() + 60 * 60 * 24 * 30;
+    setcookie($name, $value, $expire);
+    return htmlspecialchars($_COOKIE[$name]);
+}
+
 /**
  * @return string DB compatible string
  * @param string String to be escaped
@@ -232,9 +262,10 @@ function ConvertHyphensToSpaces($string) {
     return str_replace("-", " ", $string);
 }
 
-function InsertSearchHighlight($parent, $search){
+function InsertSearchHighlight($parent, $search) {
     $combined_string = "<span class='search_highlight'>$search</span>";
     $return = str_ireplace($search, $combined_string, $parent);
     return $return;
 }
+
 ?>
