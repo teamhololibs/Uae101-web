@@ -11,9 +11,11 @@ require_once '../common.prepend.php';
 
 $html = '';
 if (!isset($_GET['ajax']) || $_GET['ajax'] != '1') {
-    $html = RenderPage(ResourcesPage());
+    $data = ResourcesPage();
+    $html = RenderPage($data['data']);
 } else {
     $html = ResourcesPage();
+    $html = json_encode($html);
 }
 
 echo $html;

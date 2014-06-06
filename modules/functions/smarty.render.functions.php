@@ -104,11 +104,11 @@ function ResourcesPage() {
      */
     if (isset($_GET['search']) && $_GET['search'] != '') {
         $resource_search = TextToDB($_GET['search']);
-        $GLOBALS['page_title'] = "$resource_search - Search in ";
+        $title = "Search $resource_search";
     }
     if (isset($_GET['resource']) && $_GET['resource'] != '') {
         $resource_id = TextToDB($_GET['resource']);
-        $GLOBALS['page_title'] = "$resource_id";
+        $name = 1;
     }
     $category_search_id = '';
     if (isset($_GET['category']) && $_GET['category'] != '') {
@@ -119,17 +119,29 @@ function ResourcesPage() {
         $author_id = TextToDB($_GET['author']);
     }
 
-    $GLOBALS['page_title'] .= SITE_NAME;
     $resources = $resources_ins->GetResources($resource_search, $category_search_id, $resource_id, $author_id);
     if (count($resources) > 0) {
-        //Debug::dump($resources[0]['name']);
+        if ($name == 1)
+            $title = $resources[0]['name'];
+
         $tpl->assign('resources', $resources);
         $html = $tpl->fetch('resource_box.tpl');
     } else {
         $html = $tpl->fetch('resource_box_notfound.tpl');
     }
 
-    return $html;
+    $GLOBALS['page_title'] = GetTitle($title);
+    $return['title'] = $GLOBALS['page_title'];
+    $return['data'] = $html;
+    return $return;
+}
+
+function GetTitle($title = '') {
+    if ($title != '') {
+        return $title . " - " . SITE_NAME;
+    } else {
+        return SITE_NAME;
+    }
 }
 
 function Page404() {

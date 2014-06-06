@@ -15,7 +15,7 @@ class SmartyCustom extends Smarty {
         //$smarty->cache_lifetime = 120;
         $this->assign('PIC_PATH', PIC_PATH);
         $this->assign('META_TITLE', $GLOBALS['page_title']);
-        
+
         $this->debugging = SMARTY_DEBUGGING;
         $this->debugging_ctrl = SMARTY_DEBUGGING_CTRL;
         $this->caching = SMARTY_CACHING;

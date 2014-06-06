@@ -51,7 +51,6 @@ $(document).ready(function() {
 //    });
     $('.left_menu').css('top', $('.header').outerHeight());
     $(".nano").nanoScroller();
-    //console.log($('.header').position().top + $('.header').outerHeight(true));
     $(window).scroll(function() {
         var winTop = $(this).scrollTop();
         var headerHeight = $('.header').outerHeight();
@@ -100,24 +99,22 @@ $(document).ready(function() {
             historystate = {search: resource_search};
             historyurl = '/?search=' + resource_search;
         }
-        console.log(resource_search);
-        //console.log(historystate);
-        //console.log(historyurl);
         resourceSearchAjax(resource_search);
         window.history.pushState(historystate, "", historyurl);
     }
     function resourceSearchAjax(resource_search) {
-        //console.log(resource_search);
         $('.loading_animation').show();
         $.ajax({
             //url: '',
             type: 'get',
+            dataType: "json",
             data: {
                 search: resource_search,
                 ajax: 1,
             },
             success: function(data) {
-                $('.content_holder').html(data);
+                $('.content_holder').html(data.data);
+                document.title = data.title;
                 setTimeout("jQuery('.loading_animation').hide();", 2000);
                 windowResize();
             }
@@ -127,11 +124,9 @@ $(document).ready(function() {
         QueryString = updateQueryString()
         ajax_url = updateAjaxUrl();
         updateLimitSearch();
-        console.log("location: " + document.location + ", state: " + JSON.stringify(event.state));
-        //console.log(event);
+        //console.log("location: " + document.location + ", state: " + JSON.stringify(event.state));
         var search;
         if (event.state == null) {
-            //console.log('fds');
             search = '';
         } else {
             search = event.state.search;
@@ -167,7 +162,6 @@ $(document).ready(function() {
         vars = urlpathname.split("/");
         var i = 0;
         for (var i = 0; i < vars.length; i++) {
-            //console.log(vars[i]);
             query_string[i] = vars[i];
         }
         return query_string;
@@ -188,7 +182,6 @@ function windowResize() {
 function textAreaLength(element) {
 // Store the maxlength and value of the field.
     var maxlength = $(element).attr('maxlength');
-    console.log(maxlength);
     var val = $(element).val();
     var char_left = maxlength - $(element).val().length;
     //$(element).parent().find('#char_left').html(char_left);
@@ -289,7 +282,6 @@ function strstr(haystack, needle, bool) {
     var pos = 0;
     haystack += '';
     pos = haystack.indexOf(needle);
-    //console.log(pos);
     if (pos == -1) {
         return false;
     } else {
