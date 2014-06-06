@@ -171,10 +171,9 @@ class Resource {
             $this->resource_info[$i]['author_info']['hyphenated_name'] = ConvertSpacesToHyphens($this->resource_info[$i]['author_info']['name']);
             $this->resource_info[$i]['author_info']['name'] = InsertSearchHighlight($this->resource_info[$i]['author_info']['name'], $this->resource_search_text);
             $this->resource_info[$i]['name'] = InsertSearchHighlight($this->resource_info[$i]['name'], $this->resource_search_text);
-            $apk = "/apk/{$this->resource_info[$i]['resource_id']}/{$this->resource_info[$i]['resource_id']}.apk";
-            if (file_exists(SERVER_PATH . "www/$apk")) {
-                $this->resource_info[$i]['apk'] = $apk;
-            }
+
+            $this->resource_info[$i]['apk'] = $this->GetApkPath($this->resource_info[$i]['resource_id']);
+
             foreach ($res_cat as $rs) {
                 $cat = new Category();
                 $cat_info = $cat->GetCategoryFullInfo($rs);
@@ -183,6 +182,19 @@ class Resource {
             }
         }
         return $this->resource_info;
+    }
+
+    public function GetApkPath($res_id) {
+        $apk = '';
+        $files = glob(SERVER_PATH . "/www/apk/$res_id/*.apk"); // get all file names
+        foreach ($files as $file) { // iterate files
+            if (is_file($file)) {
+                $file = preg_filter("/\/.*\//", "", $file);
+                $apk = "/apk/$res_id/$file";
+                break;
+            }
+        }
+        return $apk;
     }
 
     public function GetResourceCategories($res_id = '') {
@@ -290,6 +302,7 @@ class Resource {
             $res_data['resourceId'] = $resources[$i]['resource_id'];
             $res_data['name'] = $resources[$i]['name'];
             $res_data['description'] = $resources[$i]['description'];
+            $res_data['apk_path'] = $this->GetApkPath($resources[$i]['resource_id']);
             $res_data['active'] = $resources[$i]['active'];
             $res_data['url'] = $resources[$i]['url'];
             $res_data['githubStargazers'] = $resources[$i]['github_stargazers'];

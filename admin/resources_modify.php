@@ -22,11 +22,8 @@ if ($action == 'edit' && $id) {
     $resource = GetRowById($table_name, 'resource_id', $id);
 }
 
-$apk_name = "$id.apk";
-$cfg_apk = "www/apk/";
-$apk_path = SERVER_PATH . $cfg_apk . "/$id";
-$apk_full_path = SERVER_PATH . $cfg_apk . "/$id/$apk_name";
-$apk_wed_path = MAIN_SITE . "apk/$id/$apk_name";
+$apk_path = SERVER_PATH . "www/apk/$id";
+$apk_web_path = MAIN_SITE . "/apk/$id/";
 $oldmask = umask(0);
 if (!file_exists($apk_path)) {
     mkdir($apk_path, 0777, true);
@@ -86,17 +83,23 @@ if (isset($_POST['submit']) && ($_POST['submit'] != '')) {
     $fields = $_POST['q'];
     $set_str = 'SET ';
     $message = '';
-    if ($_FILES["file"]["error"] > 0) {
-        $message = "Error: " . $_FILES["file"]["error"];
-    } else {
-        move_uploaded_file($_FILES["file"]["tmp_name"], $apk_full_path);
-    }
     $fields['description'] = substr($fields['description'], 0, $desc_maxlength);
     foreach ($fields as $k => $v) {
         $v = TextToDB(trim($v));
         $set_str .= " $k = '$v', ";
     }
 
+    if ($_FILES["file"]["error"] > 0) {
+        $message = "Error: " . $_FILES["file"]["error"];
+    } else {
+        $files = glob("$apk_path/*"); // get all file names
+        foreach ($files as $file) { // iterate files
+            if (is_file($file))
+                unlink($file); // delete file
+        }
+        move_uploaded_file($_FILES["file"]["tmp_name"], "$apk_path/$id-" . $fields['name'] . ".apk");
+    }
+    
     if ($fields['name'] == '' || $fields['description'] == '' || $fields['author_id'] == '') {
         $message = "Please enter required information";
     }
@@ -160,9 +163,16 @@ $cat_ins = new Category();
             <ul>
                 <li class="wide">
                     <label for="file">Filename:</label>
-                    <? if (file_exists($apk_full_path)) { ?>
-                        <a target='_blank' href='<?= $apk_wed_path ?>'>Download APK</a>
-                    <? } ?>
+                    <?
+                    $files = glob("$apk_path/*.apk"); // get all file names
+                    foreach ($files as $file) { // iterate files
+                        if (is_file($file)) {
+                            $file = preg_filter("/\/.*\//", "", $file);
+                            ?><a target='_blank' href='<?= $apk_web_path . $file ?>'>Download APK</a><?
+                            break;
+                        }
+                    }
+                    ?>
                     <input type="file" name="file" required id="file">
                 </li>
                 <li class="wide">

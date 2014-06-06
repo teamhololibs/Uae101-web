@@ -172,7 +172,7 @@ PreparePage(array(
             foreach ($resources as $resource) {
                 ?>
                 <tr <?= ($i++ % 2 != 0) ? "class='odd'" : '' ?> >
-                    <td><?= $resource['resource_id'] ?></td>
+                    <td>#<?= $resource['resource_id'] ?></td>
                     <td>
                         <a target='_blank' href='<?= $resource['url'] ?>'><?= TextFromDB($resource['name']) ?></a><br/><br/>
                         <? if ($res->IsGithubUrl($resource['url'])) { ?>
