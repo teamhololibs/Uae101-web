@@ -344,19 +344,19 @@ class Resource {
         $cat = new Category();
         for ($i = 0; $i < count($resources); $i++) {
             $res_data = array();
-            $res_data['resourceId'] = $resources[$i]['resource_id'];
+            $res_data['resourceId'] = intval($resources[$i]['resource_id']);
             $res_data['name'] = $resources[$i]['name'];
             $res_data['description'] = $resources[$i]['description'];
             $res_data['apk_path'] = $this->GetApkPath($resources[$i]['resource_id']);
-            $res_data['active'] = $resources[$i]['active'];
+            $res_data['active'] = intval($resources[$i]['active']);
             $res_data['url'] = $resources[$i]['url'];
-            $res_data['githubStargazers'] = $resources[$i]['github_stargazers'];
-            $res_data['userId'] = $resources[$i]['user_id'];
-            $res_data['authorId'] = $resources[$i]['author_id'];
+            $res_data['githubStargazers'] = intval($resources[$i]['github_stargazers']);
+            $res_data['userId'] = intval($resources[$i]['user_id']);
+            $res_data['authorId'] = intval($resources[$i]['author_id']);
             $res_data['authorName'] = GetInfoById("authors", "author_id", $resources[$i]['author_id'], 'name');
             $res_cat = $this->GetResourceCategories($resources[$i]['resource_id']);
             $cat_info = $cat->GetCategoryFullInfo($res_cat[0]);
-            $res_data['categoryId'] = $cat_info['cat_id'];
+            $res_data['categoryId'] = intval($cat_info['cat_id']);
             $res_data['categoryName'] = $cat_info['name'];
 
             /*
@@ -375,7 +375,7 @@ class Resource {
 
             $json[] = $res_data;
         }
-        $this->resource_info['last_updated'] = "2014-05-31 14:04:07";
+        
         $this->resource_info['last_updated'] = $this->LastUpdated();
         $this->resource_info['count'] = count($json);
         usort($json, array("Resource", "CompareCategories"));
@@ -389,13 +389,8 @@ class Resource {
     }
 
     public function LastUpdated() {
-        $updated[] = GetColumnInfo("categories", 'updated', "1 ORDER BY updated DESC LIMIT 1");
-        $updated[] = GetColumnInfo("authors", 'updated', "1 ORDER BY updated DESC LIMIT 1");
-        $updated[] = GetColumnInfo("res_cat", 'updated', "1 ORDER BY updated DESC LIMIT 1");
-        $updated[] = GetColumnInfo("resources", 'updated', "1 ORDER BY updated DESC LIMIT 1");
-        sort($updated);
-        return $updated[3][0];
-        //return $updated;
+        $updated = GetColumnInfoByQuery("SELECT NOW()");
+        return $updated[0];
     }
 
 }
