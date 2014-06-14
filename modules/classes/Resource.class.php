@@ -313,6 +313,7 @@ class Resource {
 
     public function GetResourceJson() {
         $res_updated_q = '';
+        $no_change = false;
         if (isset($_GET['updated']) && $_GET['updated'] != '') {
             $updated = trim(TextToDB($_GET['updated']));
 
@@ -335,47 +336,53 @@ class Resource {
             }
 
             $res_updated = GetColumnInfo("resources", "resource_id", "updated >= '$updated' $auths_updated_q $res_cat_updated_q ");
-            $res_updated_q = implode(", ", $res_updated);
-            $res_updated_q = " resource_id IN ($res_updated_q) ";
+            if (count($res_updated) > 0) {
+                $res_updated_q = implode(", ", $res_updated);
+                $res_updated_q = " resource_id IN ($res_updated_q) ";
+            } else {
+                $no_change = true;
+            }
         }
-        $resources = GetRows("resources", $res_updated_q);
-        $this->resource_info = array();
-        $json = array();
-        $cat = new Category();
-        for ($i = 0; $i < count($resources); $i++) {
-            $res_data = array();
-            $res_data['resourceId'] = intval($resources[$i]['resource_id']);
-            $res_data['name'] = $resources[$i]['name'];
-            $res_data['description'] = $resources[$i]['description'];
-            $res_data['apk_path'] = $this->GetApkPath($resources[$i]['resource_id']);
-            $res_data['active'] = intval($resources[$i]['active']);
-            $res_data['url'] = $resources[$i]['url'];
-            $res_data['githubStargazers'] = intval($resources[$i]['github_stargazers']);
-            $res_data['userId'] = intval($resources[$i]['user_id']);
-            $res_data['authorId'] = intval($resources[$i]['author_id']);
-            $res_data['authorName'] = GetInfoById("authors", "author_id", $resources[$i]['author_id'], 'name');
-            $res_cat = $this->GetResourceCategories($resources[$i]['resource_id']);
-            $cat_info = $cat->GetCategoryFullInfo($res_cat[0]);
-            $res_data['categoryId'] = intval($cat_info['cat_id']);
-            $res_data['categoryName'] = $cat_info['name'];
+        if($no_change == false){
+            $resources = GetRows("resources", $res_updated_q);
+            $this->resource_info = array();
+            $json = array();
+            $cat = new Category();
+            for ($i = 0; $i < count($resources); $i++) {
+                $res_data = array();
+                $res_data['resourceId'] = intval($resources[$i]['resource_id']);
+                $res_data['name'] = $resources[$i]['name'];
+                $res_data['description'] = $resources[$i]['description'];
+                $res_data['apk_path'] = $this->GetApkPath($resources[$i]['resource_id']);
+                $res_data['active'] = intval($resources[$i]['active']);
+                $res_data['url'] = $resources[$i]['url'];
+                $res_data['githubStargazers'] = intval($resources[$i]['github_stargazers']);
+                $res_data['userId'] = intval($resources[$i]['user_id']);
+                $res_data['authorId'] = intval($resources[$i]['author_id']);
+                $res_data['authorName'] = GetInfoById("authors", "author_id", $resources[$i]['author_id'], 'name');
+                $res_cat = $this->GetResourceCategories($resources[$i]['resource_id']);
+                $cat_info = $cat->GetCategoryFullInfo($res_cat[0]);
+                $res_data['categoryId'] = intval($cat_info['cat_id']);
+                $res_data['categoryName'] = $cat_info['name'];
 
-            /*
-             * If in future we need to have multiple categories per library
+                /*
+                 * If in future we need to have multiple categories per library
 
-              $rc_count = 0;
-              $res = array();
-              foreach ($res_cat as $rs) {
-              $cat_info = $cat->GetCategoryFullInfo($rs);
-              $res[$rc_count]['categoryId'] = $cat_info['cat_id'];
-              $res[$rc_count]['categoryName'] = $cat_info['name'];
-              $rc_count++;
-              }
-              $res_data['categories'] = $res;
-             */
+                  $rc_count = 0;
+                  $res = array();
+                  foreach ($res_cat as $rs) {
+                  $cat_info = $cat->GetCategoryFullInfo($rs);
+                  $res[$rc_count]['categoryId'] = $cat_info['cat_id'];
+                  $res[$rc_count]['categoryName'] = $cat_info['name'];
+                  $rc_count++;
+                  }
+                  $res_data['categories'] = $res;
+                 */
 
-            $json[] = $res_data;
+                $json[] = $res_data;
+            }
         }
-        
+            
         $this->resource_info['last_updated'] = $this->LastUpdated();
         $this->resource_info['count'] = count($json);
         usort($json, array("Resource", "CompareCategories"));
