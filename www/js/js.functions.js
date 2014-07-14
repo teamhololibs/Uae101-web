@@ -131,7 +131,6 @@ $(document).ready(function() {
     }
     window.onpopstate = function(event) {
         QueryString = updateQueryString()
-        ajax_url = updateAjaxUrl();
         updateLimitSearch();
         //console.log("location: " + document.location + ", state: " + JSON.stringify(event.state));
         var search;
