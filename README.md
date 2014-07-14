@@ -6,6 +6,7 @@ UAE 101
 uaepackage.com
 uaepot.com
 afe.com
+easyuae.org
 
 ===
 
