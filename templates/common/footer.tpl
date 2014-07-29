@@ -7,7 +7,7 @@
             <a href="/contactus">Contact Us</a>
         </li>
         <li>
-            <a href="/submit">Submit a Library</a>
+            <a href="/submit">Submit a Page</a>
         </li>
     </ul>
 </div>

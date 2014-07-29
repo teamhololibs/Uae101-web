@@ -47,7 +47,7 @@ if (isset($_POST['submit']) && ($_POST['submit'] != '')) {
     $set_str = 'SET ';
     $message = '';
 
-    if ($fields['name'] == '' || $fields['is_parent'] == '') {
+    if ($fields['name'] == '') {
         $message = "Please enter required information";
     }
 
@@ -107,7 +107,6 @@ PreparePage(array(
     'page_heading' => ($cats['name'] == null || $action == 'create') ? 'New Category' : $cats['name'], // Required
 ));
 ?>
-<script type="text/javascript" src="js/category.js"></script>
 <div class="data_container">
     <div class="form_fields">
         <form method="post" action="<?= $table_name ?>_modify.php?<?= $_SERVER['QUERY_STRING'] ?>">
@@ -115,29 +114,6 @@ PreparePage(array(
                 <li class="wide">
                     <label for="name">Category Name:</label>
                     <input id="name" type='text' class="required" required name="q[name]" value="<?= $cats['name'] ?>" title="Name of the category"/>
-                </li>
-                <li class="wide">
-                    <label style="padding: 0;" for="is_parent_">Is this a root/parent category?:</label>
-                    <label class="form_radio" for="is_parent_yes">Yes</label>
-                    <input class="form_radio" required id="is_parent_yes" type='radio' class="required is_parent" name="q[is_parent]" value="1" <?= ($cats['is_parent'] == '1') ? "checked" : '' ?> />
-                    <label class="form_radio" for="is_parent_no">No</label>
-                    <input class="form_radio" required id="is_parent_no" type='radio' class="required is_parent" name="q[is_parent]" value="0" <?= ($cats['is_parent'] == '0') ? "checked" : '' ?>/>
-                </li>
-                <li class="wide">
-                    <label for="parent">Parent Category:</label>
-                    <select id="parent" name="q[parent_id]">
-                        <option value=''>Select a Parent</option>
-                        <?
-                        $all_cats = GetRows($table_name, 'active = 1 AND parent_id = 0 ORDER BY name');
-                        //var_dump($all_cats);
-                        foreach ($all_cats as $cat) {
-                            echo "<option value='{$cat['cat_id']}' ";
-                            if ($cat['cat_id'] == $cats['parent_id'])
-                                echo 'selected';
-                            echo ">{$cat['name']}</option>";
-                        }
-                        ?>
-                    </select>
                 </li>
             </ul>
             <div class='form_button'>

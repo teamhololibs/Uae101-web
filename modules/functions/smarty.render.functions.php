@@ -53,95 +53,109 @@ function GetLeftMenu() {
     if (isset($_GET['category_name']) && $_GET['category_name'] != '') {
         $cat_name = trim(TextToDB($_GET['category_name']));
     }
-    $categories_tree = Category::GetCategoryFullTree($cat_name);
+    $cat_ins = new Category();
+    $categories_tree = $cat_ins->GetCategorySearch($cat_name);
     $tpl = new SmartyCustom;
     if (isset($_GET['category']) && $_GET['category'] != '') {
         $category_id = $_GET['category'];
-        $selected = 0;
         for ($i = 0; $i < count($categories_tree); $i++) {
             if ($categories_tree[$i]['cat_id'] == $category_id) {
                 $categories_tree[$i]['selected'] = 'selected';
-                $selected = 1;
                 break;
             }
-            if ($selected == 0 && count($categories_tree[$i]['children']) > 0) {
-                for ($j = 0; $j < count($categories_tree[$i]['children']); $j++) {
-                    if ($categories_tree[$i]['children'][$j]['cat_id'] == $category_id) {
-                        $categories_tree[$i]['children'][$j]['selected'] = 'selected';
-                        $selected_id = 1;
-                        break;
-                    }
-                }
-            }
-            if ($selected == 1)
-                break;
         }
     }
-    $tpl->assign('categories_tree', $categories_tree);
+    $emirate_link = 'all';
+    if ($_GET['emirate'] != '' && isset($_GET['emirate']) && is_numeric($_GET['emirate'])) {
+        $emirate_link = $_GET['emirate'];
+    }
+    $tpl->assign('emirate_link', $emirate_link);
+    $tpl->assign('links', $categories_tree);
     $html = $tpl->fetch('common/left_category_menu.tpl');
     return $html;
 }
 
+function EmiratesRow() {
+
+    $tpl = new SmartyCustom;
+
+    $ajax = false;
+    if ($_GET['ajax'] != '' && isset($_GET['ajax']) && $_GET['category'] == '1') {
+        $ajax = true;
+    }
+
+    $cat_link = 'all';
+    $category_search = 'All categories';
+    if ($_GET['category'] != '' && isset($_GET['category']) && is_numeric($_GET['category']) && $_GET['category'] != 'all') {
+        $cat_link = TextToDB($_GET['category']);
+        if($ajax === false)
+            $category_search = GetInfoById('categories', 'cat_id', $cat_link, 'name');
+    }
+
+    $em_search = 'All emirates';
+    $em_link = 'all';
+    if ($_GET['emirate'] != '' && isset($_GET['emirate']) && is_numeric($_GET['emirate']) && $_GET['emirate'] != 'all') {
+        $em_link = TextToDB($_GET['emirate']);
+        if($ajax === false)
+            $em_search = GetInfoById('emirates', 'emirate_id', $em_link, 'name');
+    }
+
+    $emirates = GetRows('emirates', "1 ORDER BY name");
+    if($em_link != 'all' && $ajax === false){
+        for ($i = 0; $i < count($emirates); $i++) {
+            if($emirates[$i]['emirate_id'] == $em_link){
+                $emirates[$i]['selected'] = 'emirate_selected';
+            }
+        }
+    } else {
+        $emirate_all_selected = 'emirate_selected';
+    }
+
+    $tpl->assign('category_search', $category_search);
+    $tpl->assign('em_search', $em_search);
+    $tpl->assign('emirate_all_selected', $emirate_all_selected);
+    $tpl->assign('cat_link', $cat_link);
+    $tpl->assign('emirates', $emirates);
+    $html = $tpl->fetch('emirates_row.tpl');
+    return $html;
+}
+
 function ResourcesPage() {
+
     $tpl = new SmartyCustom;
     $resources_ins = new Resource;
     $resource_search = '';
-    $tpl_name = 'resource_box.tpl';
-    $display = GetDisplayStyle();
-
-    /*
-     * If there is need for lightbox or any other different UI for resource
-      if (isset($_GET['res_id']) && $_GET['res_id'] != '') {
-      $res_id = TextToDB($_GET['res_id']);
-      //$GLOBALS['page_title'] = "$resource_search - Search in ";
-      $resources[0] = $resources_ins->GetResourceInfo($res_id);
-      $tpl->assign('resources', $resources);
-      $html = $tpl->fetch('resource_box1.tpl');
-      return $html;
-      }
-
-      if (isset($_GET['limit_search_to_cats']) && $_GET['limit_search_to_cats'] != '') {
-      $limit_search_to_cats = TextToDB($_GET['limit_search_to_cats']);
-      }
-     */
-    if ($display == 'cards') {
-        $tpl_name = 'resource_box.tpl';
-    } elseif ($display == 'list') {
-        $tpl_name = 'resource_list.tpl';
-    }
+    $tpl_name = 'resources_view.tpl';
+    $html = '';
 
     if (isset($_GET['search']) && $_GET['search'] != '') {
         $resource_search = TextToDB($_GET['search']);
         $title = "Search $resource_search";
     }
-    if (isset($_GET['resource']) && $_GET['resource'] != '') {
-        $resource_id = TextToDB($_GET['resource']);
-        $name = 1;
-        $tpl_name = 'resource_box.tpl';
-    }
     $category_search_id = '';
-    if (isset($_GET['category']) && $_GET['category'] != '') {
+    if (isset($_GET['category']) && $_GET['category'] != '' && $_GET['category'] != 'all') {
         $category_search_id = TextToDB($_GET['category']);
-        $tpl_name = 'resource_box.tpl';
     }
-    $author_id = '';
-    if (isset($_GET['author']) && $_GET['author'] != '') {
-        $author_id = TextToDB($_GET['author']);
-        $tpl_name = 'resource_box.tpl';
+    if (isset($_GET['emirate']) && $_GET['emirate'] != '' && $_GET['emirate'] != 'all') {
+        $emirate_id = TextToDB($_GET['emirate']);
     }
 
-    $resources = $resources_ins->GetResources($resource_search, $category_search_id, $resource_id, $author_id);
+    $emirates = $resources_ins->GetResources($resource_search, $category_search_id, $emirate_id);
 
-    if (count($resources) > 0) {
+    $html .= EmiratesRow();
 
-        if ($name == 1) {
-            $title = $resources[0]['name'];
+    if (count($emirates) > 0) {
+
+        $cat_link = 'all';
+        if ($_GET['category'] != '' && isset($_GET['category']) && is_numeric($_GET['category']) && $_GET['category'] != 'all') {
+            $cat_link = $_GET['category'];
         }
-        $tpl->assign('info', $resources);
-        $html = $tpl->fetch($tpl_name);
+        $tpl->assign('cat_link', $cat_link);
+        $tpl->assign('info', $emirates);
+        $html .= $tpl->fetch($tpl_name);
     } else {
 
-        $html = $tpl->fetch('resource_box_notfound.tpl');
+        $html .= $tpl->fetch('resource_box_notfound.tpl');
     }
 
     $GLOBALS['page_title'] = GetTitle($title);
@@ -170,8 +184,8 @@ function SubmitLibrary() {
     $res_ins = new Resource;
     $submitted = 0;
     $fields = $_POST['f'];
-    if ($fields['stuff'] != '') {
-        $error = 'Argh! You are a robot!';
+    if ($_POST['stuff'] != '') {
+        $error = 'Argh! You are a bot!';
     } else if (isset($_POST['f']) && count($_POST['f']) > 0) {
         $res = $res_ins->InsertResource($fields);
         if ($res > 0) {
@@ -185,6 +199,7 @@ function SubmitLibrary() {
     $tpl->assign('submitted', $submitted);
     $tpl->assign('desc_maxlength', $desc_maxlength);
     $tpl->assign('f', $fields);
+    $tpl->assign('emirates', GetRows('emirates' , "1 ORDER BY name"));
     $html = $tpl->fetch('submit_library.tpl');
     return $html;
 }

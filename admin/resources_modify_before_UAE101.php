@@ -22,6 +22,14 @@ if ($action == 'edit' && $id) {
     $resource = GetRowById($table_name, 'resource_id', $id);
 }
 
+$apk_path = SERVER_PATH . "www/apk/$id";
+$apk_web_path = MAIN_SITE . "/apk/$id/";
+$oldmask = umask(0);
+if (!file_exists($apk_path)) {
+    mkdir($apk_path, 0777, true);
+}
+umask($oldmask);
+
 foreach ($resource as $key => $value) {
     $resource[$key] = TextFromDB($value);
 }
@@ -81,7 +89,20 @@ if (isset($_POST['submit']) && ($_POST['submit'] != '')) {
         $set_str .= " $k = '$v', ";
     }
 
-    if ($fields['name'] == '' || $fields['url'] == '') {
+    if ($_FILES["file"]['size'] > 0) {
+        if ($_FILES["file"]["error"] > 0) {
+            $message = "Error: " . $_FILES["file"]["error"];
+        } else {
+            $files = glob("$apk_path/*"); // get all file names
+            foreach ($files as $file) { // iterate files
+                if (is_file($file))
+                    unlink($file); // delete file
+            }
+            move_uploaded_file($_FILES["file"]["tmp_name"], "$apk_path/$id-" . $fields['name'] . ".apk");
+        }
+    }
+
+    if ($fields['name'] == '' || $fields['description'] == '' || $fields['author_id'] == '') {
         $message = "Please enter required information";
     }
     $set_str = (trim($set_str, ' ,'));
@@ -143,6 +164,20 @@ $cat_ins = new Category();
         <form method="post" action="<?= $table_name ?>_modify.php?<?= $_SERVER['QUERY_STRING'] ?>" enctype="multipart/form-data">
             <ul>
                 <li class="wide">
+                    <label for="file">Filename:</label>
+                    <?
+                    $files = glob("$apk_path/*.apk"); // get all file names
+                    foreach ($files as $file) { // iterate files
+                        if (is_file($file)) {
+                            $file = preg_filter("/\/.*\//", "", $file);
+                            ?><a target='_blank' href='<?= $apk_web_path . $file ?>'>Download APK</a><?
+                            break;
+                        }
+                    }
+                    ?>
+                    <input type="file" name="file" id="file">
+                </li>
+                <li class="wide">
                     <label for="name">Resource Name:</label>
                     <input id="name" type='text' required name="q[name]" value="<?= $resource['name'] ?>" title="Name of the resource"/>
                 </li>
@@ -151,7 +186,7 @@ $cat_ins = new Category();
                     <input id="URL" type='text' required name="q[url]" value="<?= $resource['url'] ?>" title="URL of the resource"/>
                 </li>
                 <li class="wide">
-                    <label for="description">Description:</label>
+                    <label for="description">Short Description:</label>
                     <textarea id="description" name="q[description]" maxlength='<?= $desc_maxlength ?>'  cols="" rows="6" placeholder=""><?= htmlspecialchars(TextFromDB($resource['description'])) ?></textarea><br/>
                     <span class='textarea_length_display'></span>
                 </li>
@@ -162,30 +197,27 @@ $cat_ins = new Category();
                     <label class="form_radio" for="is_approved_no">No</label>
                     <input class="form_radio" required id="is_approved_no" type='radio' name="q[is_approved]" value="0" <?= ($resource['is_approved'] == '0') ? "checked" : '' ?>/>
                 </li>
-                <!--li class="wide">
+                <li class="wide">
                     <br/><br/>
                     <label for="rating">Rating:</label>
                     <input id="rating" style="width: 3%;" type='text'  name="q[rating]" value="<?= $resource['rating'] ?>" title="Rating of the resource"/>
                     <div id="slider" style="margin-left: 5%;width: 50%;display: inline-block;"></div>
                     <br/><br/>
-                </li-->
-                <li class="wide">
-                    <label for="parent">Emirate:</label>
-                    <select id="parent" name="q[emirate_id]">
-                        <option value=''>Select a Emirate</option>
-                        <?
-                        $all_cats = GetRows('emirates', '1 ORDER BY name');
-                        foreach ($all_cats as $cat) {
-                            echo "<option value='{$cat['emirate_id']}' ";
-                            if ($cat['emirate_id'] == $resource['emirate_id'])
-                                echo 'selected';
-                            echo ">{$cat['name']}</option>";
-                        }
-                        ?>
-                    </select>
                 </li>
             </ul>
             <div style="clear: both"></div>
+            <table width="95%" style="font-size: 1.11em;" id='author_table'>
+                <tr>
+                    <td width="21.5%" class=""><label for="">Author:</label></td>
+                    <td width="" >
+                        <input style="width:95%;" id="author_name" class="author_autocomplete" autocomplete="off" type='text' name="" value="<?= htmlspecialchars(TextFromDB(GetInfoById("authors", "author_id", $resource['author_id'], "name"))) ?>" placeholder="Search for author..." title="Category Search"/>
+                    </td>
+                    <td  width="20%" >
+                        <input style="width:100%; background-color: lightgrey" id="author_id" type='text' readonly name="q[author_id]" value="<?= $resource['author_id'] ?>" title="Author ID"/>
+                    </td>
+                </tr>
+            </table> 
+            <br/><br/>
             <table width="95%" style="font-size: 1.11em;" id='res_cat_table'>
                 <?
                 // Autocomplete categories and category class for cat search with breadcrumbs
@@ -196,7 +228,7 @@ $cat_ins = new Category();
                     include 'resources_tr_cat.php';
                 } else {
                     foreach ($res_cats as $res_cat) {
-                        $cat_info = $cat_ins->GetCategoryInfo($res_cat);
+                        $cat_info = $cat_ins->GetCategoryFullInfo($res_cat);
                         include 'resources_tr_cat.php';
                         $i++;
                     }

@@ -1,7 +1,7 @@
 <?
 require_once '../admin.common.prepend.php';
 
-$table_name = 'authors';
+$table_name = 'emirates';
 CheckPermissions($table_name);
 
 if (isset($_GET['x'])) {
@@ -15,43 +15,27 @@ if (isset($_GET['x'])) {
     if ($fields['name'] != '') {
         $where_array[] = "name LIKE '%" . $fields['name'] . "%'";
     }
-    switch ($fields['order']) {
-        case 'author_id':
-            $order = 'author_id DESC';
-            break;
-        case 'name':
-        default: $order = 'name';
-    }
     $scope_where = trim(implode(" AND ", $where_array), "AND");
 
     $where = implode(" AND ", $where_array);
     $where = trim($where, 'AND');
 } else {
     $where = '1';
-    $order = 'name';
 }
 
-//if ($scope_where != '')
-//  $scope_where = " AND $scope_where";
-
-$authors = GetRowsAsAssocArray("SELECT * FROM $table_name WHERE $where ORDER BY $order ");
+$emirates = GetRowsAsAssocArray("SELECT * FROM $table_name WHERE $where ");
 $active_count = GetCount($table_name, "$scope_where");
 $scope_prefix = GetUrlPrefix();
-$order_prefix = GetUrlPrefix('order');
-
-$res = new Resource();
-$category = new Category();
 
 PreparePage(array(
-    'title' => 'Authors', // Required
-    'page_type' => "Authors ", // Required
+    'title' => 'Emirates', // Required
+    'page_type' => "Emirates ", // Required
     'page_action' => '', // Optional
     'page_extra_detail' => '', // Optional
-    'page_heading' => "Authors ($active_count)", // Required
-    'create_button' => '<a class="make_dialog anchor_button create_button_text" href="' . $table_name . '_modify.php?action=create">Create a New Author</a>' // Optional
+    'page_heading' => "Emirates ($active_count)", // Required
+    'create_button' => '<a class="make_dialog anchor_button create_button_text" href="' . $table_name . '_modify.php?action=create">Create a New Emirate</a>' // Optional
 ));
 ?>
-<script type="text/javascript" src="js/author_category.js"></script>
 <? if (SEARCH) { ?>
     <div class="search_options">
         <a class="anchor_button search_button_text">Search Options <span class="indicator">+</span><span class="indicator minus">-</span></a>
@@ -78,11 +62,10 @@ PreparePage(array(
     <div class="data_container">
         <table class="paginated_data" cellspacing='0' cellpadding="0">
             <tr>
-                <th><a href="<?= $order_prefix ?>&x[order]=author_id">#</a></th>
-                <th><a href="<?= $order_prefix ?>&x[order]=name">Name</a></th>
-                <th>Github ID</th>
+                <th>#</th>
+                <th>Name</th>
+                <th>Short Form</th>
                 <th># of Resources</th>
-                <th>URL</th>
                 <? if (ACTION) { ?>
                     <th>
                         Action
@@ -91,17 +74,16 @@ PreparePage(array(
             </tr>
             <?
             $i = 0;
-            foreach ($authors as $author) {
+            foreach ($emirates as $emirate) {
                 ?>
                 <tr <?= ($i++ % 2 != 0) ? "class='odd'" : '' ?> >
-                    <td><?= $author['author_id'] ?></td>
-                    <td><?= TextFromDB($author['name']) ?></td>
-                    <td><?= TextFromDB($author['github_author_id']) ?></td>
-                    <td><a href='resources_manage.php?x[author_id]=<?= $author['author_id'] ?>'><?= GetCount('resources', "active = 1 AND author_id = {$author['author_id']}") ?></td>
-                    <td><a target='_blank' href="<?= TextFromDB($author['url']) ?>"><?= TextFromDB($author['url']) ?></a></td>
+                    <td><?= $emirate['emirate_id'] ?></td>
+                    <td><?= TextFromDB($emirate['name']) ?></td>
+                    <td><?= $emirate['shortform'] ?></td>
+                    <td><a href='resources_manage.php?x[emirate_id]=<?= $emirate['emirate_id'] ?>'><?= GetCount('resources', "active = 1 AND emirate_id = {$emirate['emirate_id']}") ?></td>
                     <? if (ACTION) { ?>
                         <td>
-                            <? if (EDIT) { ?><a class="make_dialog" title="<?= TextFromDB($author['name']) ?>" href="<?= $table_name ?>_modify.php?action=edit&id=<?= $author['author_id'] ?>"/>Edit</a><br/><? } ?>
+                            <? if (EDIT) { ?><a class="make_dialog" title="<?= TextFromDB($emirate['name']) ?>" href="<?= $table_name ?>_modify.php?action=edit&id=<?= $emirate['emirate_id'] ?>"/>Edit</a><br/><? } ?>
                         </td>
                     <? } ?>
                 </tr>

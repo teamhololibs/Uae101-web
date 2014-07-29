@@ -125,7 +125,7 @@ $(document).ready(function() {
                         response($.map(data, function(item) {
                             if (type == 1) {
                                 return {
-                                    label: item.full_name,
+                                    label: item.name,
                                     value: item.cat_id
                                 }
                             }

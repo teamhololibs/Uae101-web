@@ -11,41 +11,9 @@ class Category {
     private $categories = array();
     static private $full_categories_tree = array();
 
-    /**
-     * @return array Full Category tree array
-     */
-    static public function GetCategoryFullTree($cat_name = '') {
-        $cat_name = trim(TextToDB($cat_name));
-        if (CATEGORY_TREE_SESSION_FLAG === true && $cat_name == '') {
-            if (time() - $_SESSION['category_last_retrieved'] < CATEGORY_TREE_SESSION_TIMEOUT) {
-                self::$full_categories_tree = $_SESSION['FULL_CATEGORIES_TREE'];
-                return $_SESSION['FULL_CATEGORIES_TREE'];
-            }
-        }
-        $parents = GetRows("categories", "parent_id = 0 AND active = 1 AND name LIKE '%$cat_name%' ORDER BY name", "*, REPLACE(name,' ','-') AS hyphenated_name ");
-        $i = 0;
-        self::$full_categories_tree = $parents;
-        /*
-         * If categories have parents and children
-          foreach ($parents as $parent) {
-          self::$full_categories_tree[$i] = $parent;
-          self::$full_categories_tree[$i]['children'] = GetRows("categories", "parent_id = {$parent['cat_id']} AND active = 1 ORDER BY name", "cat_id, active, name, parent_id, REPLACE(name,' ','-') AS hyphenated_name ");
-          $i++;
-          }
-         */
-        $_SESSION['FULL_CATEGORIES_TREE'] = self::$full_categories_tree;
-        return self::$full_categories_tree;
-        //Debug::dump(self::$full_categories_tree);
-    }
-
     public function SetCategoryId($cat_id) {
         if ($cat_id != '')
             $this->category_id = TextToDB($cat_id);
-    }
-
-    public function SetParentId($parent_id) {
-        if ($parent_id != '')
-            $this->parent_id = TextToDB($parent_id);
     }
 
     public function SetCategoryString($category_search_str) {
@@ -53,69 +21,24 @@ class Category {
             $this->category_search_str = TextToDB($category_search_str);
     }
 
-    public function GetCategoryParentId($cat_id = '') {
-        if ($cat_id != '')
-            $this->SetCategoryId($cat_id);
-
-        $this->parent_id = GetInfoById("categories", "cat_id", $this->category_id, "parent_id");
-    }
-
-    public function GetCategoryInfo($cat_id) {
-        return GetRowById("categories", "cat_id", $cat_id);
-    }
-
     //Used to retrieve info categories for a resource
-    public function GetCategoryFullInfo($cat_id = '') {
+    public function GetCategoryInfo($cat_id = '') {
         if ($cat_id != '')
             $this->SetCategoryId($cat_id);
 
-        $this->category_info = $this->GetCategoryInfo($this->category_id);
-
-        $this->category_info['full_name'] = $this->GetCategoryFullName($this->category_id, $this->category_info['name'], $this->category_info['parent_id']);
+        $this->category_info = GetRowById("categories", "cat_id", $this->category_id);
         $this->category_info['hyphenated_name'] = ConvertSpacesToHyphens($this->category_info['name']);
 
         return $this->category_info;
     }
 
-    public function GetCategoryFullName($cat_id, $cat_name, $parent_id) {
-
-        if ($parent_id == '0') {
-            return $cat_name;
-        }
-
-        $parent_info = $this->GetCategoryInfo($parent_id);
-        $full_name = $parent_info['name'] . " > ";
-        $full_name .= $cat_name;
-
-        return $full_name;
-    }
-
+    //used to allocate categories to resources
     public function GetCategorySearch($category_str = '') {
         if ($category_str != '')
             $this->SetCategoryString($category_str);
 
-        $categories = GetColumnInfo("categories", "cat_id", "active = 1 AND name like '%{$this->category_search_str}%' ");
+        $categories = GetRows("categories", "active = 1 AND name LIKE '%{$this->category_search_str}%' ORDER BY name", "*, REPLACE(name,' ','-') AS hyphenated_name ");
         return $categories;
-    }
-
-    //used to allocate categories to resources
-    public function GetCategorySearchFullInfo($category_str = '') {
-        if ($category_str != '')
-            $this->SetCategoryString($category_str);
-
-        $categories = GetRows("categories", "active = 1 AND name like '%{$this->category_search_str}%' ORDER BY name ");
-        $i = 0;
-        foreach ($categories as $cat) {
-            $cat_full_name = $this->GetCategoryFullName($cat['cat_id'], $cat['name'], $cat['parent_id']);
-            $this->categories[$i] = $cat;
-            $this->categories[$i]['full_name'] = $cat_full_name;
-            $i++;
-        }
-        return $this->categories;
-    }
-
-    public function GetCategoryChildren($parent_id = '') {
-        
     }
 
     public function InsertCategory($category_name = '', $parent_name_or_id = '') {
@@ -146,5 +69,45 @@ class Category {
         }
         return $cat_id;
     }
+    
+     /*
+     * Unused code
+      public function GetCategoryFullName($cat_id, $cat_name, $parent_id) {
+
+      if ($parent_id == '0') {
+      return $cat_name;
+      }
+
+      $parent_info = $this->GetCategoryInfo($parent_id);
+      $full_name = $parent_info['name'] . " > ";
+      $full_name .= $cat_name;
+
+      return $full_name;
+      }
+
+      public function GetCategorySearch($category_str = '') {
+      if ($category_str != '')
+      $this->SetCategoryString($category_str);
+
+      $categories = GetColumnInfo("categories", "cat_id", "active = 1 AND name like '%{$this->category_search_str}%' ");
+      return $categories;
+      }
+      static public function GetCategoryFullTree($cat_name = '') {
+
+      if ($category_str != '')
+      $this->SetCategoryString($category_str);
+      $cat_name = trim(TextToDB($cat_name));
+      if (CATEGORY_TREE_SESSION_FLAG === true && $cat_name == '') {
+      if (time() - $_SESSION['category_last_retrieved'] < CATEGORY_TREE_SESSION_TIMEOUT) {
+      self::$full_categories_tree = $_SESSION['FULL_CATEGORIES_TREE'];
+      return $_SESSION['FULL_CATEGORIES_TREE'];
+      }
+      }
+      $parents = GetRows("categories", "active = 1 AND name LIKE '%$cat_name%' ORDER BY name", "*, REPLACE(name,' ','-') AS hyphenated_name ");
+      self::$full_categories_tree = $parents;
+      $_SESSION['FULL_CATEGORIES_TREE'] = self::$full_categories_tree;
+      return self::$full_categories_tree;
+      }
+     */
 
 }

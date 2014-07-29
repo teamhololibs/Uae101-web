@@ -3,6 +3,7 @@
 $full_menu = array(
     'Categories' => "categories;categories",
     'Resources' => "resources;resources",
+    'Emirates' => "emirates;emirates",
     'Users' => "users;users",
     'Config Variables' => "configs;configs",
     'Super Admin Options' => array(

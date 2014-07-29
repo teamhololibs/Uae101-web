@@ -1,7 +1,7 @@
 <div class="header">
     <ul class='header_ul_left'>
         <li style='margin-left: 30px;'>
-            <a href="/"><img class='logo' src='{$PIC_PATH}/android icon.png'/></a>
+            <a href="/"><img class='logo' src="http://upload.wikimedia.org/wikipedia/commons/c/cb/Flag_of_the_United_Arab_Emirates.svg" {*src='{$PIC_PATH}/android icon.png'*}/></a>
         </li>
         <li style='margin-left: 253px;'>
             <input type='text' class='input_resource_search' placeholder="SEARCH HERE" value="{$search_text}"/>
@@ -11,15 +11,9 @@
     </ul>
     <ul class='header_ul_right'>
         <li>
-            <a id='submit_library' href="/submit">SUBMIT A LIBRARY</a>
+            <a id='submit_library' href="/submit">SUBMIT A PAGE</a>
             {*<span class='login_dropdown'>LOGIN</span>
             {include file="common/login_dropdown.tpl" var_name1=$HEADER_VARS}*}
-        </li>
-        <li>
-            <img class='list_view view_icon' src='{$PIC_PATH}/list-view.jpg'/>
-        </li>
-        <li>
-            <img class='box_view view_icon' src='{$PIC_PATH}/box-view.jpg'/>
         </li>
     </ul>
     {$var_name}

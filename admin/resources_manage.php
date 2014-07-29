@@ -15,6 +15,9 @@ if (isset($_GET['x'])) {
         $where_array[] = "author_id = {$fields['author_id']}";
     }
 
+    if ($fields['emirate_id'] != '') {
+        $where_array[] = "emirate_id = {$fields['emirate_id']}";
+    }
     if ($fields['cat_id'] != '') {
         $res_with_cats = GetColumnInfoByQuery("SELECT distinct(res_id) res_id FROM res_cat WHERE cat_id = {$fields['cat_id']} ");
         $where_array[] = "resource_id IN (" . implode(" , ", $res_with_cats) . ")";
@@ -26,13 +29,13 @@ if (isset($_GET['x'])) {
             $where_array[] = "resource_id IN (" . implode(" , ", $res_with_cats) . ")";
         }
     }
+    if ($fields['emirate_id'] != '') {
+        $where_array[] = "emirate_id = {$fields['emirate_id']}";
+    }
 
     switch ($fields['order']) {
         case 'resource_id':
             $order = 'resource_id DESC';
-            break;
-        case 'github_api_last_checked':
-            $order = 'github_api_last_checked ASC';
             break;
         case 'name':
         default:
@@ -52,10 +55,6 @@ if (isset($_GET['x'])) {
         case '-1' :
             $where_array[] = "is_approved = 0";
             $var = 'notapproved';
-            break;
-        case 'notgit' :
-            $where_array[] = "is_github = 0";
-            $var = 'notgit';
             break;
         case '1' :
         default :
@@ -81,7 +80,6 @@ $resources = GetRowsAsAssocArray("SELECT * FROM $table_name WHERE $where ORDER B
 $active_count = GetCount($table_name, "active = 1 AND is_approved = 1 $scope_where");
 $delete_count = GetCount($table_name, "active = 0 AND is_approved = 1 $scope_where");
 $notapproved_count = GetCount($table_name, "is_approved = 0 $scope_where");
-$notgit_count = GetCount($table_name, "is_github = 0 $scope_where");
 $scope_prefix = GetUrlPrefix();
 $order_prefix = GetUrlPrefix('order');
 
@@ -89,13 +87,9 @@ $res = new Resource();
 $category = new Category();
 
 if (isset($fields['cat_id'])) {
-    $cat_full_name = $category->GetCategoryFullInfo($fields['cat_id']);
+    $cat_full_name = $category->GetCategoryInfo($fields['cat_id']);
     $cat_full_name = $cat_full_name['full_name'];
     $info = " (Category: $cat_full_name)";
-}
-if (isset($fields['author_id'])) {
-    $author_name = GetInfoById("authors", "author_id", $fields['author_id'], 'name');
-    $info = " (Author: $author_name)";
 }
 
 PreparePage(array(
@@ -125,9 +119,6 @@ PreparePage(array(
                         <input id="name" type="text" name="x[cat_name]" value="<?= $_GET['x']['cat_name'] ?>" placeholder="Category"/>
                     </li>
                     <li>
-                        <input id="name" type="text" name="x[name]" value="<?= $_GET['x']['name'] ?>" placeholder="Author xxx"/>
-                    </li>
-                    <li>
                         <input id="name" type="text" name="x[name]" value="<?= $_GET['x']['name'] ?>" placeholder="Submitter xxx"/>
                     </li>
                 </ul>
@@ -148,19 +139,16 @@ PreparePage(array(
         <span class="<?= $notapproved ?>">
             <a href="<?= $scope_prefix ?>&x[scope]=-1">Not Approved<span> (<?= $notapproved_count ?>)</span></a>
         </span>
-        <span class="<?= $notgit ?>">
-            <a href="<?= $scope_prefix ?>&x[scope]=notgit">Not Github<span> (<?= $notgit_count ?>)</span></a>
-        </span>
     </div>
     <div class="data_container">
         <table class="paginated_data" cellspacing='0' cellpadding="0">
             <tr>
                 <th style="width: 3%;"><a href="<?= $order_prefix ?>&x[order]=resource_id">#</a></th>
+                <th style="width: 10%;">Emirate</th>
                 <th><a href="<?= $order_prefix ?>&x[order]=name">Name</a></th>
-                <th style="width: 20%;">Description</th>
-                <th style="width: 14%;">Category</th>
-                <th style="width: 10%;"><a href="<?= $order_prefix ?>&x[order]=github_api_last_checked">API Checked</a></th>
-                <th style="width: 17%;">Information</th>
+                <th style="">Description</th>
+                <th style="">Category</th>
+                <th style="">Information</th>
                 <? if (ACTION) { ?>
                     <th style="width: 6%;">
                         Action
@@ -173,31 +161,25 @@ PreparePage(array(
                 ?>
                 <tr <?= ($i++ % 2 != 0) ? "class='odd'" : '' ?> >
                     <td>#<?= $resource['resource_id'] ?></td>
-                    <td>
-                        <a target='_blank' href='<?= $resource['url'] ?>'><?= TextFromDB($resource['name']) ?></a><br/><br/>
-                        <? if ($res->IsGithubUrl($resource['url'])) { ?>
-                            <a target='_blank' href='<?= $res->GetGithubApiUrl($resource['url']) ?>'>GITHUB API</a>
-                        <? } ?>
+                    <td class="">
+                        <a href='resources_manage.php?x[emirate_id]=<?= $resource['emirate_id'] ?>'>
+                            <?= GetInfoById('emirates', 'emirate_id', $resource['emirate_id'], 'name') ?></a>
                     </td>
+                    <td><a target='_blank' href='<?= $resource['url'] ?>'><?= TextFromDB($resource['name']) ?></a></td>
                     <td class="content_desc"><?= (TextFromDB($resource['description'])) ?></td>
                     <td>
                         <?
                         $res_cats = $res->GetResourceCategories($resource['resource_id']);
                         foreach ($res_cats as $res_cat) {
-                            $cat_info = $category->GetCategoryFullInfo($res_cat);
-                            echo "<a href='resources_manage.php?x[cat_id]={$res_cat}'>{$cat_info['full_name']}</a><br/><br/>";
+                            $cat_info = $category->GetCategoryInfo($res_cat);
+                            echo "<a href='resources_manage.php?x[cat_id]={$res_cat}'>{$cat_info['name']}</a><br/><br/>";
                         }
-                        ?>
+                            ?>
                     </td>
-                    <td><?= $resource['github_api_last_checked'] ?></td>
                     <td>
                         <?
-                        echo "Author: <a href='resources_manage.php?x[author_id]={$resource['author_id']}'>" . GetInfoById("authors", "author_id", $resource['author_id'], "name") . "</a><br/><br/>";
                         //echo "Rating: " . $resource['rating'] . "<br/><br/>";
                         //echo "User: user<br/><br/>";
-                        echo "Github ID: " . $resource['github_resource_id'] . "<br/><br/>";
-                        echo "Github Starred: " . $resource['github_stargazers'] . "<br/><br/>";
-                        echo "Github Forks: " . $resource['github_forks'] . "<br/><br/>";
                         echo "Updated: " . $resource['updated'] . "<br/><br/>";
                         ?>
                     </td>
