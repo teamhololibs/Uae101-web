@@ -427,6 +427,7 @@ a.emirates_link:visited{
     color: #ADADAD;
     font-weight: bold;
     font-size: 1.1em;
+    white-space: nowrap;
 }
 a.emirates_link:hover{
     color: #6A9B00;
@@ -443,6 +444,17 @@ a.emirates_link:hover{
 }
 .search_details{
     font-style: italic;
+}
+a.clear_filter,
+a.clear_filter:active, 
+a.clear_filter:link, 
+a.clear_filter:visited,
+a.clear_filter:hover{
+    text-transform: uppercase;
+    color: #ADADAD;
+    font-weight: bold;
+    font-size: 1.1em;    
+    padding-left: 32px;
 }
 /* RESOURCE BOX CSS */
 
