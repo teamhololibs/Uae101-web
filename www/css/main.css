@@ -106,7 +106,7 @@ body{
 
 .wrapper{
     height: 100%;
-    min-width: 980px;
+    /*min-width: 980px;*/
     line-height: 1.2em;
     position: relative;
     /*font-family: 'Raleway', cursive;*/
@@ -184,6 +184,10 @@ html[xmlns] .clearfix {
     padding: 8px 0;
     width: 100%;
     background-color: #578900;
+    font-size: 1em;
+    line-height: 1em;
+    font-weight: bold;
+    color: white;
     /*
     background-color: #578900;
     background-color: #82bc00;
@@ -197,20 +201,23 @@ html[xmlns] .clearfix {
     background: -ms-linear-gradient(top,  #578900 0%,#487200 100%); 
     background: linear-gradient(to bottom,  #578900 0%,#487200 100%); 
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#578900', endColorstr='#487200',GradientType=0 ); 
-    -webkit-box-shadow: 0px 3px 3px 0px rgba(50, 50, 50, 0.3);
-    -moz-box-shadow:    0px 3px 3px 0px rgba(50, 50, 50, 0.3);
-    box-shadow:         0px 3px 3px 0px rgba(50, 50, 50, 0.3);
     */
 
 }
-.header_ul_left > li{
-    font-size: 1em;
-    line-height: 1em;
-    font-weight: bold;
-    color: white;
+.above_content_holder_shadow{ 
+    -webkit-box-shadow: 0px 3px 3px 0px rgba(50, 50, 50, 0.3);
+    -moz-box-shadow:    0px 3px 3px 0px rgba(50, 50, 50, 0.3);
+    box-shadow:         0px 3px 3px 0px rgba(50, 50, 50, 0.3);
+}
+.header_logo{
     float: left;
 }
-.header_ul_right > li{
+.header_search{
+    float: left;
+    width: 50%;
+    margin-left: 250px;
+}
+.header_submitpage{
     float: right;
     margin-right: 30px;
     margin-top: 7px;
@@ -366,6 +373,12 @@ a#submit_library:hover{
 .textbox_android_cat_search_after{
     border-left: 1px solid #E2E2E2;
 }
+.top_menu{
+    width: 100%;
+    font-size: 0.9em;
+    background-color: #4d5052;
+    text-align: center;
+}
 /* LEFT MENU CSS END */
 .loading_animation{
     /*display: none;*/
@@ -376,9 +389,9 @@ a#submit_library:hover{
     min-height: 80%;
     float: right;
     padding-bottom: 35px;
-    -webkit-box-shadow: inset 0px 2px 4px 0px rgba(50, 50, 50, 0.5);
-    -moz-box-shadow:    inset 0px 2px 4px 0px rgba(50, 50, 50, 0.5);
-    box-shadow:         inset 0px 2px 4px 0px rgba(50, 50, 50, 0.5);
+    /*    -webkit-box-shadow: inset 0px 2px 4px 0px rgba(50, 50, 50, 0.5);
+        -moz-box-shadow:    inset 0px 2px 4px 0px rgba(50, 50, 50, 0.5);
+        box-shadow:         inset 0px 2px 4px 0px rgba(50, 50, 50, 0.5);*/
 }
 .footer{
     height: 50px; 
