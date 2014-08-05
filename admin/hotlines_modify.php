@@ -111,7 +111,7 @@ PreparePage(array(
                 </li>
                 <li class="wide">
                     <label for="parent">Emirate:</label>
-                    <select id="parent" name="q[emirate_id]">
+                    <select id="parent" required name="q[emirate_id]">
                         <option value=''>Select a Emirate</option>
                         <?
                         $all_cats = GetRows('emirates', '1 ORDER BY name');
@@ -126,7 +126,7 @@ PreparePage(array(
                 </li>
                 <li class="wide">
                     <label for="parent">Group:</label>
-                    <select id="parent" name="q[group_id]">
+                    <select id="parent" required name="q[group_id]">
                         <option value=''>Select a Group</option>
                         <?
                         $all_cats = GetRows('groups', '1 ORDER BY group_name');
