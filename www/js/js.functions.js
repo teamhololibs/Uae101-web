@@ -136,32 +136,41 @@ $(document).ready(function() {
 });
 
 function windowResize() {
-    var content_holder_width;
-    content_holder_width = $(document).width() - $('.left_menu').width();
-    console.log($(document).width());
-    console.log($('.left_menu').width());
-    console.log(content_holder_width);
-    $('.content_holder').width(content_holder_width);
     if ($(document).height() == window.innerHeight) {
         $('.footer').addClass('footer_absolute');
     } else {
         $('.footer').removeClass('footer_absolute');
     }
 
+    var content_holder_width;
     var cat_width = 0;
     var emirates_width = 0;
-    if (content_holder_width > 1000) {
-        content_holder_width -= 80;
-        cat_width = (content_holder_width) / 2;
-        cat_width -= 20;
-        emirates_width = content_holder_width + 12;
+    
+    if ($(document).width() > 800) {
+        $('.content_holder').css('float', 'right');
+        content_holder_width = $(document).width() - $('.left_menu').width();
+        $('.content_holder').width(content_holder_width);
+        if (content_holder_width > 1000) {
+            content_holder_width -= 80;
+            cat_width = (content_holder_width) / 2;
+            cat_width -= 20;
+            emirates_width = content_holder_width + 12;
+        } else {
+            content_holder_width -= 70;
+            cat_width = content_holder_width;
+            emirates_width = content_holder_width;
+        }
+        $('.category_box').width(cat_width);
+        $('.emirates_row').width(emirates_width);
     } else {
-        content_holder_width -= 70;
-        cat_width = content_holder_width;
-        emirates_width = content_holder_width;
+        var doc_width = $(document).width() - 80;
+        console.log($(document).width());
+        console.log(doc_width);
+        $('.content_holder').css('float', 'none');
+        $('.content_holder').width(doc_width);
+        $('.category_box').width(doc_width);
+        $('.emirates_row').width(doc_width);
     }
-    $('.category_box').width(cat_width);
-    $('.emirates_row').width(emirates_width);
 }
 function textAreaLength(element) {
 // Store the maxlength and value of the field.

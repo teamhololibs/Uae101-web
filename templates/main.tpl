@@ -49,7 +49,7 @@
                 </div>
             </div>
             {include file="common/header.tpl" var_name=$HEADER_VARS}
-            <div id="left_menu" class="left_menu nano">
+            <div id="left_menu" class="left_menu nano" style="display: none">
                 <div id="" class="nano-content">
                     {*<div class="cat_search_div">
                     <span class='textbox_android_cat_search_before cat_search'></span><input type="text" class='textbox_android_cat_search cat_search' id='cat_search' placeholder='Search Categories'/><span class='textbox_android_cat_search_after cat_search'></span>
@@ -58,6 +58,9 @@
                     {$LEFT_MENU}
                     <!--div style='clear: both'></div-->
                 </div>
+            </div>
+            <div id="top_menu" class="top_menu">
+                {$LEFT_MENU}
             </div>
             <div class='content_holder'>
                 {*<div id="blok1" class="blokje"></div>
