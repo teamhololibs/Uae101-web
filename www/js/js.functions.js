@@ -34,6 +34,18 @@ $(document).ready(function() {
         $('.cat_search').show('fast');
         $('#cat_search').focus();
     });
+
+    $(document).click(function(evt) {
+        var s = evt.target.firstElementChild.className;
+        if (s.indexOf("left_menu_click_capture") > -1)
+            return;
+//        console.log(evt.target.firstElementChild.className);
+        $('.categories_dropdown').slideUp('fast');
+    });
+    $('#top_menu .left_category_menu').click(function() {
+        $('.categories_dropdown').slideDown('fast');
+    });
+
     $('#cat_search').keyup(function() {
         if ($('#cat_search').val().length == 0) {
             return;
@@ -145,8 +157,11 @@ function windowResize() {
     var content_holder_width;
     var cat_width = 0;
     var emirates_width = 0;
-    
+
     if ($(document).width() > 800) {
+        $('#left_menu').show();
+        $('#top_menu').hide();
+        $('.categories_dropdown').show();
         $('.content_holder').css('float', 'right');
         content_holder_width = $(document).width() - $('.left_menu').width();
         $('.content_holder').width(content_holder_width);
@@ -163,6 +178,9 @@ function windowResize() {
         $('.category_box').width(cat_width);
         $('.emirates_row').width(emirates_width);
     } else {
+        $('#left_menu').hide();
+        $('#top_menu').show();
+        $('.categories_dropdown').hide();
         var doc_width = $(document).width() - 80;
         console.log($(document).width());
         console.log(doc_width);

@@ -59,7 +59,7 @@
                     <!--div style='clear: both'></div-->
                 </div>
             </div>
-            <div id="top_menu" class="top_menu">
+            <div id="top_menu" class="top_menu left_menu_click_capture">
                 {$LEFT_MENU}
             </div>
             <div class='content_holder'>

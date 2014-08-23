@@ -106,7 +106,7 @@ body{
 
 .wrapper{
     height: 100%;
-    min-width: 980px;
+    /*min-width: 980px;*/
     line-height: 1.2em;
     position: relative;
     /*font-family: 'Raleway', cursive;*/
@@ -180,10 +180,18 @@ html[xmlns] .clearfix {
 }
 
 /* HEADER CSS */
+.header_item{
+    clear: both;
+    margin: 0 auto;
+}
 .header{
     padding: 8px 0;
     width: 100%;
     background-color: #578900;
+    font-size: 1em;
+    line-height: 1em;
+    font-weight: bold;
+    color: white;
     /*
     background-color: #578900;
     background-color: #82bc00;
@@ -197,22 +205,28 @@ html[xmlns] .clearfix {
     background: -ms-linear-gradient(top,  #578900 0%,#487200 100%); 
     background: linear-gradient(to bottom,  #578900 0%,#487200 100%); 
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#578900', endColorstr='#487200',GradientType=0 ); 
-    */
     -webkit-box-shadow: 0px 3px 3px 0px rgba(50, 50, 50, 0.3);
     -moz-box-shadow:    0px 3px 3px 0px rgba(50, 50, 50, 0.3);
     box-shadow:         0px 3px 3px 0px rgba(50, 50, 50, 0.3);
+    */
+}
+.above_content_holder_shadow{ 
+    -webkit-box-shadow: 0px 3px 3px 0px rgba(50, 50, 50, 0.3);
+    -moz-box-shadow:    0px 3px 3px 0px rgba(50, 50, 50, 0.3);
+    box-shadow:         0px 3px 3px 0px rgba(50, 50, 50, 0.3);
+}
 
+.header_logo{
+    /*float: left;*/
 }
-.header_ul_left > li{
-    font-size: 1em;
-    line-height: 1em;
-    font-weight: bold;
-    color: white;
-    float: left;
+.header_search{
+    /*float: left;*/
+    width: 50%;
+    /*margin-left: 250px;*/
 }
-.header_ul_right > li{
-    float: right;
-    margin-right: 30px;
+.header_submitpage{
+    /*float: right;*/
+    /*margin-right: 30px;*/
     margin-top: 7px;
 }
 .view_icon{
@@ -239,7 +253,7 @@ html[xmlns] .clearfix {
     font-size: 1em;
     margin: 0 0 0 0;
     padding: 8px 5px;
-    width: 450px;
+    width: 100%;
     border: 0;
     outline: 0;
     background: #fff url("/images/search_icon.png") no-repeat right center;
@@ -365,6 +379,15 @@ a#submit_library:hover{
 }
 .textbox_android_cat_search_after{
     border-left: 1px solid #E2E2E2;
+}
+.top_menu .categories_dropdown{
+    display: none;
+}
+.top_menu{
+    width: 100%;
+    font-size: 0.9em;
+    background-color: #4d5052;
+    text-align: center;
 }
 /* LEFT MENU CSS END */
 .loading_animation{

@@ -1,11 +1,11 @@
 <div class="header">
-    <div class="header_logo">
+    <div class="header_logo header_item">
         <a href="/"><img class='logo' src="http://upload.wikimedia.org/wikipedia/commons/c/cb/Flag_of_the_United_Arab_Emirates.svg" /></a>
     </div>
-    <div class="header_search">
+    <div class="header_search header_item">
         <input type='text' class='input_resource_search' placeholder="SEARCH HERE" value="{$search_text}"/>
     </div>
-    <div class="header_submitpage">
+    <div class="header_submitpage header_item">
         <a id='submit_library' href="/submit">SUBMIT A PAGE</a>
     </div>
     {*<span class='login_dropdown'>LOGIN</span>
