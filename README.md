@@ -3,11 +3,6 @@ Project-Libra
 
 UAE 101
 
-uaepackage.com
-uaepot.com
-afe.com
-easyuae.org
-
 ===
 
 Files related to and accessible from the admin module will be found in /admin/ directory
